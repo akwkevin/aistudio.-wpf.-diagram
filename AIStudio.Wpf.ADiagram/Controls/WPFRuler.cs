@@ -330,7 +330,7 @@ namespace AIStudio.Wpf.ADiagram.Controls
                     if ((dUnit != 0.0) && (dUnit < Length))
                     {
                         FormattedText ft = new FormattedText(
-                            (dUnit + CountShift).ToString(CultureInfo.CurrentCulture),
+                            (Math.Round(dUnit + CountShift,0)).ToString(CultureInfo.CurrentCulture),
                              CultureInfo.CurrentCulture,
                              FlowDirection.LeftToRight,
                              new Typeface("Arial"),
@@ -415,7 +415,7 @@ namespace AIStudio.Wpf.ADiagram.Controls
                 if ((dUnit != 0.0) && (dUnit < Length))
                 {
                     FormattedText ft = new FormattedText(
-                        (dUnit + CountShift).ToString(CultureInfo.CurrentCulture),
+                        (Math.Round(dUnit + CountShift,0)).ToString(CultureInfo.CurrentCulture),
                          CultureInfo.CurrentCulture,
                          FlowDirection.LeftToRight,
                          new Typeface("Arial"),
