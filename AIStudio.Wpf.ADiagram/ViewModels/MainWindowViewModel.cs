@@ -1154,18 +1154,18 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             List<Color> result = new List<Color>();
             for (var i = 0; i < count; i++)
             {
-                var colors = ColorGallery.GetGradient(ColorGallery.StandardThemeColors[i], 10);
-                for (var j = 9; j >= 0; j--)
-                {
-                    result.Add(colors[j]);
-                }
+                //var colors = ColorGallery.GetGradient(ColorGallery.StandardThemeColors[i], 10);
+                //for (var j = 9; j >= 0; j--)
+                //{
+                //    result.Add(colors[j]);
+                //}
             }
             {
-                var colors = ColorGallery.GetGradient(Colors.Black, 10);
-                for (var j = 9; j >= 0; j--)
-                {
-                    result.Add(colors[j]);
-                }
+                //var colors = ColorGallery.GetGradient(Colors.Black, 10);
+                //for (var j = 9; j >= 0; j--)
+                //{
+                //    result.Add(colors[j]);
+                //}
             }
             return result.ToArray();
         }
