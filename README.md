@@ -1,4 +1,4 @@
-本画板在WPF-Diagram-Designer进行的开发，界面框架使用Fluent.Ribbon的框架。
+本画板在WPF-Diagram-Designer的基础上进行的开发，界面框架使用Fluent.Ribbon的框架。
 
 先上源码地址：https://gitee.com/akwkevin/aistudio.-wpf.-diagram
 
@@ -36,10 +36,23 @@
 13.支持画板大小，方向，标尺，网格是否显示，画板背景色
 
 14.支持流程图（在文件新建下-基本绘图-流程图）
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095156_62819165_4799126.png "1.png")
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095209_6cdce752_4799126.png "2.png")
 
  15支持逻辑图（在文件新建下-基本绘图-逻辑图）
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095226_36478a7b_4799126.png "3.png")
 
  16.博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
+
+    相关链接地址：
+
+    Fluent.Ribbon: https://github.com/fluentribbon/Fluent.Ribbon
+
+    WPF-Diagram-Designer:https://github.com/LinRaise/WPF-Diagram-Designer
+
+    个人QQ:80267720(欢迎技术交流及技术合作)
+
+    QQ技术交流群:51286643
