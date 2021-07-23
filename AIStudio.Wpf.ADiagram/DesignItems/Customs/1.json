@@ -1,0 +1,172 @@
+{
+  "Title": null,
+  "DiagramType": 0,
+  "DiagramItems": [
+    {
+      "Name": null,
+      "DiagramType": 0,
+      "DesignerItems": [
+      ],
+      "PersistDesignerItems": [
+      ],
+      "SettingsDesignerItems": [
+      ],
+      "PathDesignerItems": [
+        {
+          "Left": 132.80000000000007,
+          "Top": 101.26000022888184,
+          "ScaleX": 1,
+          "ScaleY": 1,
+          "Margin": 0.0,
+          "ItemWidth": 65.0,
+          "ItemHeight": 65.0,
+          "Icon": "M 0,0 H 60 V 40 C 30,30 30,50 0,40 Z",
+          "ItemTypeName": "AIStudio.Wpf.ADiagram.Demos.Others.PathItemViewModel",
+          "Id": "da395032-ad9e-4dab-a035-f59bed5cb4c4",
+          "ZIndex": 0,
+          "IsGroup": false,
+          "ParentId": "00000000-0000-0000-0000-000000000000",
+          "Text": "欢迎来到AIStudio画板",
+          "ColorItem": {
+            "LineColor": {
+              "BrushType": 1,
+              "Color": "#FF808080",
+              "GradientStop": null,
+              "Offset": null,
+              "Image": null,
+              "SubType": 0,
+              "StartPoint": "0,0",
+              "EndPoint": "0,0",
+              "Opacity": 1.0,
+              "LinearOrientation": 0,
+              "RadialOrientation": 0,
+              "Angle": 0
+            },
+            "FillColor": {
+              "BrushType": 1,
+              "Color": "#FFFFA500",
+              "GradientStop": null,
+              "Offset": null,
+              "Image": null,
+              "SubType": 0,
+              "StartPoint": "0,0",
+              "EndPoint": "0,0",
+              "Opacity": 1.0,
+              "LinearOrientation": 0,
+              "RadialOrientation": 0,
+              "Angle": 0
+            },
+            "ShadowColor": "#00FFFFFF",
+            "LineWidth": 1.0,
+            "LeftArrowPathStyle": 0,
+            "RightArrowPathStyle": 1,
+            "LeftArrowSizeStyle": 10,
+            "RightArrowSizeStyle": 10
+          },
+          "FontItem": {
+            "FontWeight": "Normal",
+            "FontStyle": "Normal",
+            "FontStretch": "Normal",
+            "Underline": false,
+            "Strikethrough": false,
+            "OverLine": false,
+            "FontColor": "#FF000000",
+            "FontFamily": "Arial",
+            "FontSize": 11.0,
+            "FontObject": "Arial, 11pt",
+            "TextEffectColor": "#00FFFFFF",
+            "HighlightColor": "#00FFFFFF",
+            "FontCase": 0,
+            "HorizontalAlignment": 1,
+            "VerticalAlignment": 1,
+            "LineHeight": 0.0
+          }
+        }
+      ],
+      "MediaDesignerItems": [
+      ],
+      "ImageDesignerItems": [
+      ],
+      "TextDesignerItems": [
+      ],
+      "LogicalGateItems": [
+      ],
+      "FlowNodeDesignerItems": [
+      ],
+      "AllDesignerItems": [
+        {
+          "Left": 132.80000000000007,
+          "Top": 101.26000022888184,
+          "Margin": 0.0,
+          "ItemWidth": 65.0,
+          "ItemHeight": 65.0,
+          "Icon": "M 0,0 H 60 V 40 C 30,30 30,50 0,40 Z",
+          "ItemTypeName": "AIStudio.Wpf.ADiagram.Demos.Others.PathItemViewModel",
+          "Id": "da395032-ad9e-4dab-a035-f59bed5cb4c4",
+          "ZIndex": 0,
+          "IsGroup": false,
+          "ParentId": "00000000-0000-0000-0000-000000000000",
+          "Text": "欢迎来到AIStudio画板",
+          "ColorItem": {
+            "LineColor": {
+              "BrushType": 1,
+              "Color": "#FF808080",
+              "GradientStop": null,
+              "Offset": null,
+              "Image": null,
+              "SubType": 0,
+              "StartPoint": "0,0",
+              "EndPoint": "0,0",
+              "Opacity": 1.0,
+              "LinearOrientation": 0,
+              "RadialOrientation": 0,
+              "Angle": 0
+            },
+            "FillColor": {
+              "BrushType": 1,
+              "Color": "#FFFFA500",
+              "GradientStop": null,
+              "Offset": null,
+              "Image": null,
+              "SubType": 0,
+              "StartPoint": "0,0",
+              "EndPoint": "0,0",
+              "Opacity": 1.0,
+              "LinearOrientation": 0,
+              "RadialOrientation": 0,
+              "Angle": 0
+            },
+            "ShadowColor": "#00FFFFFF",
+            "LineWidth": 1.0,
+            "LeftArrowPathStyle": 0,
+            "RightArrowPathStyle": 1,
+            "LeftArrowSizeStyle": 10,
+            "RightArrowSizeStyle": 10
+          },
+          "FontItem": {
+            "FontWeight": "Normal",
+            "FontStyle": "Normal",
+            "FontStretch": "Normal",
+            "Underline": false,
+            "Strikethrough": false,
+            "OverLine": false,
+            "FontColor": "#FF000000",
+            "FontFamily": "Arial",
+            "FontSize": 11.0,
+            "FontObject": "Arial, 11pt",
+            "TextEffectColor": "#00FFFFFF",
+            "HighlightColor": "#00FFFFFF",
+            "FontCase": 0,
+            "HorizontalAlignment": 1,
+            "VerticalAlignment": 1,
+            "LineHeight": 0.0
+          }
+        }
+      ],
+      "ConnectionIds": [
+      ],
+      "Connections": [
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="AIStudio.Wpf.ADiagram.Views.AboutControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AIStudio.Wpf.ADiagram.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <FlowDocumentScrollViewer VerticalScrollBarVisibility="Auto">
+            <FlowDocument>
+                <Paragraph>AIStudio.Wpf.Diagram 1.0.0.0
+                    <Figure Width="150">
+                        <BlockUIContainer>
+                            <Image Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Images/diagram.png" />
+                        </BlockUIContainer>
+                    </Figure>
+                </Paragraph>
+                <Paragraph>功能暂未全部完成，持续更新中，敬请期待！！！</Paragraph>
+                <Paragraph>                  
+                    本画板在WPF-Diagram-Designer进行的开发，界面框架使用Fluent.Ribbon的框架。
+                    <LineBreak />
+                    实现的功能有：
+                    <LineBreak />
+                    Drag
+                    <LineBreak />
+                    resize
+                    <LineBreak />
+                    rotate
+                    <LineBreak />
+                    设计面板(Designer Canvas ：variable size, scrollable)
+                    <LineBreak />
+                    缩略图（Zoombox）
+                    <LineBreak />
+                    框线选择（Rubberband selection）
+                    <LineBreak />
+                    Toolbox (drag &amp; drop)
+                    <LineBreak />
+                    Connecting items
+                    <LineBreak />
+                    Open, Save
+                    <LineBreak />
+                    Cut, Copy, Paste, Delete
+                    <LineBreak />
+                    Print
+                    <LineBreak />
+                    Group, Ungroup
+                    <LineBreak />
+                    Align (Left, Right, Top, Bottom, Centered horizontal, Centered vertical)
+                    <LineBreak />
+                    Distribute (horizontal, vertical)
+                    <LineBreak />
+                    Order (Bring forward, Bring to top, Send backward, Send to back)
+                    <LineBreak />
+                    <Figure Width="150">
+                        <BlockUIContainer>
+                            <Image Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Images/contactme.png" />
+                        </BlockUIContainer>
+                    </Figure>
+                    相关链接:
+                    <LineBreak />
+                    本框架链接,欢迎点星支持:
+                    <Hyperlink NavigateUri="https://gitee.com/akwkevin/aistudio.-wpf.-diagram">https://gitee.com/akwkevin/aistudio.-wpf.-diagram</Hyperlink>
+                    <LineBreak />
+                    个人GitHub,欢迎点星支持:
+                    <Hyperlink NavigateUri="https://gitee.com/akwkevin">https://gitee.com/akwkevin</Hyperlink>
+                    <LineBreak />
+                    个人博客:
+                    <Hyperlink NavigateUri="https://www.cnblogs.com/akwkevin/">https://www.cnblogs.com/akwkevin/</Hyperlink>
+                    <LineBreak />
+                    Fluent.Ribbon:
+                    <Hyperlink NavigateUri="https://github.com/fluentribbon/Fluent.Ribbon">https://github.com/fluentribbon/Fluent.Ribbon</Hyperlink>
+                    <LineBreak />
+                    WPF-Diagram-Designer:
+                    <Hyperlink NavigateUri="https://github.com/LinRaise/WPF-Diagram-Designer">https://github.com/LinRaise/WPF-Diagram-Designer</Hyperlink>
+                    <LineBreak />
+                    <LineBreak />
+                    个人QQ:80267720(欢迎技术交流及技术合作)
+                    <LineBreak />
+                    QQ技术交流群:51286643
+                 
+                </Paragraph>        
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+    </Grid>
+</UserControl>

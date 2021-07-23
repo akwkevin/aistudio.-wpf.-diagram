@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFrameworks>net472</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>FluentTest</RootNamespace>
+    <AssemblyName>Fluent.Ribbon.Showcase</AssemblyName>
+    
+    <NoWarn>$(NoWarn);SA0001</NoWarn>
+    <InlcudeMahAppsMetro>true</InlcudeMahAppsMetro>
+    <InlcudeMahAppsMetro Condition="$(TargetFramework) == 'net452'">false</InlcudeMahAppsMetro>
+
+    <DefineConstants Condition="$(InlcudeMahAppsMetro)">$(DefineConstants);MahApps_Metro</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>FluentTest.Program</StartupObject>
+    <ApplicationIcon>Icons\App.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Icons\App.ico" />
+    <None Remove="Images\banner.png" />
+    <None Remove="Images\Blue.png" />
+    <None Remove="Images\BlueLarge.png" />
+    <None Remove="Images\Bold.png" />
+    <None Remove="Images\Box.png" />
+    <None Remove="Images\Brown.png" />
+    <None Remove="Images\BrownLarge.png" />
+    <None Remove="Images\ChangeCase.png" />
+    <None Remove="Images\ClearFormatting.png" />
+    <None Remove="Images\FontColor.png" />
+    <None Remove="Images\FormatPainter.png" />
+    <None Remove="Images\GalleryLarge.png" />
+    <None Remove="Images\Gray.png" />
+    <None Remove="Images\GrayLarge.png" />
+    <None Remove="Images\Green.png" />
+    <None Remove="Images\GreenLarge.png" />
+    <None Remove="Images\GrowFont.png" />
+    <None Remove="Images\Italic.png" />
+    <None Remove="Images\Orange.png" />
+    <None Remove="Images\OrangeLarge.png" />
+    <None Remove="Images\PasteFormating.png" />
+    <None Remove="Images\PasteImage.png" />
+    <None Remove="Images\PasteSourceFormating.png" />
+    <None Remove="Images\PasteText.png" />
+    <None Remove="Images\PasteTextOnly.png" />
+    <None Remove="Images\Pink.png" />
+    <None Remove="Images\PinkLarge.png" />
+    <None Remove="Images\Red.png" />
+    <None Remove="Images\RedLarge.png" />
+    <None Remove="Images\SampleImageForScreenTip.png" />
+    <None Remove="Images\ShrinkFont.png" />
+    <None Remove="Images\Strikethrough.png" />
+    <None Remove="Images\Subscript.png" />
+    <None Remove="Images\Superscript.png" />
+    <None Remove="Images\Test16.png" />
+    <None Remove="Images\Test32.png" />
+    <None Remove="Images\TextEffects.png" />
+    <None Remove="Images\TextHighlightColor.png" />
+    <None Remove="Images\Underline.png" />
+    <None Remove="Images\Yellow.png" />
+    <None Remove="Images\YellowLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Images\VectorIcons.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="app.manifest" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(InlcudeMahAppsMetro) == false">
+    <Page Remove="MahMetro*" />
+    <Compile Remove="MahMetro*" />
+    <None Include="MahMetro*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.3.4" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.261">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="WpfAnalyzers" Version="3.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fluent.Ribbon\Fluent.Ribbon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\App.ico" />
+    <Resource Include="Images\banner.png" />
+    <Resource Include="Images\Blue.png" />
+    <Resource Include="Images\BlueLarge.png" />
+    <Resource Include="Images\Bold.png" />
+    <Resource Include="Images\Box.png" />
+    <Resource Include="Images\Brown.png" />
+    <Resource Include="Images\BrownLarge.png" />
+    <Resource Include="Images\ChangeCase.png" />
+    <Resource Include="Images\ClearFormatting.png" />
+    <Resource Include="Images\FontColor.png" />
+    <Resource Include="Images\FormatPainter.png" />
+    <Resource Include="Images\GalleryLarge.png" />
+    <Resource Include="Images\Gray.png" />
+    <Resource Include="Images\GrayLarge.png" />
+    <Resource Include="Images\Green.png" />
+    <Resource Include="Images\GreenLarge.png" />
+    <Resource Include="Images\GrowFont.png" />
+    <Resource Include="Images\Italic.png" />
+    <Resource Include="Images\Orange.png" />
+    <Resource Include="Images\OrangeLarge.png" />
+    <Resource Include="Images\PasteFormating.png" />
+    <Resource Include="Images\PasteImage.png" />
+    <Resource Include="Images\PasteSourceFormating.png" />
+    <Resource Include="Images\PasteText.png" />
+    <Resource Include="Images\PasteTextOnly.png" />
+    <Resource Include="Images\Pink.png" />
+    <Resource Include="Images\PinkLarge.png" />
+    <Resource Include="Images\Red.png" />
+    <Resource Include="Images\RedLarge.png" />
+    <Resource Include="Images\SampleImageForScreenTip.png" />
+    <Resource Include="Images\ShrinkFont.png" />
+    <Resource Include="Images\Strikethrough.png" />
+    <Resource Include="Images\Subscript.png" />
+    <Resource Include="Images\Superscript.png" />
+    <Resource Include="Images\Test16.png" />
+    <Resource Include="Images\Test32.png" />
+    <Resource Include="Images\TextEffects.png" />
+    <Resource Include="Images\TextHighlightColor.png" />
+    <Resource Include="Images\Underline.png" />
+    <Resource Include="Images\VectorIcons.xaml" />
+    <Resource Include="Images\Yellow.png" />
+    <Resource Include="Images\YellowLarge.png" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+</Project>

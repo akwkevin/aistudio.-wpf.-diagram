@@ -1,0 +1,30 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>      
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/ScrollBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/Expander.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/GroupBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/ToolTip.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/ScrollViewer.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/ZoomBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Util.DiagramDesigner;component/Resources/Styles/DesignerItems.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/Fluent.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/Expander.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/ListBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/Slider.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/TabControl.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/ToggleButton.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Flowchart/ViewModels/FlowNode.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Logical/ViewModels/LogicalGateItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/BarcodeDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/OutLineTextDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/PathItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/PersistDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/SettingsDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/SvgDesignerItemViewModel.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    
+</ResourceDictionary>

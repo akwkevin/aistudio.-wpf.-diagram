@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net462;net472</TargetFrameworks>
+     <UseWPF>true</UseWPF>
+    <RootNamespace>Fluent</RootNamespace>
+    <AssemblyName>Fluent</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>Fluent.Ribbon is a library that implements an Office-like user interface for the Windows Presentation Foundation (WPF). It provides controls such as RibbonTabControl, Backstage, Gallery, QuickAccessToolbar, ScreenTip and so on.</Description>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.Template.xaml</DefaultItemExcludes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <!-- We also have to exclude controls in release mode to reduce binary size -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/Controls/*.xaml</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="**/*.fx;**/*.json" Exclude="$(BaseIntermediateOutputPath)/**/*" />
+    <None Include="**/Controls/*.xaml" />
+    <None Include="**/Styles.txt" />
+    <EmbeddedResource Include="**/*.Template.xaml" />
+    <EmbeddedResource Include="**/GeneratorParameters.json" />
+    <UpToDateCheckInput Include="**/*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+    <Page Remove="bin\**" />
+    <UpToDateCheckInput Remove="bin\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Themes\Themes\GeneratorParameters.json" />
+    <EmbeddedResource Remove="Themes\Themes\Theme.Template.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../License.txt" Pack="true" PackagePath="license/License.txt" />
+    <None Include="../Images/Logo/Logo_128x128.png" Pack="true" PackagePath="Logo.png" />
+  </ItemGroup>
+  <ItemGroup Condition="$(DefineConstants.Contains(NETCOREAPP)) == false">
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" Version="4.4.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.8.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.261">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="WpfAnalyzers" Version="3.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="XamlColorSchemeGenerator" Version="4.0.0-rc0140">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+      <Version>3.8.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Effects\Grayscale.fx" />
+    <Resource Include="Themes\Effects\Grayscale.ps" />
+  </ItemGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+    <PackageId>Fluent.Ribbon</PackageId>
+    <Authors>Bastian Schmidt</Authors>
+    <PackageLicenseFile>license/License.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/fluentribbon/Fluent.Ribbon</PackageProjectUrl>
+    <PackageIcon>Logo.png</PackageIcon>
+    <PackageIconUrl>https://raw.githubusercontent.com/fluentribbon/Fluent.Ribbon/master/Images/Logo/Logo_128x128.png</PackageIconUrl>
+    <PackageTags>fluent;office;ribbon;ribbonwindow;backstage;UI;XAML;Toolkit;Library;.NET;OSS;OpenSource;fluentribbon</PackageTags>
+    <PackageReleaseNotes>https://github.com/fluentribbon/Fluent.Ribbon/blob/develop/Changelog.md</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/fluentribbon/Fluent.Ribbon.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateLibraryLayout>true</GenerateLibraryLayout>
+  </PropertyGroup>
+
+ <Target Name="GenerateXamlFiles" BeforeTargets="DispatchToInnerBuilds;PrepareResources;MarkupCompilePass1;MarkupCompilePass2">
+    <PropertyGroup>
+      <XamlCombinePath>$(MSBuildProjectDirectory)/Themes/XamlCombine.exe</XamlCombinePath>
+      <!-- <XamlCombinePath>C:/DEV/OSS_Own/FluentRibbon/XamlCombine/bin/Debug/netcoreapp3.0/XamlCombine.exe</XamlCombinePath> -->
+    </PropertyGroup>       
+    <!-- Generate theme files -->
+    <Message Text="$(XamlColorSchemeGeneratorExecutable)" />
+    <Exec Command="&quot;$(XamlColorSchemeGeneratorExecutable)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)/Themes/Themes" />
+    <!-- Combine xaml files -->
+    <Exec Command="&quot;$(XamlCombinePath)&quot; &quot;Styles.txt&quot; &quot;Styles.xaml&quot;" WorkingDirectory="$(MSBuildProjectDirectory)/Themes" />
+  </Target>
+
+  <!-- 
+  Delete generated color scheme XAML files when user explicitly executes Build>Clean
+  command in Visual Studio.
+  
+  https://stackoverflow.com/questions/5102661/need-a-post-clean-event-in-visual-studio 
+  -->
+  <Target Name="MyDistClean" AfterTargets="Clean">
+    <ItemGroup>
+      <ThemeFiles Include="$(MSBuildProjectDirectory)/Themes/Themes/Dark.*" />
+      <ThemeFiles Include="$(MSBuildProjectDirectory)/Themes/Themes/Light.*" />
+      <ThemeFiles Include="$(MSBuildProjectDirectory)/Themes/Themes/Colorful.*" />
+    </ItemGroup>
+    <Message Text="Deleting XAML Color Scheme files..." Importance="high" />
+    <Delete Files="$(ThemeFiles)" ContinueOnError="true" />
+  </Target>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+</Project>

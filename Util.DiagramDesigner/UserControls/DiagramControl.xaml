@@ -1,0 +1,978 @@
+﻿<UserControl x:Class="Util.DiagramDesigner.DiagramControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:s="clr-namespace:Util.DiagramDesigner"
+             xmlns:c="clr-namespace:Util.DiagramDesigner.Controls"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             mc:Ignorable="d" HorizontalAlignment="Center" VerticalAlignment="Center"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Util.DiagramDesigner;component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <s:ColorBrushConverter x:Key="ColorBrushConverter" />
+            <s:ConectorOrientationConverter  x:Key="ConectorOrientationConverter" />
+            <s:ConectorValueConverter x:Key="ConectorValueConverter"/>
+            <s:ArrowPathConverter x:Key="ArrowPathConverter"/>
+            <s:ArrowSizeConverter x:Key="ArrowSizeConverter"/>
+            <s:LineDashConverter x:Key="LineDashConverter"/>
+            <s:ClipConverter x:Key="ClipConverter"/>
+
+            <!-- ResizeDecorator Default Template -->
+            <!--
+            <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="{x:Type Control}">
+                <Grid SnapsToDevicePixels="true">
+                    <c:ResizeThumb Height="1" Cursor="SizeNS" Margin="0 0 0 0"
+                     VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <c:ResizeThumb Width="1" Cursor="SizeWE" Margin="0 0 0 0"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                    <c:ResizeThumb Width="1" Cursor="SizeWE" Margin="0 0 0 0"
+                     VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                    <c:ResizeThumb Height="1" Cursor="SizeNS" Margin="0 0 0 0"
+                     VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+                    <c:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-3 -3 0 0"
+                     VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <c:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -3 -3 0"
+                     VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                    <c:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-3 0 0 -3"
+                     VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                    <c:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -3 -3"
+                     VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+            </ControlTemplate>-->
+
+            <Style TargetType="{x:Type Shape}" x:Key="ThumbCorner">
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="Stroke" Value="#FFC8C8C8" />
+                <Setter Property="StrokeThickness" Value=".5" />
+                <Setter Property="Width" Value="7" />
+                <Setter Property="Height" Value="7" />
+                <Setter Property="Margin" Value="-2" />
+                <Setter Property="Fill">
+                    <Setter.Value>
+                        <RadialGradientBrush Center="0.2, 0.2" GradientOrigin="0.2, 0.2" RadiusX="0.8" RadiusY="0.8">
+                            <GradientStop Color="White" Offset="0.0" />
+                            <GradientStop Color="Gray" Offset="0.8" />
+                        </RadialGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--ResizeDecorator Default Template-->
+            <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="{x:Type Control}">
+                <Grid>
+                    <Grid Opacity="0" Margin="-3">
+                        <c:RotateThumb x:Name="rotate" Width="7"
+                             Height="7"
+                             Margin="0,-20,0,0"
+                             Cursor="Hand"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Center"/>
+                        <c:ResizeThumb Height="3"
+                             Cursor="SizeNS"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Stretch"/>
+                        <c:ResizeThumb Width="3"
+                             Cursor="SizeWE"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Left"/>
+                        <c:ResizeThumb Width="3"
+                             Cursor="SizeWE"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Right"/>
+                        <c:ResizeThumb Height="3"
+                             Cursor="SizeNS"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Stretch"/>
+                        <c:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNWSE"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Left"/>
+                        <c:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNESW"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Right"/>
+                        <c:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNESW"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Left"/>
+                        <c:ResizeThumb Width="7"
+                             Height="7"
+                             Margin="-2"
+                             Cursor="SizeNWSE"
+                             VerticalAlignment="Bottom"
+                             HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Grid IsHitTestVisible="False" Opacity="1" Margin="-3">
+                        <Rectangle SnapsToDevicePixels="True"
+                         StrokeThickness="1"
+                         Margin="1"
+                         Stroke="Gray"/>
+                        <Line x:Name="line" StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,-19,0,0"
+                    Stroke="Gray"/>
+                        <Ellipse x:Name="top" Style="{StaticResource ThumbCorner}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-1,-20,0,0"/>
+                        <Ellipse Style="{StaticResource ThumbCorner}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Ellipse Style="{StaticResource ThumbCorner}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                        <Ellipse Style="{StaticResource ThumbCorner}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                        <Ellipse Style="{StaticResource ThumbCorner}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <DataTrigger Binding="{Binding ShowRotate}" Value="false">
+                        <Setter TargetName="rotate" Property="Visibility" Value="Collapsed"/>
+                        <Setter TargetName="line" Property="Visibility" Value="Collapsed"/>
+                        <Setter TargetName="top" Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
+            <ObjectDataProvider x:Key="ConnectorOrientationMenu" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="s:ConnectorOrientation" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <Style x:Key="CinchMenuItemStyle" TargetType="{x:Type MenuItem}" >
+                <Setter Property="Header" Value="{Binding Text}" />
+                <Setter Property="ItemsSource" Value="{Binding Children}" />
+                <Setter Property="Command" Value="{Binding Command}" />
+                <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+            </Style>
+
+            <!-- Connector Style -->
+            <Style x:Key="normalConnector" TargetType="{x:Type s:Connector}">
+                <Setter Property="Cursor" Value="Cross" />
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type s:Connector}">
+                            <Grid Width="{Binding ConnectorWidth}" Height="{Binding ConnectorHeight}">
+                                <Grid.ContextMenu>
+                                    <ContextMenu ItemsSource="{Binding MenuOptions}" >
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style TargetType="MenuItem">
+                                                <Setter Property="MenuItem.Header" Value="{Binding Text}" />
+                                                <Setter Property="MenuItem.ItemsSource" Value="{Binding Children}" />
+                                                <Setter Property="MenuItem.Command" Value="{Binding Command}" />
+                                                <Setter Property="MenuItem.Icon" Value="{Binding Icon}" />
+                                                <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+                                                <Setter Property="MenuItem.IsCheckable" Value="{Binding IsCheckable}" />
+                                                <Setter Property="MenuItem.IsChecked" Value="{Binding IsChecked}" />
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu>
+                                </Grid.ContextMenu>
+                                <!-- transparent extra space makes connector easier to hit -->
+                                <Rectangle Fill="Transparent" Margin="-2" />
+                                <Rectangle Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}"  StrokeThickness="1" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Connector Style -->
+            <Style x:Key="logicalConnector" TargetType="{x:Type s:Connector}">
+                <Setter Property="Cursor" Value="Cross" />
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type s:Connector}">
+                            <Grid>
+                                <Grid Width="{Binding ConnectorWidth}" Height="{Binding ConnectorHeight}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Grid.ContextMenu>
+                                        <ContextMenu ItemsSource="{Binding MenuOptions}">
+                                            <ContextMenu.ItemContainerStyle>
+                                                <Style TargetType="MenuItem">
+                                                    <Setter Property="MenuItem.Header" Value="{Binding Text}" />
+                                                    <Setter Property="MenuItem.ItemsSource" Value="{Binding Children}" />
+                                                    <Setter Property="MenuItem.Command" Value="{Binding Command}" />
+                                                    <Setter Property="MenuItem.Icon" Value="{Binding Icon}" />
+                                                    <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+                                                    <Setter Property="MenuItem.IsCheckable" Value="{Binding IsCheckable}" />
+                                                    <Setter Property="MenuItem.IsChecked" Value="{Binding IsChecked}" />
+                                                </Style>
+                                            </ContextMenu.ItemContainerStyle>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
+                                    <!-- transparent extra space makes connector easier to hit -->
+                                    <Rectangle Fill="Transparent" Margin="-2" />
+                                    <Rectangle Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}"  StrokeThickness="1" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+                                </Grid>
+                                <TextBlock x:Name="txtleft" FontSize="10" RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource ConectorValueConverter}">
+                                            <Binding Path="ConnectorValue" />
+                                            <Binding Path="ValueTypePoint"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform Y="10" X="{Binding ElementName=txtleft,Path=Text,Converter={StaticResource ConectorOrientationConverter}}"/>
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                                <TextBlock x:Name="txtRight" FontSize="10" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource ConectorValueConverter}">
+                                            <Binding Path="ConnectorValue" />
+                                            <Binding Path="ValueTypePoint"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform Y="10" X="5"/>
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Value="Right" Binding="{Binding Orientation}">
+                                    <Setter TargetName="txtleft" Property="Visibility" Value="Collapsed" />
+                                    <Setter TargetName="txtRight" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Connector Style -->
+            <Style x:Key="pointConnector" TargetType="{x:Type s:PointConnector}">
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type s:PointConnector}">
+                            <Grid Width="{Binding ConnectorWidth}" Height="{Binding ConnectorHeight}">
+                                <!-- transparent extra space makes connector easier to hit -->
+                                <Ellipse Fill="Transparent" Margin="-2" />
+                                <Ellipse Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}"  StrokeThickness="1" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="normalConnectorContainer" TargetType="{x:Type s:ConnectorContainer}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ItemsControl}">
+                            <Grid>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <Rectangle Fill="#7F243859" Opacity="0.5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding ShouldInsertAnchor, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <i:Interaction.Behaviors>
+                                        <s:ControlMouseLeftButtonDownCommandBehavior Command="{Binding AddItemCommand}" />
+                                    </i:Interaction.Behaviors>
+                                </Rectangle>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="logicConnectorContainer" TargetType="{x:Type s:ConnectorContainer}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ItemsControl}">
+                            <Grid>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.LayoutTransform>
+        <ScaleTransform x:Name="scale" ScaleX="{Binding ZoomValue}" ScaleY="{Binding ZoomValue}" Changed="ScaleTransform_Changed"  />
+    </UserControl.LayoutTransform>
+    <Border BorderBrush="LightGray"
+            BorderThickness="0">
+        <Grid>
+            <ItemsControl ItemsSource="{Binding Items}"
+                                ItemContainerStyleSelector="{x:Static s:DesignerItemsControlItemStyleSelector.Instance}">
+                <ItemsControl.Resources>
+                    <Style x:Key="designerItemStyle"
+                                TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left"
+                                    Value="{Binding Left}" />
+                        <Setter Property="Canvas.ZIndex"
+                                    Value="{Binding ZIndex}" />
+                        <Setter Property="s:SelectionProps.EnabledForSelection"
+                                    Value="True" />
+                        <Setter Property="s:ItemConnectProps.EnabledForConnection"
+                                    Value="True" />
+                        <Setter Property="Width"
+                                    Value="{Binding ItemWidth}" />
+                        <Setter Property="Height"
+                                    Value="{Binding ItemHeight}" />
+                        <Setter Property="SnapsToDevicePixels"
+                                    Value="True" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid x:Name="selectedGrid" IsHitTestVisible="{Binding IsHitTestVisible}" >
+                                        <Grid.ContextMenu>
+                                            <ContextMenu ItemsSource="{Binding MenuOptions}" Visibility="{Binding ShowMenuOptions,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <ContextMenu.ItemContainerStyle>
+                                                    <Style TargetType="MenuItem">
+                                                        <Setter Property="MenuItem.Header" Value="{Binding Text}" />
+                                                        <Setter Property="MenuItem.ItemsSource" Value="{Binding Children}" />
+                                                        <Setter Property="MenuItem.Command" Value="{Binding Command}" />
+                                                        <Setter Property="MenuItem.Icon" Value="{Binding Icon}" />
+                                                        <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+                                                        <Setter Property="MenuItem.IsCheckable" Value="{Binding IsCheckable}" />
+                                                        <Setter Property="MenuItem.IsChecked" Value="{Binding IsChecked}" />
+                                                    </Style>
+                                                </ContextMenu.ItemContainerStyle>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+
+                                        <!-- PART_DragThumb -->
+                                        <c:DragThumb x:Name="PART_DragThumb" 
+                                                            Cursor="SizeAll" >
+                                            <c:DragThumb.InputBindings>
+                                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
+                                            </c:DragThumb.InputBindings>
+                                        </c:DragThumb>
+
+                                        <Grid RenderTransformOrigin="0.5,0.5">
+                                            <!-- PART_ResizeDecorator -->
+                                            <Control x:Name="PART_ResizeDecorator"
+                                                 Visibility="Collapsed"
+                                                 Template="{StaticResource ResizeDecoratorTemplate}"/>
+
+
+                                            <!-- PART_ContentPresenter -->
+                                            <ContentPresenter x:Name="PART_ContentPresenter"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                Content="{TemplateBinding Content}" />
+
+                                            <Control x:Name="PART_Text" Margin="5">
+                                                <Control.Style>
+                                                    <Style TargetType="Control">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate>
+                                                                    <Grid/>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ShowText}" Value="True">
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate>
+                                                                            <s:TextControl x:Name="PART_Text" />
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </DataTrigger>
+
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Control.Style>
+                                            </Control>
+
+                                            <!-- PART_ConnectorDecorator -->
+                                            <Grid Margin="-5"
+                                                    x:Name="PART_ConnectorDecorator">
+                                                <s:Connector DataContext="{Binding LeftConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Left"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Left"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                                <s:Connector DataContext="{Binding TopConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Top"
+                                                                VerticalAlignment="Top"
+                                                                HorizontalAlignment="Center"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                                <s:Connector DataContext="{Binding RightConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Right"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Right"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                                <s:Connector DataContext="{Binding BottomConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Bottom"
+                                                                VerticalAlignment="Bottom"
+                                                                HorizontalAlignment="Center"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                            </Grid>
+
+                                            <Grid.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="{Binding Angle}" />
+                                                    <ScaleTransform x:Name="scale" ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}"></ScaleTransform>
+                                                </TransformGroup>
+                                            </Grid.RenderTransform>
+                                        </Grid>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding IsSelected}"/>
+                                                <Condition Value="{x:Static sys:Guid.Empty}" Binding="{Binding ParentId}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="PART_ResizeDecorator" Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                        <Trigger Property="IsMouseOver"
+                                                        Value="true">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Visible"/>
+                                        </Trigger>
+                                        <DataTrigger Value="True"
+                                                            Binding="{Binding RelativeSource={RelativeSource Self},Path=IsDragConnectionOver}">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Value="0"
+                                                            Binding="{Binding Connectors.Count}">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="10" Color="{Binding ColorViewModel.ShadowColor}"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ColorViewModel.ShadowColor}" Value="Transparent">
+                                <Setter Property="Effect" Value="{x:Null}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <Style x:Key="connectorItemStyle"
+                                TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Width"
+                                    Value="{Binding Area.Width}" />
+                        <Setter Property="Height"
+                                    Value="{Binding Area.Height}" />
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Area.Top}" />
+                        <Setter Property="Canvas.Left"
+                                    Value="{Binding Area.Left}" />
+                        <Setter Property="Canvas.ZIndex"
+                                    Value="{Binding ZIndex}" />
+                        <Setter Property="s:SelectionProps.EnabledForSelection"
+                                    Value="True" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="删除" Command="{Binding DeleteConnectionCommand}" CommandParameter="{Binding}"/>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+
+                                        <Canvas Margin="0"
+                                                x:Name="selectedGrid"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch">
+                                            <Canvas.InputBindings>
+                                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
+                                            </Canvas.InputBindings>
+                                            <Polyline x:Name="poly"                                                  
+                                                        Points="{Binding Path=ConnectionPoints, Converter={x:Static s:ConnectionPathConverter.Instance}}"
+                                                        Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
+                                                        StrokeThickness="{Binding ColorViewModel.LineWidth}"  
+                                                        StrokeDashArray="{Binding ColorViewModel.LineDashStyle,Converter={StaticResource LineDashConverter}}" />
+
+                                            <Path x:Name="rightarrow"
+                                                    Data="{Binding ColorViewModel.RightArrowPathStyle,Converter={StaticResource ArrowPathConverter}}"
+                                                    Visibility="{Binding Path=IsFullConnection, Converter={x:Static s:BoolToVisibilityConverter.Instance}}"
+                                                    Fill="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
+                                                    HorizontalAlignment="Left"
+                                                    Height="{Binding ColorViewModel.RightArrowSizeStyle, Converter={StaticResource ArrowSizeConverter}}"
+                                                    Width="{Binding ColorViewModel.RightArrowSizeStyle, Converter={StaticResource ArrowSizeConverter}}"
+                                                    Canvas.Left="{Binding EndPoint.X}"
+                                                    Canvas.Top="{Binding EndPoint.Y}"
+                                                    Stretch="Fill"
+                                                    Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
+                                                    VerticalAlignment="Top"                                                    
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                <Path.RenderTransform>
+                                                    <RotateTransform x:Name="rightrot" />
+                                                </Path.RenderTransform>
+                                            </Path>
+
+                                            <Path x:Name="leftarrow"
+                                                    Data="{Binding ColorViewModel.LeftArrowPathStyle,Converter={StaticResource ArrowPathConverter}}"
+                                                    Visibility="{Binding Path=IsFullConnection, Converter={x:Static s:BoolToVisibilityConverter.Instance}}"
+                                                    Fill="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
+                                                    HorizontalAlignment="Left"
+                                                    Height="{Binding ColorViewModel.LeftArrowSizeStyle, Converter={StaticResource ArrowSizeConverter}}"
+                                                    Width="{Binding ColorViewModel.LeftArrowSizeStyle, Converter={StaticResource ArrowSizeConverter}}"
+                                                    Canvas.Left="{Binding StartPoint.X}"
+                                                    Canvas.Top="{Binding StartPoint.Y}"
+                                                    Stretch="Fill"
+                                                    Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
+                                                    VerticalAlignment="Top"                                                    
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                <Path.RenderTransform>
+                                                    <RotateTransform x:Name="leftrot" />
+                                                </Path.RenderTransform>
+                                            </Path>
+                                        </Canvas>
+
+                                        <!-- PART_DragThumb -->
+                                        <c:DragThumb x:Name="PART_DragThumb"
+                                                            Cursor="SizeAll" >
+                                            <c:DragThumb.InputBindings>
+                                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
+                                            </c:DragThumb.InputBindings>
+                                        </c:DragThumb>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Value="True"
+                                                            Binding="{Binding IsSelected}">
+                                            <Setter TargetName="poly"
+                                                        Property="Stroke"
+                                                        Value="Black" />
+                                            <Setter TargetName="rightarrow"
+                                                        Property="Stroke"
+                                                        Value="Black" />
+                                            <Setter TargetName="rightarrow"
+                                                        Property="Fill"
+                                                        Value="Black" />
+                                        </DataTrigger>
+
+                                        <!--右箭头-->
+                                        <DataTrigger Binding="{Binding Path=SinkConnectorInfo.Orientation}"
+                                                            Value="Left">
+                                            <Setter TargetName="rightarrow"
+                                                        Property="Margin"
+                                                        Value="-10,-5,0,0" />
+                                            <Setter TargetName="rightarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="90" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=SinkConnectorInfo.Orientation}"
+                                                            Value="Top">
+                                            <Setter TargetName="rightarrow"
+                                                        Property="Margin"
+                                                        Value="-5,-10,0,0" />
+                                            <Setter TargetName="rightarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="180" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=SinkConnectorInfo.Orientation}"
+                                                            Value="Right">
+                                            <Setter TargetName="rightarrow"
+                                                        Property="Margin"
+                                                        Value="0,-5,0,0" />
+                                            <Setter TargetName="rightarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="-90" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=SinkConnectorInfo.Orientation}"
+                                                            Value="Bottom">
+                                            <Setter TargetName="rightarrow"
+                                                        Property="Margin"
+                                                        Value="-5,0,0,0" />
+                                            <Setter TargetName="rightarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="0" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding SinkConnectorInfo.IsInnerPoint}"/>
+                                                <Condition Value="0" Binding="{Binding SinkConnectorInfo.XRatio}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="rightarrow" Property="Visibility" Value="Hidden"/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding SinkConnectorInfo.IsInnerPoint}"/>
+                                                <Condition Value="1" Binding="{Binding SinkConnectorInfo.XRatio}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="rightarrow" Property="Visibility" Value="Hidden"/>
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding Path=ColorViewModel.RightArrowStyle}" Value="None">
+                                            <Setter TargetName="rightarrow" Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+
+                                        <!--左箭头-->
+                                        <DataTrigger Binding="{Binding Path=SourceConnectorInfo.Orientation}"
+                                                            Value="Left">
+                                            <Setter TargetName="leftarrow"
+                                                        Property="Margin"
+                                                        Value="-10,-5,0,0" />
+                                            <Setter TargetName="leftarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="90" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=SourceConnectorInfo.Orientation}"
+                                                            Value="Top">
+                                            <Setter TargetName="leftarrow"
+                                                        Property="Margin"
+                                                        Value="-5,-10,0,0" />
+                                            <Setter TargetName="leftarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="180" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=SourceConnectorInfo.Orientation}"
+                                                            Value="Right">
+                                            <Setter TargetName="leftarrow"
+                                                        Property="Margin"
+                                                        Value="0,-5,0,0" />
+                                            <Setter TargetName="leftarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="-90" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=SourceConnectorInfo.Orientation}"
+                                                            Value="Bottom">
+                                            <Setter TargetName="leftarrow"
+                                                        Property="Margin"
+                                                        Value="-5,0,0,0" />
+                                            <Setter TargetName="leftarrow"
+                                                        Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="0" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding SourceConnectorInfo.IsInnerPoint}"/>
+                                                <Condition Value="0" Binding="{Binding SourceConnectorInfo.XRatio}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="leftarrow" Property="Visibility" Value="Hidden"/>
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding SourceConnectorInfo.IsInnerPoint}"/>
+                                                <Condition Value="1" Binding="{Binding SourceConnectorInfo.XRatio}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="leftarrow" Property="Visibility" Value="Hidden"/>
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding Path=ColorViewModel.LeftArrowStyle}" Value="None">
+                                            <Setter TargetName="leftarrow" Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="gifimageItemStyle"
+                                TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left"
+                                    Value="{Binding Left}" />
+                        <Setter Property="Canvas.ZIndex"
+                                    Value="{Binding ZIndex}" />
+                        <Setter Property="s:SelectionProps.EnabledForSelection"
+                                    Value="True" />
+                        <Setter Property="s:ItemConnectProps.EnabledForConnection"
+                                    Value="True" />
+                        <Setter Property="Width"
+                                    Value="{Binding ItemWidth}" />
+                        <Setter Property="Height"
+                                    Value="{Binding ItemHeight}" />
+                        <Setter Property="SnapsToDevicePixels"
+                                    Value="True" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid x:Name="selectedGrid" IsHitTestVisible="{Binding IsHitTestVisible}">
+                                        <Grid.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="插入点" IsCheckable="True" IsChecked="{Binding ShouldInsertAnchor}" />
+                                                <MenuItem Header="选择" ItemsSource="{Binding MenuOptions}" ItemContainerStyle="{StaticResource CinchMenuItemStyle}"/>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+                                        <!-- PART_DragThumb -->
+                                        <c:DragThumb x:Name="PART_DragThumb"
+                                                            Cursor="SizeAll" />
+                                        <Grid RenderTransformOrigin="0.5,0.5">
+                                            <!-- PART_ResizeDecorator -->
+                                            <Control x:Name="PART_ResizeDecorator" 
+                                                 Visibility="Collapsed"
+                                                    Template="{StaticResource ResizeDecoratorTemplate}"/>
+                                            <!-- PART_ContentPresenter -->
+                                            <ContentPresenter x:Name="PART_ContentPresenter"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                Content="{TemplateBinding Content}" />
+                                            <!-- PART_ConnectorDecorator -->
+                                            <s:ConnectorContainer x:Name="PART_ConnectorContainer" Visibility="Hidden" Style="{StaticResource normalConnectorContainer}"  ItemsSource="{Binding Connectors}">
+                                                <s:ConnectorContainer.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <s:Connector Style="{StaticResource normalConnector}"/>
+                                                    </DataTemplate>
+                                                </s:ConnectorContainer.ItemTemplate>
+                                            </s:ConnectorContainer>
+                                            <Grid.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="{Binding Angle}" />
+                                                    <ScaleTransform x:Name="scale" ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}"></ScaleTransform>
+                                                </TransformGroup>
+                                            </Grid.RenderTransform>
+                                        </Grid>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding IsSelected}"/>
+                                                <Condition Value="{x:Static sys:Guid.Empty}" Binding="{Binding ParentId}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="PART_ResizeDecorator" Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter TargetName="PART_ConnectorContainer" Property="Visibility" Value="Visible" />
+                                        </Trigger>
+                                        <DataTrigger Value="True" Binding="{Binding IsDragConnectionOver}">
+                                            <Setter TargetName="PART_ConnectorContainer" Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="logicalItemStyle"
+                                TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left"
+                                    Value="{Binding Left}" />
+                        <Setter Property="Canvas.ZIndex"
+                                    Value="{Binding ZIndex}" />
+                        <Setter Property="s:SelectionProps.EnabledForSelection"
+                                    Value="True" />
+                        <Setter Property="s:ItemConnectProps.EnabledForConnection"
+                                    Value="True" />
+                        <Setter Property="Width"
+                                    Value="{Binding ItemWidth}" />
+                        <Setter Property="Height"
+                                    Value="{Binding ItemHeight}" />
+                        <Setter Property="SnapsToDevicePixels"
+                                    Value="True" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid x:Name="selectedGrid">
+                                        <Grid.ContextMenu>
+                                            <ContextMenu ItemsSource="{Binding MenuOptions}" Visibility="{Binding ShowMenuOptions,Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <ContextMenu.ItemContainerStyle>
+                                                    <Style TargetType="MenuItem">
+                                                        <Setter Property="MenuItem.Header" Value="{Binding Text}" />
+                                                        <Setter Property="MenuItem.ItemsSource" Value="{Binding Children}" />
+                                                        <Setter Property="MenuItem.Command" Value="{Binding Command}" />
+                                                        <Setter Property="MenuItem.Icon" Value="{Binding Icon}" />
+                                                        <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+                                                        <Setter Property="MenuItem.IsCheckable" Value="{Binding IsCheckable}" />
+                                                        <Setter Property="MenuItem.IsChecked" Value="{Binding IsChecked}" />
+                                                    </Style>
+                                                </ContextMenu.ItemContainerStyle>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+
+                                        <!--PART_ConnectorDecorator-->
+                                        <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource logicConnectorContainer}" ItemsSource="{Binding Connectors}" Margin="-4,0,0,0">
+                                            <s:ConnectorContainer.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <s:Connector  Style="{StaticResource logicalConnector}"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </s:ConnectorContainer.ItemTemplate>
+                                        </s:ConnectorContainer>
+                                        <!-- PART_DragThumb -->
+                                        <c:DragThumb x:Name="PART_DragThumb"
+                                                            Cursor="SizeAll" >
+                                            <c:DragThumb.InputBindings>
+                                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
+                                            </c:DragThumb.InputBindings>
+                                        </c:DragThumb>
+                                        <!-- PART_ResizeDecorator -->
+                                        <Control x:Name="PART_ResizeDecorator" 
+                                                 Visibility="Collapsed"
+                                                    Template="{StaticResource ResizeDecoratorTemplate}"/>
+                                        <!-- PART_ContentPresenter -->
+                                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                Content="{TemplateBinding Content}" />
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Value="True" Binding="{Binding IsSelected}"/>
+                                                <Condition Value="{x:Static sys:Guid.Empty}" Binding="{Binding ParentId}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter TargetName="PART_ResizeDecorator" Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="pointItemStyle"
+                                TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left"
+                                    Value="{Binding Left}" />
+                        <Setter Property="Canvas.ZIndex"
+                                    Value="{Binding ZIndex}" />
+                        <Setter Property="s:SelectionProps.EnabledForSelection"
+                                    Value="True" />
+                        <Setter Property="Width"
+                                    Value="{Binding ItemWidth}" />
+                        <Setter Property="Height"
+                                    Value="{Binding ItemHeight}" />
+                        <Setter Property="SnapsToDevicePixels"
+                                    Value="True" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid x:Name="selectedGrid" Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                                        <!-- PART_ConnectorDecorator -->
+                                        <Grid Margin="-5"
+                                                    x:Name="PART_ConnectorDecorator">
+                                            <s:PointConnector DataContext="{Binding TopConnector}" Style="{StaticResource pointConnector}"/>
+                                        </Grid>
+                                        <!-- PART_DragThumb -->
+                                        <c:DragThumb x:Name="PART_DragThumb"
+                                                            Cursor="SizeAll" />
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                        Value="true">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Visible"/>
+                                        </Trigger>
+                                        <DataTrigger Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsDragConnectionOver}">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="linkpointItemStyle"
+                                TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Top}" />
+                        <Setter Property="Canvas.Left"
+                                    Value="{Binding Left}" />
+                        <Setter Property="Canvas.ZIndex"
+                                    Value="{Binding ZIndex}" />
+                        <Setter Property="s:SelectionProps.EnabledForSelection"
+                                    Value="True" />
+                        <Setter Property="s:ItemConnectProps.EnabledForConnection"
+                                    Value="True" />
+                        <Setter Property="Width"
+                                    Value="{Binding ItemWidth}" />
+                        <Setter Property="Height"
+                                    Value="{Binding ItemHeight}" />
+                        <Setter Property="SnapsToDevicePixels"
+                                    Value="True" />
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid x:Name="selectedGrid">
+
+                                        <!-- PART_ConnectorDecorator -->
+                                        <Grid Margin="-5"
+                                                    x:Name="PART_ConnectorDecorator">
+                                            <s:Connector DataContext="{Binding TopConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Right"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Center"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                        </Grid>
+                                        <!-- PART_DragThumb -->
+                                        <c:DragThumb x:Name="PART_DragThumb"
+                                                            Cursor="SizeAll" />
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                        Value="true">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Visible"/>
+                                        </Trigger>
+                                        <DataTrigger Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsDragConnectionOver}">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ItemsControl.Resources>
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <s:DesignerCanvas Loaded="DesignerCanvas_Loaded"
+                                                Height="{Binding PageSize.Height}"
+                                                Width="{Binding PageSize.Width}"
+                                                ShowGrid="{Binding ShowGrid}"
+                                                GridCellSize="{Binding GridCellSize}"
+                                                GridMargin="{Binding GridMargin}"
+                                                GridColor="{Binding GridColor}"
+                                                Background="{Binding PageBackground,Converter={StaticResource ColorBrushConverter}}"
+                                                AllowDrop="True">
+                        </s:DesignerCanvas>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+            </ItemsControl>
+        </Grid>
+    </Border>
+</UserControl>

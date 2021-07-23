@@ -1,0 +1,344 @@
+﻿<UserControl x:Class="AIStudio.Wpf.ADiagram.Views.PropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Fluent="urn:fluent-ribbon"
+             xmlns:controls="clr-namespace:AIStudio.Wpf.ADiagram.Controls"
+             xmlns:views="clr-namespace:AIStudio.Wpf.ADiagram.Views"
+             xmlns:converter="clr-namespace:AIStudio.Wpf.ADiagram.Converters"
+             xmlns:helper="clr-namespace:AIStudio.Wpf.ADiagram.Helpers"
+             xmlns:dd="https://astudio.github.io/diagram"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:flowchart="clr-namespace:AIStudio.Wpf.ADiagram.Demos.Flowchart"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converter:NullableToBooleanConverter x:Key="NullableToBooleanConverter"/>
+        <converter:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+        <dd:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+
+        <ControlTemplate TargetType="Control" x:Key="FillTemplate">
+            <TabControl Style="{StaticResource UniformTabControlStyle}" >
+                <TabItem Header="填充" Height="34">
+                    <StackPanel 
+                        DataContext="{Binding SelectedItem.ColorViewModel.FillColor}"
+                        Visibility="{Binding .,Converter={StaticResource NullableToVisibilityConverter}}">
+                        <StackPanel>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='None'}, ConverterParameter='None'}" Content="无填充" />
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='SolidColorBrush'}, ConverterParameter='SolidColorBrush'}" Content="单色填充"/>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='LinearGradientBrush'}, ConverterParameter='LinearGradientBrush'}" Content="线性渐变填充"/>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='RadialGradientBrush'}, ConverterParameter='RadialGradientBrush'}" Content="径向渐变填充"/>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='DrawingBrush'}, ConverterParameter='DrawingBrush'}" Content="图案填充"/>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='ImageBrush'}, ConverterParameter='ImageBrush'}" Content="图片或纹理填充"/>
+                        </StackPanel>
+                        <DockPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='SolidColorBrush'}">
+                            <!-- The following code shows theme colors mode for color gallery -->
+                            <Fluent:DropDownButton DockPanel.Dock="Right" Margin="5" Height="24" Width="60" 
+                                            Template="{StaticResource RibbonDropDownButtonControlTemplate1}"
+                                            MaxDropDownHeight="500">
+                                <Fluent:DropDownButton.Icon>
+                                    <Grid>
+                                        <Rectangle Height="22" StrokeThickness="1" Stroke="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="{Binding Color}" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </Grid>
+                                </Fluent:DropDownButton.Icon>
+                                <Fluent:ColorGallery SelectedColor="{Binding Color, Mode=TwoWay}"
+                                                 Mode="StandardColors"
+                                                 StandardColorGridRows="3"
+                                                 Columns="10"
+                                                 ThemeColorGridRows="5"
+                                                 IsNoColorButtonVisible="True" />
+                            </Fluent:DropDownButton>
+                            <TextBlock Margin="5" VerticalAlignment="Center" Text="颜色"/>
+                        </DockPanel>
+                        <StackPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='LinearGradientBrush^RadialGradientBrush'}">
+                            <DockPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='LinearGradientBrush'}">
+                                <Fluent:ComboBox DockPanel.Dock="Right" Margin="5" Size="Small" Width="140" IsEditable="False" helper:EnumHelper.Enum="{x:Type dd:LinearOrientation}" SelectedItem="{Binding LinearOrientation}">
+                                    <Fluent:ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding .,Converter={StaticResource EnumDescriptionConverter}}" />
+                                        </DataTemplate>
+                                    </Fluent:ComboBox.ItemTemplate>
+                                </Fluent:ComboBox>
+                                <TextBlock Text="方向" VerticalAlignment="Center" Margin="5"/>
+                            </DockPanel>
+                            <DockPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='RadialGradientBrush'}">
+                                <Fluent:ComboBox DockPanel.Dock="Right" Margin="5" Size="Small" Width="140" IsEditable="False" helper:EnumHelper.Enum="{x:Type dd:RadialOrientation}" SelectedItem="{Binding RadialOrientation}">
+                                    <Fluent:ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding .,Converter={StaticResource EnumDescriptionConverter}}" />
+                                        </DataTemplate>
+                                    </Fluent:ComboBox.ItemTemplate>
+                                </Fluent:ComboBox>
+                                <TextBlock Text="方向" VerticalAlignment="Center" Margin="5"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <Fluent:Spinner DockPanel.Dock="Right" Margin="5" Width="60" Size="Small" Value="{Binding Angle}" Maximum="359" Minimum="0"
+                                    Format="0 deg" />
+                                <TextBlock Text="角度" VerticalAlignment="Center" Margin="5"/>
+                            </DockPanel>
+                            <controls:GradientStopControl />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueSetToOppositeVisibility},ConverterParameter='None'}">
+                            <TextBlock Text="亮度" VerticalAlignment="Center" Margin="5"/>
+                            <DockPanel>
+                                <Fluent:Spinner DockPanel.Dock="Right" Margin="5" Width="60" Size="Small" Value="{Binding Light}" Maximum="1" Minimum="-1"
+                                    Format="0 %" />
+                                <Slider  Margin="5" Maximum="1" Minimum="-1" Value="{Binding Light}" Style="{StaticResource DefaultSlider}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueSetToOppositeVisibility},ConverterParameter='None'}">
+                            <TextBlock Text="透明度" VerticalAlignment="Center" Margin="5"/>
+                            <DockPanel>
+                                <Fluent:Spinner DockPanel.Dock="Right" Margin="5" Width="60" Size="Small" Value="{Binding Opacity}" Maximum="1" Minimum="0"
+                                    Format="0 %" />
+                                <Slider Margin="5" Maximum="1" Minimum="0" Value="{Binding Opacity}" Style="{StaticResource DefaultSlider}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="线条" Height="34">
+                    <StackPanel 
+                        DataContext="{Binding SelectedItem.ColorViewModel.LineColor}"
+                        Visibility="{Binding .,Converter={StaticResource NullableToVisibilityConverter}}">
+                        <StackPanel>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='None'}, ConverterParameter='None'}" Content="无线条" />
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='SolidColorBrush'}, ConverterParameter='SolidColorBrush'}" Content="实线"/>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='LinearGradientBrush'}, ConverterParameter='LinearGradientBrush'}" Content="线性渐变填充"/>
+                            <RadioButton Margin="5" IsChecked="{Binding BrushType,Converter={converter:ConverterValueMapToBool Parameter='RadialGradientBrush'}, ConverterParameter='RadialGradientBrush'}" Content="径向渐变填充"/>
+                        </StackPanel>
+
+                        <DockPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='SolidColorBrush'}">
+                            <!-- The following code shows theme colors mode for color gallery -->
+                            <Fluent:DropDownButton DockPanel.Dock="Right" Margin="5" Height="24" Width="60" 
+                                                Template="{StaticResource RibbonDropDownButtonControlTemplate1}"
+                                                MaxDropDownHeight="500">
+                                <Fluent:DropDownButton.Icon>
+                                    <Grid>
+                                        <Rectangle Height="22" StrokeThickness="1" Stroke="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="{Binding Color}" />
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </Grid>
+                                </Fluent:DropDownButton.Icon>
+                                <Fluent:ColorGallery SelectedColor="{Binding Color, Mode=TwoWay}"
+                                                     Mode="StandardColors"
+                                                     StandardColorGridRows="3"
+                                                     Columns="10"
+                                                     ThemeColorGridRows="5"
+                                                     IsNoColorButtonVisible="True" />
+                            </Fluent:DropDownButton>
+                            <TextBlock Margin="5" VerticalAlignment="Center" Text="颜色"/>
+                        </DockPanel>
+                        <StackPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='LinearGradientBrush^RadialGradientBrush'}">
+                            <DockPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='LinearGradientBrush'}">
+                                <Fluent:ComboBox DockPanel.Dock="Right" Margin="5" Size="Small" Width="140" IsEditable="False" helper:EnumHelper.Enum="{x:Type dd:LinearOrientation}" SelectedItem="{Binding LinearOrientation}">
+                                    <Fluent:ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding .,Converter={StaticResource EnumDescriptionConverter}}" />
+                                        </DataTemplate>
+                                    </Fluent:ComboBox.ItemTemplate>
+                                </Fluent:ComboBox>
+                                <TextBlock Text="方向" VerticalAlignment="Center" Margin="5"/>
+                            </DockPanel>
+                            <DockPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueMapSetToVisibility},ConverterParameter='RadialGradientBrush'}">
+                                <Fluent:ComboBox DockPanel.Dock="Right" Margin="5" Size="Small" Width="140" IsEditable="False" helper:EnumHelper.Enum="{x:Type dd:RadialOrientation}" SelectedItem="{Binding RadialOrientation}">
+                                    <Fluent:ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding .,Converter={StaticResource EnumDescriptionConverter}}" />
+                                        </DataTemplate>
+                                    </Fluent:ComboBox.ItemTemplate>
+                                </Fluent:ComboBox>
+                                <TextBlock Text="方向" VerticalAlignment="Center" Margin="5"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <Fluent:Spinner DockPanel.Dock="Right" Margin="5" Width="60" Size="Small" Value="{Binding Angle}" Maximum="359" Minimum="0"
+                                    Format="0 deg" />
+                                <TextBlock Text="角度" VerticalAlignment="Center" Margin="5"/>
+                            </DockPanel>
+                            <controls:GradientStopControl />
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueSetToOppositeVisibility},ConverterParameter='None'}">
+                            <TextBlock Text="亮度" VerticalAlignment="Center" Margin="5"/>
+                            <DockPanel>
+                                <Fluent:Spinner DockPanel.Dock="Right" Margin="5" Width="60" Size="Small" Value="{Binding Light}" Maximum="1" Minimum="-1"
+                                    Format="0 %" />
+                                <Slider  Margin="5" Maximum="1" Minimum="-1" Value="{Binding Light}" Style="{StaticResource DefaultSlider}"/>
+                            </DockPanel>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding BrushType,Converter={converter:ConverterValueSetToOppositeVisibility},ConverterParameter='None'}">
+                            <TextBlock Text="透明度" VerticalAlignment="Center" Margin="5"/>
+                            <DockPanel>
+                                <Fluent:Spinner DockPanel.Dock="Right" Margin="5" Width="60" Size="Small" Value="{Binding Opacity}" Maximum="1" Minimum="0"
+                                    Format="0 %" />
+                                <Slider Margin="5" Maximum="1" Minimum="0" Value="{Binding Opacity}" Style="{StaticResource DefaultSlider}"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="阴影" Height="34">
+
+                </TabItem>
+            </TabControl>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="Control" x:Key="ThemeTemplate">
+            <Grid>
+                
+            </Grid>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="Control" x:Key="PictureTemplate">
+            <TabControl Style="{StaticResource UniformTabControlStyle}">
+                <TabItem Header="图片" Height="34">
+                    <UniformGrid Columns="2" VerticalAlignment="Top">
+                        <Fluent:Button Header="插入图片" VerticalAlignment="Top" Command="{Binding AddImageCommand}">
+                            <Fluent:Button.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="Image" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:Button.LargeIcon>
+                        </Fluent:Button>
+                        <Fluent:Button Header="改变图片"  VerticalAlignment="Top" Command="{Binding EditImageCommand}">
+                            <Fluent:Button.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="ImageEdit" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:Button.LargeIcon>
+                        </Fluent:Button>
+                        <Fluent:SplitButton Header="图片裁剪" VerticalAlignment="Top" HorizontalAlignment="Stretch" Command="{Binding ResizeImageCommand}">
+                            <Fluent:SplitButton.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="ImagePlus" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:SplitButton.LargeIcon>
+                            <ListBox helper:EnumHelper.Enum="{x:Type dd:ClipMode}" SelectedItem="{Binding SelectedItem.ClipMode}"  BorderThickness="0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding .,Converter={StaticResource EnumDescriptionConverter}}"  />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Fluent:SplitButton>
+                        <Fluent:Button Header="原始图" VerticalAlignment="Top" Command="{Binding ResetImageCommand}">
+                            <Fluent:Button.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="ImageRemove" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:Button.LargeIcon>
+                        </Fluent:Button>
+                    </UniformGrid>
+                </TabItem>
+                <TabItem Header="视频" Height="34">
+                    <UniformGrid Columns="2" VerticalAlignment="Top">
+                        <Fluent:Button Header="插入视频" VerticalAlignment="Top" Command="{Binding AddVideoCommand}">
+                            <Fluent:Button.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="Video" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:Button.LargeIcon>
+                        </Fluent:Button>
+                    </UniformGrid>
+                </TabItem>
+                <TabItem Header="二维码" Height="34">
+                    <UniformGrid Columns="2" VerticalAlignment="Top">
+                        <Fluent:Button Header="插入二维码" VerticalAlignment="Top" Command="{Binding AddBarcodeCommand}" CommandParameter="QR_CODE">
+                            <Fluent:Button.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="Qrcode" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:Button.LargeIcon>
+                        </Fluent:Button>
+                        <Fluent:Button Header="插入条形码" VerticalAlignment="Top" Command="{Binding AddBarcodeCommand}" CommandParameter="CODE_39">
+                            <Fluent:Button.LargeIcon>
+                                <iconPacks:PackIconMaterial Kind="Barcode" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Fluent:Button.LargeIcon>
+                        </Fluent:Button>
+                    </UniformGrid>
+                </TabItem>
+            </TabControl>
+        </ControlTemplate>
+
+        <ControlTemplate TargetType="Control" x:Key="PropertyTemplate">
+            <controls:PropertiesView SelectedObject="{Binding SelectedItem}">
+                <controls:PropertiesView.Resources>
+                    <Style x:Key="ActTypeStyle" TargetType="{x:Type ContentControl}">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid DataContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}}">
+                                        <Fluent:ComboBox Size="Small" IsEditable="False" Height="Auto" Template="{StaticResource ComboboxControlTemplate1}"
+                                                            BorderThickness="0" BorderBrush="Transparent"                                                           
+                                                            Text="{Binding ActType}" >
+                                            <ComboBoxItem Content="or"/>
+                                            <ComboBoxItem Content="and"/>
+                                        </Fluent:ComboBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="UserIdsStyle" TargetType="{x:Type ContentControl}">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid DataContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}}">
+                                        <controls:MultiSelectComboBox BorderThickness="0" DisplayMemberPath="text" SelectedValuePath="value"
+                                                            SelectedValues="{Binding UserIds}"
+                                                            ItemsSource="{x:Static flowchart:FlowchartService.Users}"  ></controls:MultiSelectComboBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="RoleIdsStyle" TargetType="{x:Type ContentControl}">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid DataContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType={x:Type ContentControl}}}">
+                                        <controls:MultiSelectComboBox BorderThickness="0" DisplayMemberPath="text" SelectedValuePath="value"
+                                                            SelectedValues="{Binding RoleIds}"
+                                                            ItemsSource="{x:Static flowchart:FlowchartService.Roles}"></controls:MultiSelectComboBox>
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </controls:PropertiesView.Resources>
+            </controls:PropertiesView>
+        </ControlTemplate>  
+    </UserControl.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>        
+        <StackPanel Margin="1,0,0,0">
+            <ToggleButton IsChecked="{Binding ElementName=expanderRight,Path=IsExpanded}" Background="{DynamicResource WhiteBrush}" Style="{StaticResource ExpanderToggleButton}"/>
+            <ListBox x:Name="listBox" SelectedIndex="0" Padding="0,0,0,10" BorderThickness="0" Style="{StaticResource DefaultListBox}">
+                <iconPacks:PackIconMaterial Kind="FormatColorFill" Width="18" Height="18" Margin="8"/>
+                <iconPacks:PackIconMaterial Kind="ViewGridOutline" Width="18" Height="18" Margin="8" />
+                <iconPacks:PackIconMaterial Kind="Image" Width="18" Height="18" Margin="8"/>
+                <iconPacks:PackIconMaterial Kind="SettingsHelper" Width="18" Height="18" Margin="8"/>
+            </ListBox>
+        </StackPanel>
+        <dd:BorderResizeThumb Width="1" Margin="0,0,-3,0" ResizeElement="{Binding ElementName=control}" Cursor="SizeWE" VerticalAlignment="Stretch" HorizontalAlignment="Left" Visibility="{Binding ElementName=expanderRight,Path=IsExpanded,Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Expander x:Name="expanderRight" Grid.Column="1" IsExpanded="True" ExpandDirection="Right" Style="{StaticResource DefaultAutoHideExpander}" Padding="0">
+            <Control x:Name="control" Width="200" MinWidth="100" MaxWidth="500">
+                <Control.Style>
+                    <Style TargetType="Control">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex,ElementName=listBox, Mode=OneWay}" Value="0">
+                                <Setter Property="Template" Value="{StaticResource FillTemplate}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex,ElementName=listBox, Mode=OneWay}" Value="1">
+                                <Setter Property="Template" Value="{StaticResource ThemeTemplate}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex,ElementName=listBox, Mode=OneWay}" Value="2">
+                                <Setter Property="Template" Value="{StaticResource PictureTemplate}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex,ElementName=listBox, Mode=OneWay}" Value="3">
+                                <Setter Property="Template" Value="{StaticResource PropertyTemplate}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Control.Style>
+            </Control>
+        </Expander>
+
+    </Grid>
+</UserControl>

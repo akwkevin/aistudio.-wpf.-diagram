@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="Util.DiagramDesigner.TextControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:s="clr-namespace:Util.DiagramDesigner"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <s:ColorBrushConverter x:Key="ColorBrushConverter" />
+        <s:TrueToFalseConverter x:Key="TrueToFalseConverter"/>
+        <!--TextBox默认样式-->
+        <Style TargetType="{x:Type TextBox}" x:Key="WaterTextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid x:Name="PART_Root">
+                            <Border x:Name="Bg" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    Background="{TemplateBinding Background}" />
+                            <Grid x:Name="PART_InnerGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--内容区域-->
+                                <ScrollViewer x:Name="PART_ContentHost" BorderThickness="0" Grid.Column="1" IsTabStop="False" Margin="2"
+                                          VerticalAlignment="Stretch" Background="{x:Null}" >
+                                    <ScrollViewer.Effect>
+                                        <DropShadowEffect x:Name="effect" Color="{Binding FontViewModel.TextEffectColor}" ></DropShadowEffect>
+                                    </ScrollViewer.Effect>
+                                </ScrollViewer>
+                                <!--水印-->
+                                <TextBlock x:Name="Message"  Padding="{TemplateBinding Padding}" Visibility="Collapsed"
+                                       Text="{TemplateBinding s:ControlAttachProperty.Watermark}" Grid.Column="1"
+                                       Foreground="{TemplateBinding Foreground}" IsHitTestVisible="False" Opacity="0.5"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="5,2,5,2" />
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!--显示水印-->
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="">
+                                <Setter TargetName="Message" Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding FontViewModel.TextEffectColor}" Value="Transparent">
+                                <Setter TargetName="PART_ContentHost" Property="Effect" Value="{x:Null}"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid IsHitTestVisible="{Binding IsHitTestVisible}">
+        <TextBox x:Name="PART_TextBlock"                         
+                         Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                         Foreground="{Binding FontViewModel.FontColor,Converter={StaticResource ColorBrushConverter}}"
+                         FontSize="{Binding FontViewModel.FontSize}" 
+                         FontFamily="{Binding FontViewModel.FontFamily}"  
+                         FontWeight="{Binding FontViewModel.FontWeight}"
+                         FontStyle="{Binding FontViewModel.FontStyle}"                         
+                         FontStretch="{Binding FontViewModel.FontStretch}"
+                         TextDecorations="{Binding FontViewModel.TextDecorations}"
+                         HorizontalContentAlignment="{Binding FontViewModel.HorizontalAlignment}"
+                         VerticalContentAlignment="{Binding FontViewModel.VerticalAlignment}"
+                         TextBlock.LineHeight="{Binding FontViewModel.LineHeight}"
+                         AcceptsReturn="True"
+                         s:ControlAttachProperty.Watermark="{Binding Path=(s:ControlAttachProperty.Watermark),RelativeSource={RelativeSource AncestorType={x:Type s:TextControl}}}"
+                         Style="{StaticResource WaterTextBox}" IsReadOnly="True">
+      
+        </TextBox>
+        <TextBox x:Name="PART_ShowText"
+                         Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                            
+                         Foreground="{Binding FontViewModel.FontColor,Converter={StaticResource ColorBrushConverter}}"
+                         IsReadOnly="{Binding IsReadOnly}"
+                         FontSize="{Binding FontViewModel.FontSize}" 
+                         FontFamily="{Binding FontViewModel.FontFamily}"  
+                         FontWeight="{Binding FontViewModel.FontWeight}"
+                         FontStyle="{Binding FontViewModel.FontStyle}"                         
+                         FontStretch="{Binding FontViewModel.FontStretch}"
+                         TextDecorations="{Binding FontViewModel.TextDecorations}"
+                         HorizontalContentAlignment="{Binding FontViewModel.HorizontalAlignment}"
+                         VerticalContentAlignment="{Binding FontViewModel.VerticalAlignment}"
+                         TextBlock.LineHeight="{Binding FontViewModel.LineHeight}"
+                         AcceptsReturn="True"
+                         s:ControlAttachProperty.Watermark="{Binding Path=(s:ControlAttachProperty.Watermark),RelativeSource={RelativeSource AncestorType={x:Type s:TextControl}}}"
+                         Style="{StaticResource WaterTextBox}" Visibility="Collapsed">
+        </TextBox>
+       
+    </Grid>
+</UserControl>
