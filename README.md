@@ -1,4 +1,4 @@
-本画板在WPF-Diagram-Designer进行的开发，界面框架使用Fluent.Ribbon的框架。
+本画板在WPF-Diagram-Designer的基础上进行的开发，界面框架使用Fluent.Ribbon的框架。
 
 先上源码地址：https://gitee.com/akwkevin/aistudio.-wpf.-diagram
 
