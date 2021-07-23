@@ -36,10 +36,13 @@
 13.支持画板大小，方向，标尺，网格是否显示，画板背景色
 
 14.支持流程图（在文件新建下-基本绘图-流程图）
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095156_62819165_4799126.png "1.png")
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095209_6cdce752_4799126.png "2.png")
 
  15支持逻辑图（在文件新建下-基本绘图-逻辑图）
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095226_36478a7b_4799126.png "3.png")
 
  16.博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
