@@ -6,11 +6,8 @@
 
 本画板在WPF-Diagram-Designer进行的开发，界面框架使用Fluent.Ribbon的框架。
 
-先上源码地址：https://gitee.com/akwkevin/aistudio.-wpf.-diagram
-
 界面图：
-![输入图片说明](https://img2020.cnblogs.com/blog/809298/202107/809298-20210723091933451-676811809.png "在这里输入图片标题")
-
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095141_dbfbe652_4799126.png "4.png")
 
 1.支持字体样式，字体颜色，字体阴影，对齐方向，行间距。
 
@@ -39,19 +36,10 @@
 13.支持画板大小，方向，标尺，网格是否显示，画板背景色
 
 14.支持流程图（在文件新建下-基本绘图-流程图）
-![输入图片说明](https://img2020.cnblogs.com/blog/809298/202107/809298-20210723093134120-338545139.png "在这里输入图片标题")
-![输入图片说明](https://img2020.cnblogs.com/blog/809298/202107/809298-20210723093004503-1002425664.png "在这里输入图片标题")
-
- 
-
- 
-
-
-
- 
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095156_62819165_4799126.png "1.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095209_6cdce752_4799126.png "2.png")
 
  15支持逻辑图（在文件新建下-基本绘图-逻辑图）
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095226_36478a7b_4799126.png "3.png")
 
- ![输入图片说明](https://img2020.cnblogs.com/blog/809298/202107/809298-20210723093031657-599553461.png "在这里输入图片标题")
-
- 
+ 16.博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
