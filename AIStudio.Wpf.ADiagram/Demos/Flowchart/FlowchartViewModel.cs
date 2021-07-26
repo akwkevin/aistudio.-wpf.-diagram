@@ -98,5 +98,6 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             DiagramViewModel.ClearSelectedItems();
         }
 
+ 
     }
 }

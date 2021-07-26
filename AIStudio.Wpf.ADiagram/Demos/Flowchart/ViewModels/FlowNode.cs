@@ -60,13 +60,36 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             {
                 SetProperty(ref _color, value);
             }
-        }
+        } 
 
         [Browsable(false)]
         public NodeKinds Kind { get; set; }
 
         [Browsable(false)]
         public string StateImage { get; set; }
+
+        #region 没有存起来，仅仅测试使用
+        private int _status;
+    
+        public int Status
+        {
+            get { return _status; }
+            set
+            {
+                SetProperty(ref _status, value);
+            }
+        }
+
+        private string _remark;
+        public string Remark
+        {
+            get { return _remark; }
+            set
+            {
+                SetProperty(ref _remark, value);
+            }
+        }
+        #endregion
     }
 
     public class StartFlowNode : FlowNode

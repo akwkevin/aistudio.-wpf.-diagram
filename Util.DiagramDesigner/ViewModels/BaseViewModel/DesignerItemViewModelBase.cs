@@ -66,7 +66,6 @@ namespace Util.DiagramDesigner
             get { return (connectors != null && connectors.Count >= 4) ? connectors[3] : null; }
         }
 
-        //public ConnectorViewModel ConnectorViewModel { get; set; }
 
         private string _icon;
         [CanDo]

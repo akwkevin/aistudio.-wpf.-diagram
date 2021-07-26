@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using Util.DiagramDesigner;
 
 namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
 {
@@ -43,5 +45,27 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
                 _roles = value;
             }
         }
+
+        public static void Approve(FlowNode flowNode, int status, string remark)
+        {
+            flowNode.Status = status;
+            switch (status)
+            {
+                case 100:
+                    flowNode.Color = Colors.Green.ToString();                   
+                    break;
+                case 2:
+                    flowNode.Color = Colors.Red.ToString();
+                    break;
+                case 3:
+                    flowNode.Color = Colors.Red.ToString();
+                    break;
+                case 4:
+                    flowNode.Color = Colors.Red.ToString();
+                    break;
+            }
+        }
+
+
     }
 }

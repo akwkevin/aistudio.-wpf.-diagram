@@ -1,0 +1,19 @@
+﻿<Window x:Class="AIStudio.Wpf.ADiagram.Demos.Flowchart.Views.ApproveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AIStudio.Wpf.ADiagram.Demos.Flowchart.Views"
+        xmlns:converter="clr-namespace:AIStudio.Wpf.ADiagram.Converters"
+        mc:Ignorable="d"
+        Title="ApproveWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="50,5,0,5" Orientation="Horizontal" >
+            <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=100}, ConverterParameter=100}" Content="通过"/>
+            <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=2}, ConverterParameter=2}" Content="驳回上一级"/>
+            <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=3}, ConverterParameter=3}" Content="驳回重提"/>
+            <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=4}, ConverterParameter=4}" Content="否决"/>
+        </StackPanel>
+        <TextBox Height="28" Margin="52,5,0,5" Text="{Binding Remark}" ></TextBox>
+    </Grid>
+</Window>

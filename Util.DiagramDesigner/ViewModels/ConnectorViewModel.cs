@@ -144,7 +144,6 @@ namespace Util.DiagramDesigner
                 {
                     SourceA = PointHelper.GetPointForConnector(_sourceConnectorInfo);
                     (_sourceConnectorInfo.DataItem as INotifyPropertyChanged).PropertyChanged += new WeakINPCEventHandler(ConnectorViewModel_PropertyChanged).Handler;
-                    //_sourceConnectorInfo.DataItem.ConnectorViewModel = this;
                 }
             }
         }
@@ -164,7 +163,6 @@ namespace Util.DiagramDesigner
                     {
                         SourceB = PointHelper.GetPointForConnector((FullyCreatedConnectorInfo)_sinkConnectorInfo);
                         (((FullyCreatedConnectorInfo)_sinkConnectorInfo).DataItem as INotifyPropertyChanged).PropertyChanged += new WeakINPCEventHandler(ConnectorViewModel_PropertyChanged).Handler;
-                        //((FullyCreatedConnectorInfo)_sinkConnectorInfo).DataItem.ConnectorViewModel = this;
                     }
                     else
                     {
