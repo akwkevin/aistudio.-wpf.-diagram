@@ -209,22 +209,31 @@ namespace Util.DiagramDesigner
         {
             get
             {
+                var text = _text;
+                if (OutTextItem != null)
+                {
+                    text = OutTextItem._text;
+                }
                 if (FontViewModel.FontCase == FontCase.Upper)
                 {
-                    return _text?.ToUpper();
+                    return text?.ToUpper();
                 }
                 else if (FontViewModel.FontCase == FontCase.Lower)
                 {
-                    return _text?.ToLower();
+                    return text?.ToLower();
                 }
                 else
                 {
-                    return _text;
+                    return text;
                 }
             }
             set
             {
-                if (SetProperty(ref _text, value))
+                if (OutTextItem != null)
+                {
+                    OutTextItem.Text = value;
+                }
+                else if (SetProperty(ref _text, value))
                 {
                     if (!string.IsNullOrEmpty(_text))
                     {

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Util.DiagramDesigner;
+using Expression = org.mariuszgromada.math.mxparser.Expression;
 
 namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
 {
@@ -48,7 +47,9 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
         }
 
 
-
+        /// <summary>
+        /// 流程数据
+        /// </summary>
         public static List<FlowNode> FlowNodes { get; set; }
 
 
@@ -108,7 +109,7 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
                             nextstep.PreStepId = new List<string>();
                         nextstep.PreStepId.Add(step.Id.ToString());
                     }
-                }             
+                }
             }
 
             var oAStartStep = oASteps.Single(p => p.Kind == NodeKinds.Start);
@@ -126,7 +127,7 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
 
 
         /// <summary>
-        /// 获取下一个节点
+        /// 初始化步骤
         /// </summary>
         /// <param name="oASteps"></param>
         /// <param name="nextstepid"></param>
@@ -161,13 +162,55 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             return outsteps;
         }
 
+        /// <summary>
+        /// 审批动作,因为是客户端模拟，假设每次都是该节点的审批人进行的操作
+        /// </summary>
+        /// <param name="flowNode"></param>
+        /// <param name="status"></param>
+        /// <param name="remark"></param>
         public static void Approve(FlowNode flowNode, int status, string remark = null)
         {
             switch (status)
             {
                 case 100:
+                    if (flowNode is MiddleFlowNode middleFlowNode)
+                    {
+                        if (string.IsNullOrEmpty(flowNode.Remark))
+                        {
+                            remark = "审批人：" + remark;
+                        }
+                        else
+                        {
+                            remark = flowNode.Remark + "\r审批人：" + remark;
+                        }
+
+                        if (middleFlowNode.ActType == "and")//如果是与签，那么要都审批通过
+                        {
+                            if (middleFlowNode.UserIds != null && middleFlowNode.UserIds.Count > 1)
+                            {
+                                //实际情况不是这样的，这里只是演示，简化。
+                                int count = remark.Split("审批人：", StringSplitOptions.RemoveEmptyEntries).Length;
+                                if (middleFlowNode.UserIds.Count != count)
+                                {
+                                    SetStatus(flowNode, 1, remark);
+                                    return;
+                                }
+                            }
+                            else if (middleFlowNode.RoleIds != null && middleFlowNode.RoleIds.Count > 1)
+                            {
+                                //实际情况不是这样的，这里只是演示，简化。
+                                int count = remark.Split("审批人：", StringSplitOptions.RemoveEmptyEntries).Length;
+                                if (middleFlowNode.RoleIds.Count != count)
+                                {
+                                    SetStatus(flowNode, 1, remark);
+                                    return;
+                                }
+                            }
+                        }
+                      
+                    }
+
                     SetStatus(flowNode, status, remark);
-                    flowNode.Color = Colors.Green.ToString();
                     if (!string.IsNullOrEmpty(flowNode.NextStepId))
                     {
                         Next(flowNode.NextStepId);
@@ -180,7 +223,7 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
                         }
                     }
                     break;
-                case 2:                    
+                case 2:
                     if (Pre(flowNode))
                     {
                         SetStatus(flowNode, status, remark);
@@ -203,6 +246,10 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             }
         }
 
+        /// <summary>
+        /// 流向下一个节点
+        /// </summary>
+        /// <param name="stepid"></param>
         public static void Next(string stepid)
         {
             FlowNode nextNode = FlowNodes.FirstOrDefault(p => p.Id.ToString() == stepid);
@@ -210,31 +257,37 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
 
             switch (nextNode.Kind)
             {
-                case NodeKinds.Start: 
-                    SetStatus(nextNode, 100); 
-                    Next(nextNode.NextStepId); 
+                case NodeKinds.Start:
+                    SetStatus(nextNode, 100);
+                    Next(nextNode.NextStepId);
                     break;
-                case NodeKinds.End: 
-                    SetStatus(nextNode, 100); 
-                    MessageBox.Show("流程完成"); 
+                case NodeKinds.End:
+                    SetStatus(nextNode, 100);
+                    MessageBox.Show("流程完成");
                     break;
                 case NodeKinds.Decide:
                     foreach (var step in nextNode.SelectNextStep)
                     {
                         try
                         {
-                            //暂未实现表达式比较
-                            step.Value.Replace("data.Flag", nextNode.Text);
-                            //先按第一个表达式成立处理。
-                            SetStatus(nextNode, 100);
-                            Next(step.Key);
-                            break;
+                            //按条件选择一个分支
+                            string express = step.Value.Replace("data.Flag", nextNode.Text);
+                            Expression e = new Expression(express);
+                            var result = e.calculate();
+                            if (result == 1)
+                            {
+                                SetStatus(nextNode, 100);
+                                Next(step.Key);
+                                return;
+                            }
                         }
                         catch { }
                     }
+                    //如果表达式错了，就按第一个处理
+                    Next(nextNode.SelectNextStep.FirstOrDefault().Key);
                     break;
                 case NodeKinds.COBegin:
-                    foreach (var step in nextNode.SelectNextStep)
+                    foreach (var step in nextNode.SelectNextStep)//启动各个分支
                     {
                         SetStatus(nextNode, 100);
                         Next(step.Key);
@@ -244,7 +297,7 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
                     foreach (var prestep in nextNode.PreStepId)
                     {
                         var step = FlowNodes.FirstOrDefault(p => p.Id.ToString() == prestep);
-                        if (step.Status != 100)
+                        if (step.Status != 100)//如果并行分支没有都完成，那么并行结束节点也未完成
                         {
                             return;
                         }
@@ -255,6 +308,11 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             }
         }
 
+        /// <summary>
+        /// 流向上一个节点
+        /// </summary>
+        /// <param name="flowNode"></param>
+        /// <returns></returns>
         public static bool Pre(FlowNode flowNode)
         {
             if (flowNode.PreStepId != null && flowNode.PreStepId.Count == 1)
@@ -270,6 +328,12 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             return false;
         }
 
+        /// <summary>
+        /// 设置颜色
+        /// </summary>
+        /// <param name="flowNode"></param>
+        /// <param name="status"></param>
+        /// <param name="remark"></param>
         public static void SetStatus(FlowNode flowNode, int status, string remark = null)
         {
             flowNode.Status = status;

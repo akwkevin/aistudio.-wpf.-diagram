@@ -39,22 +39,22 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             DesignerItemViewModelBase start = new StartFlowNode() { Left = 100, Top = 0, Color = Colors.Yellow.ToString() };
             DiagramViewModel.DirectAddItemCommand.Execute(start);
 
-            DesignerItemViewModelBase middle1 = new MiddleFlowNode() { Left = 100, Top = 100, Color = Colors.Yellow.ToString(), Text = "主管审批" };
+            DesignerItemViewModelBase middle1 = new MiddleFlowNode() { Left = 100, Top = 100, Color = Colors.Yellow.ToString(), Text = "主管审批", UserIds= new List<string> { "操作员1", "操作员2" }, ActType = "or" };
             DiagramViewModel.DirectAddItemCommand.Execute(middle1);
 
             DesignerItemViewModelBase decide = new DecideFlowNode() { Left = 100, Top = 200, Color = Colors.Yellow.ToString(), Text = "5" };
             DiagramViewModel.DirectAddItemCommand.Execute(decide);
 
-            DesignerItemViewModelBase middle2 = new MiddleFlowNode() { Left = 200, Top = 300, Color = Colors.Yellow.ToString(), Text = "分管领导" };
+            DesignerItemViewModelBase middle2 = new MiddleFlowNode() { Left = 200, Top = 300, Color = Colors.Yellow.ToString(), Text = "分管领导", UserIds = new List<string> { "操作员1", "操作员2" }, ActType = "and" };
             DiagramViewModel.DirectAddItemCommand.Execute(middle2);
 
             DesignerItemViewModelBase cobegin = new COBeginFlowNode() { Left = 100, Top = 400, Color = Colors.Yellow.ToString() };
             DiagramViewModel.DirectAddItemCommand.Execute(cobegin);
 
-            DesignerItemViewModelBase middle3 = new MiddleFlowNode() { Left = 100, Top = 500, Color = Colors.Yellow.ToString(), Text = "财务审批" };
+            DesignerItemViewModelBase middle3 = new MiddleFlowNode() { Left = 100, Top = 500, Color = Colors.Yellow.ToString(), Text = "财务审批", UserIds = new List<string> { "Admin" }, ActType = "or" };
             DiagramViewModel.DirectAddItemCommand.Execute(middle3);
 
-            DesignerItemViewModelBase middle4 = new MiddleFlowNode() { Left = 200, Top = 500, Color = Colors.Yellow.ToString(), Text = "人力审批" };
+            DesignerItemViewModelBase middle4 = new MiddleFlowNode() { Left = 200, Top = 500, Color = Colors.Yellow.ToString(), Text = "人力审批", RoleIds = new List<string> { "操作员", "管理员" }, ActType = "or" };
             DiagramViewModel.DirectAddItemCommand.Execute(middle4);
 
             DesignerItemViewModelBase coend = new COEndFlowNode() { Left = 100, Top = 600, Color = Colors.Yellow.ToString() };

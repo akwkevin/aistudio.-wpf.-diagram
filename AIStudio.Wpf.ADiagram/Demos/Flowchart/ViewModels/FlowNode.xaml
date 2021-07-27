@@ -45,7 +45,7 @@
            
                 </Grid>
             </Border>
-            <TextBlock Text="{Binding Remark}" FontSize="9" RenderTransformOrigin="1,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2">
+            <TextBlock Text="{Binding Remark}" FontSize="9" RenderTransformOrigin="1,0.5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2">
                 <TextBlock.RenderTransform>
                     <TranslateTransform X="{Binding ItemWidth}"/>
                 </TextBlock.RenderTransform>
