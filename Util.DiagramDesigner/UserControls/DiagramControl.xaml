@@ -22,7 +22,8 @@
             <s:ArrowSizeConverter x:Key="ArrowSizeConverter"/>
             <s:LineDashConverter x:Key="LineDashConverter"/>
             <s:ClipConverter x:Key="ClipConverter"/>
-
+            <s:InvertBoolConverter x:Key="InvertBoolConverter"/>
+            
             <!-- ResizeDecorator Default Template -->
             <!--
             <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="{x:Type Control}">
@@ -376,7 +377,7 @@
                                                                 VerticalAlignment="Stretch"
                                                                 Content="{TemplateBinding Content}" />
 
-                                            <Control x:Name="PART_Text" Margin="5">
+                                            <Control x:Name="PART_Text" Margin="5" IsHitTestVisible="{Binding IsReadOnlyText,Converter={StaticResource InvertBoolConverter}}">
                                                 <Control.Style>
                                                     <Style TargetType="Control">
                                                         <Setter Property="Template">

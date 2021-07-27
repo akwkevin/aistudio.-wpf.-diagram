@@ -1,10 +1,7 @@
 ﻿using AIStudio.Wpf.ADiagram.Controls;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using Util.DiagramDesigner;
 
 namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
@@ -56,5 +53,25 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
                 SetProperty(ref _actType, value);
             }
         }
+
+        protected override void ExecuteEditCommand(object param)
+        {
+            if (IsReadOnly == true) return;
+
+            if (Status == 1)
+            {
+                MiddleFlowNodeData data = new MiddleFlowNodeData();
+                if (visualiserService.ShowDialog(data) == true)
+                {
+                    FlowchartService.Approve(this, data.Status, data.Remark);
+                }
+            }
+            else
+            {
+                MessageBox.Show("该节点不能进行审批！！！");
+            }
+        }
+
+
     }
 }

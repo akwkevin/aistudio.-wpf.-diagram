@@ -234,6 +234,21 @@ namespace Util.DiagramDesigner
             }
         }
 
+        private bool _isReadOnlyText = false;
+        public bool IsReadOnlyText
+        {
+            get
+            {
+                if (IsReadOnly)
+                    return true;
+                return _isReadOnlyText;
+            }
+            set
+            {
+                SetProperty(ref _isReadOnlyText, value);
+            }
+        }
+
         private bool _showText;
         public virtual bool ShowText
         {

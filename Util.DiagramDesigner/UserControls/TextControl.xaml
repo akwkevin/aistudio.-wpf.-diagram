@@ -82,7 +82,7 @@
         <TextBox x:Name="PART_ShowText"
                          Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                            
                          Foreground="{Binding FontViewModel.FontColor,Converter={StaticResource ColorBrushConverter}}"
-                         IsReadOnly="{Binding IsReadOnly}"
+                         IsReadOnly="{Binding IsReadOnlyText}"
                          FontSize="{Binding FontViewModel.FontSize}" 
                          FontFamily="{Binding FontViewModel.FontFamily}"  
                          FontWeight="{Binding FontViewModel.FontWeight}"

@@ -36,13 +36,13 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
         {
             base.Init();
 
-            DesignerItemViewModelBase start = new StartFlowNode() { Left = 100, Top = 0, Color = Colors.Green.ToString() };
+            DesignerItemViewModelBase start = new StartFlowNode() { Left = 100, Top = 0, Color = Colors.Yellow.ToString() };
             DiagramViewModel.DirectAddItemCommand.Execute(start);
 
             DesignerItemViewModelBase middle1 = new MiddleFlowNode() { Left = 100, Top = 100, Color = Colors.Yellow.ToString(), Text = "主管审批" };
             DiagramViewModel.DirectAddItemCommand.Execute(middle1);
 
-            DesignerItemViewModelBase decide = new DecideFlowNode() { Left = 100, Top = 200, Color = Colors.Yellow.ToString(), Text = "条件" };
+            DesignerItemViewModelBase decide = new DecideFlowNode() { Left = 100, Top = 200, Color = Colors.Yellow.ToString(), Text = "5" };
             DiagramViewModel.DirectAddItemCommand.Execute(decide);
 
             DesignerItemViewModelBase middle2 = new MiddleFlowNode() { Left = 200, Top = 300, Color = Colors.Yellow.ToString(), Text = "分管领导" };
@@ -96,6 +96,8 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             DiagramViewModel.DirectAddItemCommand.Execute(connector10);
 
             DiagramViewModel.ClearSelectedItems();
+
+            FlowchartService.InitOAData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList());
         }
 
  

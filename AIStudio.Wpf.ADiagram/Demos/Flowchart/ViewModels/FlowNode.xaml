@@ -42,8 +42,14 @@
             <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
                 <Grid>
                     <Border HorizontalAlignment="Left" Width="3" Background="{Binding Color}"/>
+           
                 </Grid>
             </Border>
+            <TextBlock Text="{Binding Remark}" FontSize="9" RenderTransformOrigin="1,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="{Binding ItemWidth}"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
         </Grid>
     </ControlTemplate>
 
@@ -109,7 +115,7 @@
             <Viewbox Stretch="Fill">
                 <Grid>
                     <ContentControl Style="{StaticResource CustomFlowNodeStyle}" Margin="2"/>
-                    <TextBlock Text="{Binding Text}" Margin="5" Foreground="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Text}" Margin="5" Foreground="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" HorizontalAlignment="Left" />
                 </Grid>
             </Viewbox>
         </Grid>
@@ -123,6 +129,20 @@
     <DataTemplate DataType="{x:Type demo:FlowNode}">
         <Grid IsHitTestVisible="False">
             <ContentControl Style="{StaticResource CustomFlowNodeStyle}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type demo:MiddleFlowNodeData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Margin="5" Orientation="Horizontal" >
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=100}, ConverterParameter=100}" Content="通过"/>
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=2}, ConverterParameter=2}" Content="驳回上一级"/>
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=3}, ConverterParameter=3}" Content="驳回重提"/>
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=4}, ConverterParameter=4}" Content="否决"/>
+                </StackPanel>
+                <TextBox Height="28" Margin="5" Text="{Binding Remark}" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
         </Grid>
     </DataTemplate>
 

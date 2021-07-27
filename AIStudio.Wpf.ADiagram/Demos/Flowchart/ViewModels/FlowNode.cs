@@ -1,4 +1,5 @@
 ﻿using AIStudio.Wpf.ADiagram.Helpers;
+using AIStudio.Wpf.ADiagram.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,11 +13,12 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
 {
     public class FlowNode : DesignerItemViewModelBase
     {
+        protected IUIVisualizerService visualiserService;
+
         public FlowNode(NodeKinds kind) : base()
         {
             Kind = kind;
-            Text = Kind.GetDescription();
-            ShowText = true;
+            Text = Kind.GetDescription();           
             ItemWidth = 80;
             ItemHeight = 40;
 
@@ -32,6 +34,10 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
             base.Init();
 
             ShowRotate = false;
+            ShowText = true;
+            IsReadOnlyText = true;
+
+            visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
         }
 
         protected override void LoadDesignerItemViewModel(IDiagramViewModel parent, SelectableDesignerItemBase designerbase)
@@ -68,7 +74,7 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
         [Browsable(false)]
         public string StateImage { get; set; }
 
-        #region 没有存起来，仅仅测试使用
+        #region 没有存起来，仅仅测试使用,实际这些代码应该都在服务端
         private int _status;
     
         public int Status
@@ -89,6 +95,10 @@ namespace AIStudio.Wpf.ADiagram.Demos.Flowchart
                 SetProperty(ref _remark, value);
             }
         }
+
+        public List<string> PreStepId { get; set; }
+        public string NextStepId { get; set; }
+        public Dictionary<string, string> SelectNextStep { get; set; } = new Dictionary<string, string>();
         #endregion
     }
 
