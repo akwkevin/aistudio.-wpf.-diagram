@@ -41,16 +41,11 @@
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095209_6cdce752_4799126.png "2.png")
 
- 15支持逻辑图（在文件新建下-基本绘图-逻辑图）
+15支持逻辑图（在文件新建下-基本绘图-逻辑图）
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095226_36478a7b_4799126.png "3.png")
 
-2021.7.28更新 添加模拟审批功能 实现了条件节点审批，并行节点审批，与签，或签，驳回上一级等的模拟，双击节点进行审批。
-
- ![输入图片说明](https://images.gitee.com/uploads/images/2021/0728/085053_b7cf18db_4799126.png "1.png")
-
-
-    博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
+16博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
 
     相关链接地址：
 
@@ -63,3 +58,5 @@
     QQ技术交流群:51286643
 
     特别感谢：https://dotnet9.com/ 的站长：dotnet9。
+
+    有想加入开发的朋友可以联系我。
