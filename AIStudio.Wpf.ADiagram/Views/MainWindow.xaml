@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:AIStudio.Wpf.ADiagram"
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:utilhandy="https://astudio.github.io/utilcontrol.handy"
-        xmlns:controls="clr-namespace:AIStudio.Wpf.ADiagram.Controls"
+        xmlns:controls="clr-namespace:AIStudio.Wpf.BaseDiagram.Controls;assembly=AIStudio.Wpf.BaseDiagram"
         xmlns:views="clr-namespace:AIStudio.Wpf.ADiagram.Views"
-        xmlns:binding="clr-namespace:AIStudio.Wpf.ADiagram.Commands"
+        xmlns:binding="clr-namespace:AIStudio.Wpf.BaseDiagram.Commands;assembly=AIStudio.Wpf.BaseDiagram"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:controlzEx="urn:controlzex"
         xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
-        xmlns:helper="clr-namespace:AIStudio.Wpf.ADiagram.Helpers"
-        xmlns:enum="clr-namespace:AIStudio.Wpf.ADiagram.Enums"
+        xmlns:helper="clr-namespace:AIStudio.Wpf.BaseDiagram.Helpers;assembly=AIStudio.Wpf.BaseDiagram"
+        xmlns:model="clr-namespace:AIStudio.Wpf.ADiagram.Models"
         xmlns:dd="https://astudio.github.io/diagram" 
         xmlns:drop="urn:gong-wpf-dragdrop"             
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:converter="clr-namespace:AIStudio.Wpf.ADiagram.Converters"
+        xmlns:converter="clr-namespace:AIStudio.Wpf.BaseDiagram.Converters;assembly=AIStudio.Wpf.BaseDiagram"
         xmlns:viewmodel="clr-namespace:AIStudio.Wpf.ADiagram.ViewModels"
         Style="{StaticResource RibbonWindowStyle}"
         Icon="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Icons/App.ico"
@@ -1658,7 +1658,7 @@
                 </dragablz:TabablzControl>
 
                 <DockPanel Grid.Row="1" >
-                    <Fluent:ComboBox Size="Small" IsEditable="False" helper:EnumHelper.Enum="{x:Type enum:ColorType}"  SelectedItem="{Binding ColorType}" BorderThickness="0" BorderBrush="Transparent" Background="Transparent" Template="{StaticResource ComboboxControlTemplate1}" >
+                    <Fluent:ComboBox Size="Small" IsEditable="False" helper:EnumHelper.Enum="{x:Type model:ColorType}"  SelectedItem="{Binding ColorType}" BorderThickness="0" BorderBrush="Transparent" Background="Transparent" Template="{StaticResource ComboboxControlTemplate1}" >
                         <Fluent:ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <iconPacks:PackIconMaterial x:Name="icon" Kind="FormatColorText"  Width="12" Height="12" Margin="2"/>

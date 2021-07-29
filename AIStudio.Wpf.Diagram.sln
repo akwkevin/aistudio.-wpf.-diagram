@@ -7,6 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.DiagramDesigner", "Uti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIStudio.Wpf.ADiagram", "AIStudio.Wpf.ADiagram\AIStudio.Wpf.ADiagram.csproj", "{9D2DCA7D-9E0C-4E6E-ACD9-2CD18C75FE34}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIStudio.Wpf.BaseDiagram", "AIStudio.Wpf.BaseDiagram\AIStudio.Wpf.BaseDiagram.csproj", "{FC7CFBB7-29AE-4660-A94B-B80CF317D3C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIStudio.Wpf.Flowchart", "AIStudio.Wpf.Flowchart\AIStudio.Wpf.Flowchart.csproj", "{86ED5B40-D185-4AFA-B5BD-BC8E78DB8758}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIStudio.Wpf.Logical", "AIStudio.Wpf.Logical\AIStudio.Wpf.Logical.csproj", "{CC68D39D-7935-4079-9CEB-FC2FD498D511}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{4959F170-02FB-4B7F-8F53-93DAF22713F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +29,25 @@ Global
 		{9D2DCA7D-9E0C-4E6E-ACD9-2CD18C75FE34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D2DCA7D-9E0C-4E6E-ACD9-2CD18C75FE34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D2DCA7D-9E0C-4E6E-ACD9-2CD18C75FE34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC7CFBB7-29AE-4660-A94B-B80CF317D3C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC7CFBB7-29AE-4660-A94B-B80CF317D3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC7CFBB7-29AE-4660-A94B-B80CF317D3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC7CFBB7-29AE-4660-A94B-B80CF317D3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86ED5B40-D185-4AFA-B5BD-BC8E78DB8758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86ED5B40-D185-4AFA-B5BD-BC8E78DB8758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86ED5B40-D185-4AFA-B5BD-BC8E78DB8758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86ED5B40-D185-4AFA-B5BD-BC8E78DB8758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC68D39D-7935-4079-9CEB-FC2FD498D511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC68D39D-7935-4079-9CEB-FC2FD498D511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC68D39D-7935-4079-9CEB-FC2FD498D511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC68D39D-7935-4079-9CEB-FC2FD498D511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{86ED5B40-D185-4AFA-B5BD-BC8E78DB8758} = {4959F170-02FB-4B7F-8F53-93DAF22713F9}
+		{CC68D39D-7935-4079-9CEB-FC2FD498D511} = {4959F170-02FB-4B7F-8F53-93DAF22713F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D30FC641-F06C-4E35-AEA5-48A9B6E59CE0}

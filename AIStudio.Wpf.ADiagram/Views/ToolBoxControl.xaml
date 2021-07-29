@@ -3,13 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:controls="clr-namespace:AIStudio.Wpf.ADiagram.Controls"
              xmlns:views="clr-namespace:AIStudio.Wpf.ADiagram.Views"
              xmlns:viewmodels="clr-namespace:AIStudio.Wpf.ADiagram.ViewModels"
              xmlns:model="clr-namespace:AIStudio.Wpf.ADiagram.Models"
              xmlns:dd="https://astudio.github.io/diagram" 
-             xmlns:conventer="clr-namespace:AIStudio.Wpf.ADiagram.Converters"
-             xmlns:command="clr-namespace:AIStudio.Wpf.ADiagram.Commands"
+             xmlns:conventer="clr-namespace:AIStudio.Wpf.BaseDiagram.Converters;assembly=AIStudio.Wpf.BaseDiagram"
+             xmlns:command="clr-namespace:AIStudio.Wpf.BaseDiagram.Commands;assembly=AIStudio.Wpf.BaseDiagram"
              xmlns:svg="clr-namespace:Svg2XamlTestExtension;assembly=Svg2XamlTestExtension"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -18,7 +17,7 @@
             <conventer:StringPathConverter x:Key="stringPathConverter"/>
             <conventer:IntVisibilityConverter x:Key="IntVisibilityConverter"/>
             <command:CommandReference x:Key="DeleteItemCommandReference" Command="{Binding DeleteItemCommand}"/>
-            
+
             <DataTemplate DataType="{x:Type model:ImageToolBoxData}">
                 <Grid Width="{Binding Width}" Height="{Binding Height}">
                     <Rectangle Name="Border"
@@ -147,10 +146,30 @@
                                        TextDecorations="{Binding FontViewModel.TextDecorations}"
                                        HorizontalContentAlignment="{Binding FontViewModel.HorizontalAlignment}"
                                        VerticalContentAlignment="{Binding FontViewModel.VerticalAlignment}"
-                                       TextBlock.LineHeight="{Binding FontViewModel.LineHeight}"/>    
+                                       TextBlock.LineHeight="{Binding FontViewModel.LineHeight}"/>
                         </Grid>
                     </Viewbox>
 
+                </Grid>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter TargetName="Border" Property="Stroke" Value="Gray"/>
+                    </Trigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type model:FlowchartToolBoxData}">
+                <Grid Width="{Binding Width}" Height="{Binding Height}">
+                    <Rectangle Name="Border"
+                                   StrokeThickness="1"
+                                   StrokeDashArray="2"
+                                   Fill="Transparent"
+                                   SnapsToDevicePixels="true"/>
+                    <Viewbox Stretch="Fill">
+                        <Grid>
+                            <ContentControl Style="{StaticResource CustomFlowNodeStyle}" Margin="2"/>
+                            <TextBlock Text="{Binding Text}" Margin="5" Foreground="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" HorizontalAlignment="Left" />
+                        </Grid>
+                    </Viewbox>
                 </Grid>
                 <DataTemplate.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">

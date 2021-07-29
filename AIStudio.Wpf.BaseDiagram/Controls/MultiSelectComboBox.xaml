@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="AIStudio.Wpf.BaseDiagram.Controls.MultiSelectComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ComboBox Background="Transparent" BorderBrush="Transparent"
+        x:Name="MultiSelectCombo"  
+        SnapsToDevicePixels="True"
+        OverridesDefaultStyle="True"
+        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+        ScrollViewer.VerticalScrollBarVisibility="Auto"
+        ScrollViewer.CanContentScroll="True"
+        IsSynchronizedWithCurrentItem="True"
+                           >
+        <ComboBox.ItemTemplate>
+            <DataTemplate>
+                <CheckBox Content="{Binding Title}"
+                          IsChecked="{Binding Path=IsSelected, Mode=TwoWay}"
+                          Tag="{RelativeSource FindAncestor, AncestorType={x:Type ComboBox}}"
+                           Click="CheckBox_Click"           />
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+        <ComboBox.Template>
+            <ControlTemplate TargetType="ComboBox">
+                <Grid >
+                    <ToggleButton x:Name="ToggleButton" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                        Grid.Column="2" IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                        Focusable="false"                           
+                        ClickMode="Press" HorizontalContentAlignment="Left" >
+                        <ToggleButton.Template>
+                            <ControlTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                          x:Name="Border" 
+                                          Grid.ColumnSpan="2"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}" />
+                                    <Border 
+                                        x:Name="BorderComp" 
+                                        Grid.Column="0"
+                                        CornerRadius="2" 
+                                        Margin="1" 
+                                        BorderThickness="0,0,0,0" >
+                                        <TextBlock Text="{Binding Path=Text,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" Padding="3" />
+                                    </Border>
+                                    <Border x:Name="ArrowBorder"  Grid.Column="1"   >
+                                        <Path 
+                                          x:Name="Arrow"                                         
+                                          Stretch="Fill" Width="5" Height="3"
+                                          Fill="Black" 
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                    </Border>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="ArrowBorder" Property="Background" Value="{DynamicResource Fluent.Ribbon.Brushes.Button.MouseOver.Background}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </ToggleButton.Template>
+                         </ToggleButton>
+                        <Popup x:Name="Popup"
+                            Placement="Bottom"                        
+                            AllowsTransparency="True" 
+                            Focusable="False"  IsOpen="{TemplateBinding IsDropDownOpen}"
+                            PopupAnimation="Slide">
+                        <Grid x:Name="DropDown"
+                            SnapsToDevicePixels="True"  
+                            MinWidth="{TemplateBinding ActualWidth}"
+                            MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <Border x:Name="DropDownBorder" 
+                                   BorderThickness="1" Background="{DynamicResource WhiteBrush}"
+                                   BorderBrush="{DynamicResource GrayBrush8}"/>
+                            <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" DataContext="{Binding}">
+                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                            </ScrollViewer>
+                        </Grid>
+                    </Popup>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="HasItems" Value="false">
+                        <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                    </Trigger>
+                    <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                        <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                    </Trigger>
+                    <Trigger Property="IsDropDownOpen" Value="true">
+                        <Setter TargetName="ToggleButton" Property="Background" Value="{DynamicResource Fluent.Ribbon.Brushes.Button.MouseOver.Background}" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ComboBox.Template>
+    </ComboBox>
+</UserControl>

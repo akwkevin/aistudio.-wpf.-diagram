@@ -16,14 +16,12 @@
         <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/Slider.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/TabControl.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Themes/Styles/ToggleButton.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Flowchart/ViewModels/FlowNode.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Logical/ViewModels/LogicalGateItemViewModel.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/BarcodeDesignerItemViewModel.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/OutLineTextDesignerItemViewModel.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/PathItemViewModel.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/PersistDesignerItemViewModel.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/SettingsDesignerItemViewModel.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.ADiagram;component/Demos/Others/ViewModels/SvgDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.BaseDiagram;component/Extensions/ViewModels/BarcodeDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.BaseDiagram;component/Extensions/ViewModels/OutLineTextDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.BaseDiagram;component/Extensions/ViewModels/PathItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.BaseDiagram;component/Extensions/ViewModels/PersistDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.BaseDiagram;component/Extensions/ViewModels/SettingsDesignerItemViewModel.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.BaseDiagram;component/Extensions/ViewModels/SvgDesignerItemViewModel.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     

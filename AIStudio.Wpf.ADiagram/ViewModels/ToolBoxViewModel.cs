@@ -1,21 +1,18 @@
-﻿using AIStudio.Wpf.ADiagram.Models;
+﻿using AIStudio.Wpf.BaseDiagram.Commands;
+using AIStudio.Wpf.BaseDiagram.Extensions.ViewModels;
+using AIStudio.Wpf.BaseDiagram.Helpers;
+using AIStudio.Wpf.ADiagram.Models;
+using AIStudio.Wpf.Flowchart;
+using AIStudio.Wpf.Flowchart.ViewModels;
+using AIStudio.Wpf.Logical.ViewModels;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Windows.Input;
 using Util.DiagramDesigner;
 using Util.DiagramDesigner.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using AIStudio.Wpf.ADiagram.Demos.Flowchart;
-using AIStudio.Wpf.ADiagram.Demos.Logical;
-using AIStudio.Wpf.ADiagram.Demos.Others;
-using System.Windows.Input;
-using AIStudio.Wpf.ADiagram.Commands;
-using System.IO;
-using Newtonsoft.Json;
-using AIStudio.Wpf.ADiagram.Helpers;
-using static AIStudio.Wpf.ADiagram.Helpers.NewNameHelper;
 
 namespace AIStudio.Wpf.ADiagram.ViewModels
 {
@@ -195,7 +192,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             if (Directory.Exists(_svg))
             {
                 var files = Directory.GetFiles(_svg);
-                foreach (var filename in files.OrderBy(p => p, new NaturalStringComparer()).Where(p => p.ToLower().EndsWith(".svg")))
+                foreach (var filename in files.OrderBy(p => p, new NewNameHelper.NaturalStringComparer()).Where(p => p.ToLower().EndsWith(".svg")))
                 {
                     SvgToolBoxCategory.ToolBoxItems.Add(new SvgToolBoxData(filename, typeof(SvgDesignerItemViewModel)));
                 }

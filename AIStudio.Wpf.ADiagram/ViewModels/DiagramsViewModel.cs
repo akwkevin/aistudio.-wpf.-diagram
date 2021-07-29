@@ -1,7 +1,7 @@
-﻿using AIStudio.Wpf.ADiagram.Commands;
-using AIStudio.Wpf.ADiagram.Demos.Flowchart;
-using AIStudio.Wpf.ADiagram.Demos.Others;
-using AIStudio.Wpf.ADiagram.Helpers;
+﻿using AIStudio.Wpf.BaseDiagram.Commands;
+using AIStudio.Wpf.Flowchart;
+using AIStudio.Wpf.BaseDiagram.Extensions.ViewModels;
+using AIStudio.Wpf.BaseDiagram.Helpers;
 using AIStudio.Wpf.ADiagram.Models;
 using Newtonsoft.Json;
 using System;
@@ -20,14 +20,12 @@ using ZXing;
 
 namespace AIStudio.Wpf.ADiagram.ViewModels
 {
-    public class DiagramsViewModel : BindableBase
+    public partial class DiagramsViewModel : BindableBase
     {
         private IDiagramServiceProvider _service { get { return DiagramServicesProvider.Instance.Provider; } }
-        public MainWindowViewModel MainWindowViewModel { get; set; }
        
-        public DiagramsViewModel(MainWindowViewModel mainWindowViewModel, string title, string status, DiagramType diagramType)
+        public DiagramsViewModel(string title, string status, DiagramType diagramType)
         {
-            MainWindowViewModel = mainWindowViewModel;
             Title = title;
             Status = status;
             DiagramType = diagramType;
@@ -40,9 +38,8 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
 
             Init();
         }
-        public DiagramsViewModel(MainWindowViewModel mainWindowViewModel, string filename)
+        public DiagramsViewModel(string filename)
         {
-            MainWindowViewModel = mainWindowViewModel;
             FileName = filename;
             OpenFile(filename);
         }

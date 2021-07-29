@@ -1,9 +1,6 @@
-﻿using AIStudio.Wpf.ADiagram.Commands;
-using AIStudio.Wpf.ADiagram.Demos.Flowchart;
-using AIStudio.Wpf.ADiagram.Demos.Logical;
-using AIStudio.Wpf.ADiagram.Enums;
-using AIStudio.Wpf.ADiagram.Helpers;
-using AIStudio.Wpf.ADiagram.Views;
+﻿using AIStudio.Wpf.ADiagram.Views;
+using AIStudio.Wpf.Flowchart;
+using AIStudio.Wpf.Logical;
 using ControlzEx.Theming;
 using Dragablz;
 using Fluent;
@@ -18,6 +15,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Util.DiagramDesigner;
+using AIStudio.Wpf.BaseDiagram.Helpers;
+using AIStudio.Wpf.BaseDiagram.Commands;
 
 namespace AIStudio.Wpf.ADiagram.ViewModels
 {
@@ -32,7 +31,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
 
             ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
             DiagramsViewModels = new ObservableCollection<DiagramsViewModel>();
-            DiagramsViewModels.Add(new DiagramsViewModel(this, "新建-1", "*", DiagramType.Normal));
+            DiagramsViewModels.Add(new DiagramsViewModel("新建-1", "*", DiagramType.Normal));
             DiagramsViewModel = DiagramsViewModels.FirstOrDefault();
 
             StandardColor = GenerateStandardGradients();
@@ -78,8 +77,8 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             }
         }
 
-        private ColorType _colorObject;
-        public ColorType ColorType
+        private Models.ColorType _colorObject;
+        public Models.ColorType ColorType
         {
             get
             {
@@ -217,7 +216,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 return
                     () =>
                     {
-                        return new DiagramsViewModel(this, NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", DiagramType.Normal);
+                        return new DiagramsViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", DiagramType.Normal);
                     };
             }
         }
@@ -774,7 +773,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 return;
             }
 
-            var flow = new DiagramsViewModel(this, filename);
+            var flow = new DiagramsViewModel(filename);
             DiagramsViewModels.Add(flow);
             DiagramsViewModel = flow;
 
@@ -884,15 +883,15 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             IsOpenBackstage = false;
             if (type == DiagramType.FlowChart.ToString())
             {
-                DiagramsViewModel = new FlowchartViewModel(this, NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
+                DiagramsViewModel = new FlowchartViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
             }
             else if (type == DiagramType.Logical.ToString())
             {
-                DiagramsViewModel = new LogicalViewModel(this, NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
+                DiagramsViewModel = new LogicalViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
             }
             else
             {
-                DiagramsViewModel = new DiagramsViewModel(this, NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
+                DiagramsViewModel = new DiagramsViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
             }
 
             DiagramsViewModels.Add(DiagramsViewModel);
@@ -1135,9 +1134,9 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
 
             switch (ColorType)
             {
-                case ColorType.Text: DiagramsViewModel.SetFont(new FontViewModel() { FontColor = (Color)para }, "FontColor"); break;
-                case ColorType.Fill: DiagramsViewModel.SetColor(new ColorViewModel() { FillColor = new ColorObject() { Color = (Color)para } }, "FillColor"); break;
-                case ColorType.Line: DiagramsViewModel.SetColor(new ColorViewModel() { LineColor = new ColorObject() { Color = (Color)para } }, "LineColor"); break;
+                case Models.ColorType.Text: DiagramsViewModel.SetFont(new FontViewModel() { FontColor = (Color)para }, "FontColor"); break;
+                case Models.ColorType.Fill: DiagramsViewModel.SetColor(new ColorViewModel() { FillColor = new ColorObject() { Color = (Color)para } }, "FillColor"); break;
+                case Models.ColorType.Line: DiagramsViewModel.SetColor(new ColorViewModel() { LineColor = new ColorObject() { Color = (Color)para } }, "LineColor"); break;
             }
         }
 

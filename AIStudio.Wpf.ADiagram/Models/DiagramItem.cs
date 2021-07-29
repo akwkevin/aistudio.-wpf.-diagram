@@ -7,9 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using AIStudio.Wpf.ADiagram.Demos.Flowchart;
-using AIStudio.Wpf.ADiagram.Demos.Others;
+using AIStudio.Wpf.Flowchart;
+using AIStudio.Wpf.BaseDiagram.Extensions.ViewModels;
+using AIStudio.Wpf.BaseDiagram.Extensions.Models;
 using Newtonsoft.Json;
+using AIStudio.Wpf.Flowchart.Models;
+using AIStudio.Wpf.Flowchart.ViewModels;
 
 namespace AIStudio.Wpf.ADiagram.Models
 {

@@ -14,16 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controls\AnimationHelper.cs" />
-    <Compile Remove="Controls\CancelRoutedEventArgs.cs" />
-    <Compile Remove="Controls\ContextMenuToggleButton.cs" />
-    <Compile Remove="Controls\ScrollViewer.xaml.cs" />
-    <Compile Remove="Controls\TabControl.xaml.cs" />
-    <Compile Remove="Controls\TabItem.cs" />
-    <Compile Remove="Controls\TabPanel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Icons\App.ico" />
     <None Remove="Images\AlignObjectsBottom.png" />
     <None Remove="Images\AlignObjectsCenteredHorizontal.png" />
@@ -115,8 +105,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Remove="Controls\ScrollViewer.xaml" />
-    <Page Remove="Controls\TabControl.xaml" />
     <Page Remove="Images\VectorIcons.xaml" />
   </ItemGroup>
 
@@ -128,13 +116,13 @@
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.8.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.VaadinIcons" Version="4.8.0" />
-    <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Util.Svg2XamlTestExtension" Version="1.2.5" />
-    <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AIStudio.Wpf.BaseDiagram\AIStudio.Wpf.BaseDiagram.csproj" />
+    <ProjectReference Include="..\AIStudio.Wpf.Flowchart\AIStudio.Wpf.Flowchart.csproj" />
+    <ProjectReference Include="..\AIStudio.Wpf.Logical\AIStudio.Wpf.Logical.csproj" />
     <ProjectReference Include="..\Util.DiagramDesigner\Util.DiagramDesigner.csproj" />
   </ItemGroup>
 
@@ -239,32 +227,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\PopupWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Demos\Logical\ViewModels\LogicalGateItemViewModel.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Demos\Others\ViewModels\BarcodeDesignerItemViewModel.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Demos\Others\ViewModels\PersistDesignerItemViewModel.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Demos\Others\ViewModels\SettingsDesignerItemViewModel.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Demos\Others\ViewModels\OutLineTextDesignerItemViewModel.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Demos\Others\ViewModels\PathItemViewModel.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
     <Page Update="Themes\Generic.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

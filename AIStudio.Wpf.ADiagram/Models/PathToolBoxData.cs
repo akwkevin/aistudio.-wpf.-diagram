@@ -1,14 +1,8 @@
-﻿using Util.DiagramDesigner.Helpers;
+﻿using AIStudio.Wpf.Flowchart;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using Util.DiagramDesigner;
-using AIStudio.Wpf.ADiagram.Demos.Flowchart;
-using AIStudio.Wpf.ADiagram.Helpers;
+using Util.DiagramDesigner.Helpers;
 
 namespace AIStudio.Wpf.ADiagram.Models
 {

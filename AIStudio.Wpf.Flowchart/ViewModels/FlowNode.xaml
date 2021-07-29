@@ -1,0 +1,126 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:Util.DiagramDesigner;assembly=Util.DiagramDesigner"
+                    xmlns:viewmodel="clr-namespace:AIStudio.Wpf.Flowchart.ViewModels"
+                    xmlns:converter="clr-namespace:AIStudio.Wpf.BaseDiagram.Converters;assembly=AIStudio.Wpf.BaseDiagram">
+
+    <s:ColorBrushConverter x:Key="ColorBrushConverter"/>
+
+    <ControlTemplate x:Key="NormalNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+                <Grid>
+                    <Border HorizontalAlignment="Left" Width="3" Background="{Binding Color}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="StartNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border CornerRadius="3" BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+                <Grid>
+                    <Border HorizontalAlignment="Left" CornerRadius="3,0,0,3" Width="3" Background="{Binding Color}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="EndNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border CornerRadius="3" BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+                <Grid>
+                    <Border HorizontalAlignment="Left" CornerRadius="3,0,0,3" Width="3" Background="{Binding Color}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="MiddleNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+                <Grid>
+                    <Border HorizontalAlignment="Left" Width="3" Background="{Binding Color}"/>
+           
+                </Grid>
+            </Border>
+            <TextBlock Text="{Binding Remark}" FontSize="9" RenderTransformOrigin="1,0.5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="{Binding ItemWidth}"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="DecideNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Path Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" StrokeThickness="1" Stretch="Fill" Data="M 0,0.25 L 0.5 0 L 1,0.25 L 0.5,0.5 Z"></Path>
+        </Grid>
+    </ControlTemplate>
+
+
+    <ControlTemplate x:Key="COBeginNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+                <Grid>
+                    <Border HorizontalAlignment="Left" Width="3" Background="{Binding Color}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="COEndNodeStyle" TargetType="{x:Type ContentControl}">
+        <Grid>
+            <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+                <Grid>
+                    <Border HorizontalAlignment="Left" Width="3" Background="{Binding Color}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="CustomFlowNodeStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Template" Value="{StaticResource NormalNodeStyle}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Kind}" Value="Start">
+                <Setter Property="Template" Value="{StaticResource StartNodeStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="End">
+                <Setter Property="Template" Value="{StaticResource EndNodeStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Middle">
+                <Setter Property="Template" Value="{StaticResource MiddleNodeStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Decide">
+                <Setter Property="Template" Value="{StaticResource DecideNodeStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="COBegin">
+                <Setter Property="Template" Value="{StaticResource COBeginNodeStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="COEnd">
+                <Setter Property="Template" Value="{StaticResource COEndNodeStyle}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate DataType="{x:Type viewmodel:FlowNode}">
+        <Grid IsHitTestVisible="False">
+            <ContentControl Style="{StaticResource CustomFlowNodeStyle}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:MiddleFlowNodeData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Margin="5" Orientation="Horizontal" >
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=100}, ConverterParameter=100}" Content="通过"/>
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=2}, ConverterParameter=2}" Content="驳回上一级"/>
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=3}, ConverterParameter=3}" Content="驳回重提"/>
+                    <RadioButton Margin="3" IsChecked="{Binding Status,Converter={converter:ConverterValueMapToBool Parameter=4}, ConverterParameter=4}" Content="否决"/>
+                </StackPanel>
+                <TextBox Height="28" Margin="5" Text="{Binding Remark}" VerticalContentAlignment="Center"></TextBox>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

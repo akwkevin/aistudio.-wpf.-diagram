@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Fluent="urn:fluent-ribbon"
-             xmlns:controls="clr-namespace:AIStudio.Wpf.ADiagram.Controls"
+             xmlns:controls="clr-namespace:AIStudio.Wpf.BaseDiagram.Controls;assembly=AIStudio.Wpf.BaseDiagram"
              xmlns:views="clr-namespace:AIStudio.Wpf.ADiagram.Views"
-             xmlns:converter="clr-namespace:AIStudio.Wpf.ADiagram.Converters"
-             xmlns:helper="clr-namespace:AIStudio.Wpf.ADiagram.Helpers"
+             xmlns:converter="clr-namespace:AIStudio.Wpf.BaseDiagram.Converters;assembly=AIStudio.Wpf.BaseDiagram"
+             xmlns:helper="clr-namespace:AIStudio.Wpf.BaseDiagram.Helpers;assembly=AIStudio.Wpf.BaseDiagram"
              xmlns:dd="https://astudio.github.io/diagram"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:flowchart="clr-namespace:AIStudio.Wpf.ADiagram.Demos.Flowchart"
+             xmlns:flowchart="clr-namespace:AIStudio.Wpf.Flowchart;assembly=AIStudio.Wpf.Flowchart"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>

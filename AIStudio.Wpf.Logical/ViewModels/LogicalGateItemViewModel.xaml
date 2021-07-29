@@ -1,0 +1,102 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:AIStudio.Wpf.Logical" 
+                    xmlns:viewmodel="clr-namespace:AIStudio.Wpf.Logical.ViewModels" 
+                    xmlns:gif="http://wpfanimatedgif.codeplex.com" 
+                    xmlns:converter="clr-namespace:AIStudio.Wpf.BaseDiagram.Converters;assembly=AIStudio.Wpf.BaseDiagram"
+                    xmlns:controls="clr-namespace:AIStudio.Wpf.BaseDiagram.Controls;assembly=AIStudio.Wpf.BaseDiagram"
+                    xmlns:dd="https://astudio.github.io/diagram"
+                    xmlns:Fluent="urn:fluent-ribbon"
+                    xmlns:s="clr-namespace:Util.DiagramDesigner;assembly=Util.DiagramDesigner"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+
+    <converter:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+    <converter:DoubleToThickness x:Key="DoubleToThickness"/>
+    <s:ColorBrushConverter x:Key="ColorBrushConverter"/>
+
+    <DataTemplate DataType="{x:Type viewmodel:LogicalGateItemViewModel}">
+        <Grid IsHitTestVisible="False">
+            <Rectangle StrokeThickness="1" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+            <TextBlock Text="{Binding LogicalType}" Foreground="{Binding FontViewModel.FontColor,Converter={StaticResource ColorBrushConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+            <TextBlock Text="{Binding OrderNumber,StringFormat={}{0}#}" Foreground="Blue" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="2"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:LogicalGateItemData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <ListBox ItemsSource="{Binding InputValues}" AlternationCount="{Binding InputValues.Count}" Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="输入" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex)}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBox Width="100" Text="{Binding ConnectorValue,Mode=TwoWay}"></TextBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:ConstantDesignerItemViewModel}">
+        <Grid IsHitTestVisible="False">
+            <Rectangle StrokeThickness="1" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:ValueDesignerItemData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="Value"
+                   Margin="5" />
+            <TextBox Grid.Column="1"
+                    Text="{Binding Value}" VerticalAlignment="Center"
+                    Margin="5" 
+                    FontSize="12"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:LinkPointDesignerItemData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="LinkPoint"
+                   Margin="5" />
+            <ComboBox Grid.Column="1"
+                    SelectedItem="{Binding LinkPoint}" ItemsSource="{x:Static local:LogicalService.LinkPoint}" VerticalAlignment="Center" DisplayMemberPath="Name"
+                    Margin="5" 
+                    FontSize="12"/>
+        </Grid>
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type viewmodel:InputItemViewModel}">
+        <Grid IsHitTestVisible="False">
+            <Rectangle StrokeThickness="1" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+            <TextBlock Text="{Binding Text,TargetNullValue='[Null]'}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:OutputItemViewModel}">
+        <Grid IsHitTestVisible="False">
+            <Rectangle StrokeThickness="1" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+            <TextBlock Text="{Binding Text,TargetNullValue='[Null]'}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:TimerDesignerItemViewModel}">
+        <Grid IsHitTestVisible="False">
+            <Ellipse StrokeThickness="1" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" /> 
+            <TextBlock Text="{Binding Value,StringFormat={}{0}s}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>
