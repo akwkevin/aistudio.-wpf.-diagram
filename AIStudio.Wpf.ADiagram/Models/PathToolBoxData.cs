@@ -1,4 +1,5 @@
 ﻿using AIStudio.Wpf.Flowchart;
+using AIStudio.Wpf.SFC;
 using System;
 using System.Windows.Media;
 using Util.DiagramDesigner;
@@ -45,6 +46,17 @@ namespace AIStudio.Wpf.ADiagram.Models
     {
         public NodeKinds Kind { get; set; }
         public FlowchartToolBoxData(NodeKinds kind, Type type, double width = 32, double height = 32) : base(kind.GetDescription(), null, type, width, height)
+        {
+            Kind = kind;
+            ColorViewModel.LineColor.Color = Colors.Black;
+        }
+
+    }
+
+    public class SFCToolBoxData : ToolBoxData
+    {
+        public SFCNodeKinds Kind { get; set; }
+        public SFCToolBoxData(SFCNodeKinds kind, Type type, double width = 32, double height = 32) : base(kind.GetDescription(), null, type, width, height)
         {
             Kind = kind;
             ColorViewModel.LineColor.Color = Colors.Black;

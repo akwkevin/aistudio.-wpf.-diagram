@@ -13,6 +13,8 @@ using System.Linq;
 using System.Windows.Input;
 using Util.DiagramDesigner;
 using Util.DiagramDesigner.Helpers;
+using AIStudio.Wpf.SFC;
+using AIStudio.Wpf.SFC.ViewModels;
 
 namespace AIStudio.Wpf.ADiagram.ViewModels
 {
@@ -177,6 +179,16 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             mediaToolBoxItems.Add(new MediaToolBoxData("../Images/SVG.png", typeof(SvgDesignerItemViewModel)));
             ToolBoxCategory.Add(new ToolBoxCategory() { Header = "媒体", ToolBoxItems = new ObservableCollection<ToolBoxData>(mediaToolBoxItems) });
 
+            List<ToolBoxData> sfcToolBoxItems = new List<ToolBoxData>();
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Start, typeof(SFCStartNode), 32, 28));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Condition, typeof(SFCConditionNode), 32, 28));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Node, typeof(SFCNodeNode), 32, 28));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Action, typeof(SFCActionNode), 32, 28));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.COBegin, typeof(SFCCOBeginNode), 32, 10));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.COEnd, typeof(SFCCOEndNode), 32, 10));
+
+            ToolBoxCategory.Add(new ToolBoxCategory() { Header = "SFC顺序控制图", ToolBoxItems = new ObservableCollection<ToolBoxData>(sfcToolBoxItems) });
+
             LoadMyItems();
             LoadSvgItems();
         }
@@ -243,7 +255,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 DiagramItem diagramItem = new DiagramItem();
                 diagramItem.AddItems(new List<DesignerItemViewModelBase> { designer });
                 diagramDocument.DiagramItems.Add(diagramItem);
-                string newname = NewNameHelper.GetNewName(MyToolBoxCategory.ToolBoxItems.OfType<DesignerItemToolBoxData>().Select(p => Path.GetFileNameWithoutExtension(p.FileName)),"");
+                string newname = NewNameHelper.GetNewName(MyToolBoxCategory.ToolBoxItems.OfType<DesignerItemToolBoxData>().Select(p => Path.GetFileNameWithoutExtension(p.FileName)), "");
                 var filename = $"{_custom}\\{newname}.json";
                 File.WriteAllText(filename, JsonConvert.SerializeObject(diagramDocument));
 

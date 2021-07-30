@@ -123,6 +123,7 @@
     <ProjectReference Include="..\AIStudio.Wpf.BaseDiagram\AIStudio.Wpf.BaseDiagram.csproj" />
     <ProjectReference Include="..\AIStudio.Wpf.Flowchart\AIStudio.Wpf.Flowchart.csproj" />
     <ProjectReference Include="..\AIStudio.Wpf.Logical\AIStudio.Wpf.Logical.csproj" />
+    <ProjectReference Include="..\AIStudio.Wpf.SFC\AIStudio.Wpf.SFC.csproj" />
     <ProjectReference Include="..\Util.DiagramDesigner\Util.DiagramDesigner.csproj" />
   </ItemGroup>
 

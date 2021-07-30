@@ -54,7 +54,7 @@ namespace AIStudio.Wpf.Flowchart.ViewModels
         }
 
         private string _color;
-        [Browsable(true)]
+        [Browsable(false)]
         public string Color
         {
             get { return _color; }

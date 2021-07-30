@@ -177,7 +177,23 @@
                     </Trigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
-
+            <DataTemplate DataType="{x:Type model:SFCToolBoxData}">
+                <Grid Width="{Binding Width}" Height="{Binding Height}">
+                    <Rectangle Name="Border"
+                                   StrokeThickness="1"
+                                   StrokeDashArray="2"
+                                   Fill="Transparent"
+                                   SnapsToDevicePixels="true"/>
+                    <Grid ToolTip="{Binding Text}">
+                        <ContentControl Style="{StaticResource CustomSFCNodeStyle}" Margin="2"/>                     
+                    </Grid>
+                </Grid>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter TargetName="Border" Property="Stroke" Value="Gray"/>
+                    </Trigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:ToolBoxCategory}">
                 <Grid Visibility="{Binding IsChecked,Converter={StaticResource boolToVisibilityConverter}}">
                     <Expander Header="{Binding Header}" 

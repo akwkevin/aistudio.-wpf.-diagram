@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="/AIStudio.Wpf.ADiagram;component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.Flowchart;component/ViewModels/FlowNode.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.Logical;component/ViewModels/LogicalGateItemViewModel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/AIStudio.Wpf.SFC;component/ViewModels/SFCNode.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
