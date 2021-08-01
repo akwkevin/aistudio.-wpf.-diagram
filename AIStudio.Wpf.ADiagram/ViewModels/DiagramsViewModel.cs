@@ -772,12 +772,44 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             }
         }
 
-        public void CenterExecuted(object para)
+        public void CenterMoveExecuted(object para)
         {
             foreach (var item in DiagramViewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
             {
                 item.Left = (DiagramViewModel.PageSize.Width - item.ItemWidth) / 2;
                 item.Top = (DiagramViewModel.PageSize.Height - item.ItemHeight) / 2;
+            }
+        }
+
+        public void LeftMoveExecuted(object para)
+        {
+            foreach (var item in DiagramViewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+            {
+                item.Left -= 0.5;
+            }
+        }
+
+        public void RightMoveExecuted(object para)
+        {
+            foreach (var item in DiagramViewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+            {
+                item.Left += 0.5;
+            }
+        }
+
+        public void UpMoveExecuted(object para)
+        {
+            foreach (var item in DiagramViewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+            {
+                item.Top -= 0.5;
+            }
+        }
+
+        public void DownMoveExecuted(object para)
+        {
+            foreach (var item in DiagramViewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+            {
+                item.Top += 0.5;
             }
         }
 

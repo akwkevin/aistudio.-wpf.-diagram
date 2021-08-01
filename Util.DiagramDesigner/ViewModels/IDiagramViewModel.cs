@@ -45,6 +45,7 @@ namespace Util.DiagramDesigner
         Rect GetBoundingRectangle(IEnumerable<DesignerItemViewModelBase> items);
         void UpdateZIndex();
         Size PageSize { get;}
+        PageSizeType PageSizeType { get; set; }
         bool ShowGrid { get; set; }
         Size GridCellSize { get; set; }
         PageSizeOrientation PageSizeOrientation { get; set; }

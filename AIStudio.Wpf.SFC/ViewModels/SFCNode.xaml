@@ -2,12 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:s="clr-namespace:Util.DiagramDesigner;assembly=Util.DiagramDesigner"
                     xmlns:viewmodel="clr-namespace:AIStudio.Wpf.SFC.ViewModels"
+                    xmlns:local="clr-namespace:AIStudio.Wpf.SFC"
                     xmlns:converter="clr-namespace:AIStudio.Wpf.BaseDiagram.Converters;assembly=AIStudio.Wpf.BaseDiagram">
 
     <s:ColorBrushConverter x:Key="ColorBrushConverter"/>
+    <converter:HalfConverter x:Key="HalfConverter"/>
+    <converter:IntToBoolConverter x:Key="IntToBoolConverter"/>
 
     <ControlTemplate x:Key="StartStyle" TargetType="{x:Type ContentControl}">
-        <Grid>
+        <Grid IsHitTestVisible="False">
             <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}">
                 <Border BorderThickness="1" Margin="3" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
                     <Grid>
@@ -19,37 +22,38 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="NodeStyle" TargetType="{x:Type ContentControl}">
-        <Grid>
+        <Grid IsHitTestVisible="False">
             <Border BorderThickness="4" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
                 <Grid>
 
                 </Grid>
             </Border>
         </Grid>
-    </ControlTemplate>  
+    </ControlTemplate>
 
     <ControlTemplate x:Key="ConditionStyle" TargetType="{x:Type ContentControl}">
-        <Grid>
+        <Grid IsHitTestVisible="False">
             <Border BorderThickness="1" HorizontalAlignment="Center" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}">
             </Border>
             <Border BorderThickness="1" VerticalAlignment="Center" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}">
             </Border>
+            <TextBlock Text="{Binding Text}" RenderTransformOrigin="1,0.5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform X="{Binding ItemWidth}"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="ActionStyle" TargetType="{x:Type ContentControl}">
-        <Grid>
-            <Border BorderThickness="1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
-                <Grid>
-
-                </Grid>
-            </Border>
+        <Grid IsHitTestVisible="False">
+            <Ellipse StrokeThickness="1"  Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" />
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="COBeginStyle" TargetType="{x:Type ContentControl}">
-        <Grid>
-            <Border BorderThickness="0,1,0,1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+        <Grid IsHitTestVisible="False">
+            <Border BorderThickness="0,2,0,2" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
                 <Grid>
 
                 </Grid>
@@ -58,12 +62,111 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="COEndStyle" TargetType="{x:Type ContentControl}">
-        <Grid>
-            <Border BorderThickness="0,1,0,1" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
+        <Grid IsHitTestVisible="False">
+            <Border BorderThickness="0,2,0,2" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Background="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
                 <Grid>
 
                 </Grid>
             </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="TankStyle" TargetType="{x:Type ContentControl}">
+        <Grid IsHitTestVisible="False">
+            <Rectangle RadiusX="5" RadiusY="5" StrokeThickness="1"  Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" />
+            <ProgressBar Orientation="Vertical" Foreground="Green" Background="Red" Value="{Binding LinkPoint.Value,FallbackValue=50}" Width="5" HorizontalAlignment="Right" Margin="5" Maximum="100" Minimum="0"/>
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type ToggleButton}" x:Key="SolenoidToggleButtonStyle">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid x:Name="Grid" Margin="{TemplateBinding Padding}">
+                        <Path x:Name="path1" Data="M192 128l128 128-128 128z" Fill="Red" Stroke="Black" Stretch="Fill" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource HalfConverter}}" HorizontalAlignment="Left"/>
+                        <Path x:Name="path2" Data="M450 600L650 800V400z" Fill="Red" Stroke="Black" Stretch="Fill" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource HalfConverter}}" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource GrayBrush8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Fluent.Ribbon.Brushes.HighlightBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Fill" TargetName="path1" Value="Green" />
+                            <Setter Property="Fill" TargetName="path2" Value="Green" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.6" TargetName="Grid"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ToggleButton}" x:Key="StartToggleButtonStyle">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid x:Name="Grid" Margin="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                        <TextBlock x:Name="txt" Text="开始" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource GrayBrush8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Fluent.Ribbon.Brushes.HighlightBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" TargetName="Grid" Value="Green" />
+                            <Setter Property="Text" TargetName="txt" Value="停止" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.6" TargetName="Grid"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="SolenoidStyle" TargetType="{x:Type ContentControl}">
+        <Grid Margin="0,5">
+            <ToggleButton Style="{StaticResource SolenoidToggleButtonStyle}" IsChecked="{Binding DOLinkPoint.Value, Converter={StaticResource IntToBoolConverter}}"/>
+            <TextBlock Text="{Binding Text}" RenderTransformOrigin="0.5,1" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="2">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform Y="16"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="StartBtnStyle" TargetType="{x:Type ContentControl}">
+        <Grid Margin="0,5">
+            <ToggleButton Style="{StaticResource StartToggleButtonStyle}" IsChecked="{Binding LinkPoint.Value, Converter={StaticResource IntToBoolConverter}}"/>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ListStyle" TargetType="{x:Type ContentControl}">
+        <Grid Margin="2">
+            <ItemsControl ItemsSource="{x:Static local:SFCService.LinkPoint}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <TextBlock Text="{Binding Name}" Width="45" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Despcription}" Width="60" VerticalAlignment="Center" />
+                            <TextBox Text="{Binding Value,Mode=TwoWay}" Width="50" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </ControlTemplate>
 
@@ -88,12 +191,140 @@
             <DataTrigger Binding="{Binding Kind}" Value="COEnd">
                 <Setter Property="Template" Value="{StaticResource COEndStyle}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Simulate_Tank">
+                <Setter Property="Template" Value="{StaticResource TankStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Simulate_Solenoid">
+                <Setter Property="Template" Value="{StaticResource SolenoidStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Simulate_Start">
+                <Setter Property="Template" Value="{StaticResource StartBtnStyle}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Kind}" Value="Simulate_List">
+                <Setter Property="Template" Value="{StaticResource ListStyle}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
     <DataTemplate DataType="{x:Type viewmodel:SFCNode}">
-        <Grid IsHitTestVisible="False">
+        <Grid>
             <ContentControl Style="{StaticResource CustomSFCNodeStyle}"/>
         </Grid>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:SFCConditionNodeData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="条件"
+                   Margin="5" />
+            <TextBox Grid.Column="1"
+                    Text="{Binding Expression}" VerticalAlignment="Center"
+                    Margin="2" 
+                    FontSize="12"/>
+            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top">
+                <Label
+                   Content="绑定"
+                   Margin="5,5,0,5" />
+                <Button Command="{Binding AddCommand}" Width="16" Height="16">
+                    <Path  Stretch="Fill" Fill="Black" Data="M938.666667 426.666667h-341.333334V85.333333c0-46.933333-38.4-85.333333-85.333333-85.333333s-85.333333 38.4-85.333333 85.333333v341.333334H85.333333c-46.933333 0-85.333333 38.4-85.333333 85.333333s38.4 85.333333 85.333333 85.333333h341.333334v341.333334c0 46.933333 38.4 85.333333 85.333333 85.333333s85.333333-38.4 85.333333-85.333333v-341.333334h341.333334c46.933333 0 85.333333-38.4 85.333333-85.333333s-38.4-85.333333-85.333333-85.333333z"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Margin="2">              
+                <ItemsControl 
+                ItemsSource="{Binding LinkPoint}" AlternationCount="{Binding LinkPoint.Count}" Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="2">
+                                <Button DockPanel.Dock="Right" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding .}"  Width="16" Height="16">
+                                    <Path Stretch="Fill" Fill="Black" Data="M512 620.544l253.3376 253.3376a76.6976 76.6976 0 1 0 108.544-108.544L620.6464 512l253.2352-253.3376a76.6976 76.6976 0 1 0-108.544-108.544L512 403.3536 258.6624 150.1184a76.6976 76.6976 0 1 0-108.544 108.544L403.3536 512 150.1184 765.3376a76.6976 76.6976 0 1 0 108.544 108.544L512 620.6464z"/>
+                                </Button>
+                                <ComboBox SelectedValue="{Binding Name}" ItemsSource="{x:Static local:SFCService.LinkPoint}"  VerticalAlignment="Center" SelectedValuePath="Name" DisplayMemberPath="Name" FontSize="12"/>                           
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:SFCActionNodeData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="结果"
+                   Margin="5" />
+            <TextBox Grid.Column="1"
+                    Text="{Binding Expression}" VerticalAlignment="Center"
+                    Margin="2" 
+                    FontSize="12"/>
+            <Label Grid.Column="0" Grid.Row="1"
+                   Content="测点"
+                   Margin="5" />
+            <ComboBox Grid.Column="1" Grid.Row="1"
+                    SelectedItem="{Binding LinkPoint}" ItemsSource="{x:Static local:SFCService.LinkPoint}" VerticalAlignment="Center" DisplayMemberPath="Name"
+                    Margin="5" 
+                    FontSize="12"/>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type viewmodel:Simulate_SolenoidViewModelData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="输入"
+                   Margin="5" />
+            <ComboBox Grid.Column="1" Grid.Row="0"
+                    SelectedItem="{Binding DILinkPoint}" ItemsSource="{x:Static local:SFCService.LinkPoint}" VerticalAlignment="Center" DisplayMemberPath="Name"
+                    Margin="5" 
+                    FontSize="12"/>
+            <Label Grid.Column="0"
+                   Grid.Row="1"
+                   Content="反馈"
+                   Margin="5" />
+            <ComboBox Grid.Column="1" Grid.Row="1"
+                    SelectedItem="{Binding DOLinkPoint}" ItemsSource="{x:Static local:SFCService.LinkPoint}" VerticalAlignment="Center" DisplayMemberPath="Name"
+                    Margin="5" 
+                    FontSize="12"/>
+
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodel:Simulate_TankViewModelData}">
+        <Grid Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="液位"
+                   Margin="5" />
+            <ComboBox Grid.Column="1" Grid.Row="0"
+                    SelectedItem="{Binding LinkPoint}" ItemsSource="{x:Static local:SFCService.LinkPoint}" VerticalAlignment="Center" DisplayMemberPath="Name"
+                    Margin="5" 
+                    FontSize="12"/>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>

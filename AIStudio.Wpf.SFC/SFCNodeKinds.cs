@@ -19,5 +19,14 @@ namespace AIStudio.Wpf.SFC
         COBegin = 5,
         [Description("并行结束")]
         COEnd = 6,
+
+        [Description("容器")]
+        Simulate_Tank = 100,
+        [Description("阀门")]
+        Simulate_Solenoid = 101,
+        [Description("开始")]
+        Simulate_Start= 102,
+        [Description("测定清单")]
+        Simulate_List =103,
     }
 }

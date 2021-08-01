@@ -99,7 +99,6 @@ namespace Util.DiagramDesigner.Controls
             }
         }
 
-
         private DesignerCanvas GetDesignerCanvas(DependencyObject element)
         {
             while (element != null && !(element is DesignerCanvas))

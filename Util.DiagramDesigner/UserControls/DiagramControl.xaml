@@ -23,7 +23,7 @@
             <s:LineDashConverter x:Key="LineDashConverter"/>
             <s:ClipConverter x:Key="ClipConverter"/>
             <s:InvertBoolConverter x:Key="InvertBoolConverter"/>
-            
+
             <!-- ResizeDecorator Default Template -->
             <!--
             <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="{x:Type Control}">
@@ -307,6 +307,45 @@
                 </Setter>
             </Style>
 
+            <ControlTemplate x:Key="ConnectorDecoratorTemplate"
+                     TargetType="{x:Type Control}">
+                <Grid Margin="-5">
+                    <s:Connector DataContext="{Binding LeftConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Left"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Left"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                    <s:Connector DataContext="{Binding TopConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Top"
+                                                                VerticalAlignment="Top"
+                                                                HorizontalAlignment="Center"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                    <s:Connector DataContext="{Binding RightConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Right"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Right"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                    <s:Connector DataContext="{Binding BottomConnector}" Style="{StaticResource normalConnector}"
+                                                                Orientation="Bottom"
+                                                                VerticalAlignment="Bottom"
+                                                                HorizontalAlignment="Center"
+                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="RatioConnectorDecoratorTemplate"
+                     TargetType="{x:Type Control}">
+                <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource logicConnectorContainer}" ItemsSource="{Binding Connectors}" Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <s:ConnectorContainer.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <s:Connector  Style="{StaticResource normalConnector}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </s:ConnectorContainer.ItemTemplate>
+                </s:ConnectorContainer>
+            </ControlTemplate>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.LayoutTransform>
@@ -404,29 +443,7 @@
                                             </Control>
 
                                             <!-- PART_ConnectorDecorator -->
-                                            <Grid Margin="-5"
-                                                    x:Name="PART_ConnectorDecorator">
-                                                <s:Connector DataContext="{Binding LeftConnector}" Style="{StaticResource normalConnector}"
-                                                                Orientation="Left"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Left"
-                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                                                <s:Connector DataContext="{Binding TopConnector}" Style="{StaticResource normalConnector}"
-                                                                Orientation="Top"
-                                                                VerticalAlignment="Top"
-                                                                HorizontalAlignment="Center"
-                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                                                <s:Connector DataContext="{Binding RightConnector}" Style="{StaticResource normalConnector}"
-                                                                Orientation="Right"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Right"
-                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                                                <s:Connector DataContext="{Binding BottomConnector}" Style="{StaticResource normalConnector}"
-                                                                Orientation="Bottom"
-                                                                VerticalAlignment="Bottom"
-                                                                HorizontalAlignment="Center"
-                                                                Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                                            </Grid>
+                                            <Control x:Name="PART_ConnectorDecorator" Template="{StaticResource ConnectorDecoratorTemplate}"/>
 
                                             <Grid.RenderTransform>
                                                 <TransformGroup>
@@ -455,6 +472,10 @@
                                         <DataTrigger Value="0"
                                                             Binding="{Binding Connectors.Count}">
                                             <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                        <DataTrigger Value="True"
+                                                            Binding="{Binding IsRatioConnector}">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Template" Value="{StaticResource RatioConnectorDecoratorTemplate}" />
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
@@ -551,7 +572,7 @@
                                                             Cursor="SizeAll" >
                                             <c:DragThumb.InputBindings>
                                                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
-                                            </c:DragThumb.InputBindings>
+                                            </c:DragThumb.InputBindings>                                 
                                         </c:DragThumb>
                                     </Grid>
                                     <DataTemplate.Triggers>
@@ -616,22 +637,8 @@
                                                     <RotateTransform Angle="0" />
                                                 </Setter.Value>
                                             </Setter>
-                                        </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Value="True" Binding="{Binding SinkConnectorInfo.IsInnerPoint}"/>
-                                                <Condition Value="0" Binding="{Binding SinkConnectorInfo.XRatio}"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter TargetName="rightarrow" Property="Visibility" Value="Hidden"/>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Value="True" Binding="{Binding SinkConnectorInfo.IsInnerPoint}"/>
-                                                <Condition Value="1" Binding="{Binding SinkConnectorInfo.XRatio}"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter TargetName="rightarrow" Property="Visibility" Value="Hidden"/>
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding Path=ColorViewModel.RightArrowStyle}" Value="None">
+                                        </DataTrigger>                                      
+                                        <DataTrigger Binding="{Binding Path=ColorViewModel.RightArrowPathStyle}" Value="None">
                                             <Setter TargetName="rightarrow" Property="Visibility" Value="Hidden"/>
                                         </DataTrigger>
 
@@ -684,21 +691,7 @@
                                                 </Setter.Value>
                                             </Setter>
                                         </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Value="True" Binding="{Binding SourceConnectorInfo.IsInnerPoint}"/>
-                                                <Condition Value="0" Binding="{Binding SourceConnectorInfo.XRatio}"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter TargetName="leftarrow" Property="Visibility" Value="Hidden"/>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Value="True" Binding="{Binding SourceConnectorInfo.IsInnerPoint}"/>
-                                                <Condition Value="1" Binding="{Binding SourceConnectorInfo.XRatio}"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter TargetName="leftarrow" Property="Visibility" Value="Hidden"/>
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding Path=ColorViewModel.LeftArrowStyle}" Value="None">
+                                        <DataTrigger Binding="{Binding Path=ColorViewModel.LeftArrowPathStyle}" Value="None">
                                             <Setter TargetName="leftarrow" Property="Visibility" Value="Hidden"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
@@ -823,7 +816,7 @@
                                         </Grid.ContextMenu>
 
                                         <!--PART_ConnectorDecorator-->
-                                        <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource logicConnectorContainer}" ItemsSource="{Binding Connectors}" Margin="-4,0,0,0">
+                                        <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource logicConnectorContainer}" ItemsSource="{Binding Connectors}" Margin="0,0,0,0">
                                             <s:ConnectorContainer.ItemTemplate>
                                                 <DataTemplate>
                                                     <Grid>

@@ -60,7 +60,7 @@ namespace AIStudio.Wpf.Flowchart
         /// <param name="json"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static void InitOAData(List<FlowNode> oASteps, List<ConnectorViewModel> connectors)
+        public static void InitData(List<FlowNode> oASteps, List<ConnectorViewModel> connectors)
         {
             foreach (var edge in connectors)
             {

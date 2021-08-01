@@ -23,10 +23,7 @@ namespace Util.DiagramDesigner
         {
             base.Init();
 
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Top));
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Bottom));
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Left));
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Right));
+            InitConnector();
         }
 
         protected override void LoadDesignerItemViewModel(IDiagramViewModel parent, SelectableDesignerItemBase designerbase)
@@ -43,7 +40,14 @@ namespace Util.DiagramDesigner
             this.ItemWidth = designer.ItemWidth;
             this.ItemHeight = designer.ItemHeight;
             this.Icon = designer.Icon;
+        }
 
+        protected virtual void InitConnector()
+        {
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Top));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Bottom));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Left));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Right));
         }
 
         public FullyCreatedConnectorInfo TopConnector
@@ -162,6 +166,7 @@ namespace Util.DiagramDesigner
         }
 
         public bool ShowRotate { get; set; } = true;
+        public bool ShowArrow { get; set; } = true;
 
         private double _left;
         [Browsable(true)]
@@ -263,6 +268,11 @@ namespace Util.DiagramDesigner
             }
         }
 
+        /// <summary>
+        /// 连接点是否可以按偏移自定义
+        /// </summary>
+        public bool IsRatioConnector { get; set; }
+
         private ObservableCollection<FullyCreatedConnectorInfo> connectors = new ObservableCollection<FullyCreatedConnectorInfo>();
         public IEnumerable<FullyCreatedConnectorInfo> Connectors { get { return connectors; } }
 
@@ -321,28 +331,40 @@ namespace Util.DiagramDesigner
             {
                 if (Parent.CellHorizontalAlignment == CellHorizontalAlignment.Center)
                 {
-                    this.Left = (int)(this.Left / Parent.GridCellSize.Width) * Parent.GridCellSize.Width + Parent.GridMargin + (Parent.GridCellSize.Width > this.ItemWidth ? (Parent.GridCellSize.Width - this.ItemWidth) / 2 : 0);
+                    if (Parent.GridCellSize.Width > this.ItemWidth)
+                    {
+                        this.Left = (int)(this.Left / Parent.GridCellSize.Width) * Parent.GridCellSize.Width + Parent.GridMargin + (Parent.GridCellSize.Width - this.ItemWidth) / 2;
+                    }
                 }
-                else if(Parent.CellHorizontalAlignment == CellHorizontalAlignment.Left)
+                else if (Parent.CellHorizontalAlignment == CellHorizontalAlignment.Left)
                 {
                     this.Left = (int)(this.Left / Parent.GridCellSize.Width) * Parent.GridCellSize.Width + Parent.GridMargin;
                 }
                 else if (Parent.CellHorizontalAlignment == CellHorizontalAlignment.Right)
                 {
-                    this.Left = (int)(this.Left / Parent.GridCellSize.Width) * Parent.GridCellSize.Width + Parent.GridMargin + (Parent.GridCellSize.Width > this.ItemWidth ? (Parent.GridCellSize.Width - this.ItemWidth) : 0);
+                    if (Parent.GridCellSize.Width > this.ItemWidth)
+                    {
+                        this.Left = (int)(this.Left / Parent.GridCellSize.Width) * Parent.GridCellSize.Width + Parent.GridMargin + (Parent.GridCellSize.Width - this.ItemWidth);
+                    }
                 }
 
                 if (Parent.CellVerticalAlignment == CellVerticalAlignment.Center)
-                {                  
-                    this.Top = (int)(this.Top / Parent.GridCellSize.Height) * Parent.GridCellSize.Height + Parent.GridMargin + (Parent.GridCellSize.Height > this.ItemHeight ? (Parent.GridCellSize.Height - this.ItemHeight) / 2 : 0);
+                {
+                    if (Parent.GridCellSize.Height > this.ItemHeight)
+                    {
+                        this.Top = (int)(this.Top / Parent.GridCellSize.Height) * Parent.GridCellSize.Height + Parent.GridMargin + (Parent.GridCellSize.Height - this.ItemHeight) / 2;
+                    }
                 }
                 else if (Parent.CellVerticalAlignment == CellVerticalAlignment.Top)
-                {                    
+                {
                     this.Top = (int)(this.Top / Parent.GridCellSize.Height) * Parent.GridCellSize.Height + Parent.GridMargin;
                 }
                 else if (Parent.CellVerticalAlignment == CellVerticalAlignment.Bottom)
-                {                   
-                    this.Top = (int)(this.Top / Parent.GridCellSize.Height) * Parent.GridCellSize.Height + Parent.GridMargin + (Parent.GridCellSize.Height > this.ItemHeight ? (Parent.GridCellSize.Height - this.ItemHeight) : 0);
+                {
+                    if (Parent.GridCellSize.Height > this.ItemHeight)
+                    {
+                        this.Top = (int)(this.Top / Parent.GridCellSize.Height) * Parent.GridCellSize.Height + Parent.GridMargin + (Parent.GridCellSize.Height - this.ItemHeight);
+                    }
                 }
             }          
         }

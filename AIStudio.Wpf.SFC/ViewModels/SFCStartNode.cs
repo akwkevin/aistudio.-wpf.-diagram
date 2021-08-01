@@ -9,6 +9,8 @@ namespace AIStudio.Wpf.SFC.ViewModels
     {
         public SFCStartNode() : base(SFCNodeKinds.Start)
         {
+            ExecuteAddTopInput(null);
+            ExecuteAddBottomOutput(null);
         }
 
         public SFCStartNode(IDiagramViewModel parent, DesignerItemBase designer) : base(parent, designer)

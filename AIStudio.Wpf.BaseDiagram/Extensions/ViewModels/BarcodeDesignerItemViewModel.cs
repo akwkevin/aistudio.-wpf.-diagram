@@ -31,7 +31,6 @@ namespace AIStudio.Wpf.BaseDiagram.Extensions.ViewModels
             base.LoadDesignerItemViewModel(parent, designerbase);
 
             Format = (BarcodeFormat)Enum.Parse(typeof(BarcodeFormat), (designerbase as DesignerItemBase).Reserve.ToString());
-            ShowText = false;
         }
 
         public void AutoSize()
@@ -54,6 +53,19 @@ namespace AIStudio.Wpf.BaseDiagram.Extensions.ViewModels
 
         public BarcodeFormat Format { get; set; } = BarcodeFormat.QR_CODE;
 
+        private bool _showText;
+        public override bool ShowText
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                SetProperty(ref _showText, value);
+            }
+        }
+
         public override bool EditData()
         {
             if (IsReadOnly == true) return false;
@@ -63,7 +75,6 @@ namespace AIStudio.Wpf.BaseDiagram.Extensions.ViewModels
             {
                 bool needauto = Text == null;
                 Text = data.Text;
-                ShowText = false;
                 Icon = data.Icon;
                 Margin = data.Margin;
                 if (needauto)

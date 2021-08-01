@@ -14,6 +14,8 @@ namespace Util.DiagramDesigner
         IQuickThemeViewModel QuickThemeViewModel { get; }
         ILockObjectViewModel LockObjectViewModel { get; }
         SelectableDesignerItemViewModelBase SelectedItem { get; set; }
+        IColorViewModel CopyDefaultColorViewModel();
+        IFontViewModel CopyDefaultFontViewModel();
     }
 
 
@@ -41,6 +43,18 @@ namespace Util.DiagramDesigner
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             RaisePropertyChanged(sender, e.PropertyName);
+        }
+
+        public IColorViewModel CopyDefaultColorViewModel()
+        {
+            var viewModel = GetOldValue<ColorViewModel>(nameof(ColorViewModel));
+            return CopyHelper.Mapper(viewModel);
+        }
+
+        public IFontViewModel CopyDefaultFontViewModel()
+        {
+            var viewModel = GetOldValue<FontViewModel>(nameof(FontViewModel));
+            return CopyHelper.Mapper<FontViewModel, IFontViewModel>(viewModel);
         }
 
         private IColorViewModel _colorViewModel;

@@ -16,6 +16,7 @@ namespace Util.DiagramDesigner
         {
             //如果是字符串或值类型则直接返回
             if (obj == null || obj is string || obj.GetType().IsValueType) return obj;
+
             object retval = Activator.CreateInstance(obj.GetType());
             FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             foreach (FieldInfo field in fields)
@@ -45,6 +46,9 @@ namespace Util.DiagramDesigner
 
         public static T AutoCopy<T>(T source) where T : new()
         {
+            //如果是字符串或值类型则直接返回
+            if (source == null || source is string || source.GetType().IsValueType) return source;
+
             T target = new T();
             var Properties = typeof(T).GetProperties();
             foreach (var Propertie in Properties)
@@ -61,7 +65,8 @@ namespace Util.DiagramDesigner
 
         public static T DeepCopy<T>(T obj)
         {
-            if (obj == null) return obj;
+            //如果是字符串或值类型则直接返回
+            if (obj == null || obj is string || obj.GetType().IsValueType) return obj;
 
             object retval;
             using (MemoryStream ms = new MemoryStream())

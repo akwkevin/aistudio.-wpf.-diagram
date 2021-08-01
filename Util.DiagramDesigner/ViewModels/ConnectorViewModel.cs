@@ -184,7 +184,7 @@ namespace Util.DiagramDesigner
                 UpdateConnectionPointsByLine();
                 return;
             }
-            if (Parent.DiagramType == DiagramType.FlowChart)
+            if (Parent.DiagramType == DiagramType.FlowChart || Parent.DiagramType == DiagramType.SFC)
             {
                 UpdateConnectionPointsByFlowChart();
             }
@@ -379,6 +379,11 @@ namespace Util.DiagramDesigner
             this.SinkConnectorInfo = sinkConnectorInfo;
             PathFinder = new OrthogonalPathFinder();
             DeleteConnectionCommand = new SimpleCommand(DeleteConnection);
+
+            if (sinkConnectorInfo is FullyCreatedConnectorInfo sink && sink.DataItem.ShowArrow == false)
+            {
+                this.ColorViewModel.RightArrowPathStyle = ArrowPathStyle.None;
+            }
         }
 
         public SimpleCommand DeleteConnectionCommand { get; set; }

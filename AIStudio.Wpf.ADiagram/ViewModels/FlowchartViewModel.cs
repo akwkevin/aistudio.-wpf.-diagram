@@ -98,7 +98,7 @@ namespace AIStudio.Wpf.Flowchart
 
             DiagramViewModel.ClearSelectedItems();
 
-            FlowchartService.InitOAData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList());
+            FlowchartService.InitData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList());
         }
 
  

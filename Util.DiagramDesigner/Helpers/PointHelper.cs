@@ -17,30 +17,8 @@ namespace Util.DiagramDesigner
             Point point = new Point();
             if (connector.IsInnerPoint)
             {
-                switch (connector.Orientation)
-                {
-                    case ConnectorOrientation.Top:
-                        point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth * connector.XRatio + connector.ConnectorWidth / 2,
-                                 connector.DataItem.Top + connector.DataItem.ItemHeight * connector.YRatio);
-                        break;
-                    case ConnectorOrientation.Bottom:
-                        point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth * connector.XRatio + connector.ConnectorWidth / 2,
-                                 connector.DataItem.Top + connector.DataItem.ItemHeight * connector.YRatio + connector.ConnectorHeight / 2); ;
-                        break;
-                    case ConnectorOrientation.Right:
-                        point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth * connector.XRatio,
-                                 connector.DataItem.Top + connector.DataItem.ItemHeight * connector.YRatio + connector.ConnectorHeight / 2);
-                        break;
-                    case ConnectorOrientation.Left:
-                        point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth * connector.XRatio,
-                                 connector.DataItem.Top + connector.DataItem.ItemHeight * connector.YRatio + connector.ConnectorHeight / 2);
-                        break;
-                    default:
-                         point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth * connector.XRatio + connector.ConnectorWidth / 2,
-                                 connector.DataItem.Top + connector.DataItem.ItemHeight * connector.YRatio + connector.ConnectorHeight / 2);
-                        break;
-                }
-
+                point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth * connector.XRatio,
+                        connector.DataItem.Top + connector.DataItem.ItemHeight * connector.YRatio);
             }
             else
             {

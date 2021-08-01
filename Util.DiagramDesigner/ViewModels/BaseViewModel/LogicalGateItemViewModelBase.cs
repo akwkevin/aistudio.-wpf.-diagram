@@ -82,6 +82,7 @@ namespace Util.DiagramDesigner
         protected override void Init()
         {
             ShowRotate = false;
+            ShowArrow = false;
             AddInputCommand = new SimpleCommand(para => ExecuteAddInput(para));
             AddOutputCommand = new SimpleCommand(para => ExecuteAddOutput(para));
 
@@ -217,7 +218,7 @@ namespace Util.DiagramDesigner
             Input.Add(Input.Count, connector);
             for (int i = 0; i < Input.Values.Count; i++)
             {
-                Input[i].YRatio = (i + 1.0) / (Input.Values.Count + 1.0) - connector.ConnectorHeight / 2 / connector.DataItem.ItemHeight;
+                Input[i].YRatio = (i + 1.0) / (Input.Values.Count + 1.0);
             }
             AddConnector(connector);
         }
@@ -229,7 +230,7 @@ namespace Util.DiagramDesigner
             Output.Add(Output.Count, connector);
             for (int i = 0; i < Output.Values.Count; i++)
             {
-                Output[i].YRatio = (i + 1.0) / (Output.Values.Count + 1.0) - connector.ConnectorHeight / 2 / connector.DataItem.ItemHeight;
+                Output[i].YRatio = (i + 1.0) / (Output.Values.Count + 1.0);
             }
             AddConnector(connector);
         }

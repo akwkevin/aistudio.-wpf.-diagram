@@ -376,6 +376,52 @@ namespace Util.DiagramDesigner
             _service.DrawModeViewModel.ResetDrawMode();
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+
+            if (e.Key == Key.Left)
+            {
+                if (_viewModel.SelectedItems != null)
+                {
+                    foreach(var item in _viewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+                    {
+                        item.Left -= 0.1;
+                    }
+                }
+            }
+            else if (e.Key == Key.Right)
+            {
+                if (_viewModel.SelectedItems != null)
+                {
+                    foreach (var item in _viewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+                    {
+                        item.Left += 0.1;
+                    }
+                }
+            }
+            else if (e.Key == Key.Up)
+            {
+                if (_viewModel.SelectedItems != null)
+                {
+                    foreach (var item in _viewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+                    {
+                        item.Top -= 0.1;
+                    }
+                }
+            }
+            else if (e.Key == Key.Down)
+            {
+                if (_viewModel.SelectedItems != null)
+                {
+                    foreach (var item in _viewModel.SelectedItems.OfType<DesignerItemViewModelBase>())
+                    {
+                        item.Top += 0.1;
+                    }
+                }
+            }
+        }
+
         protected override Size MeasureOverride(Size constraint)
         {
             Size size = new Size();

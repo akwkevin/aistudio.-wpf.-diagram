@@ -37,10 +37,10 @@ namespace Util.DiagramDesigner
                     FullyCreatedConnectorInfo vm = item as FullyCreatedConnectorInfo;
                     var connector = ItemContainerGenerator.ContainerFromItem(item) as ContentPresenter;
 
-                    Canvas.SetLeft(connector, vm.DataItem.ItemWidth * vm.XRatio);
-                    Canvas.SetTop(connector, vm.DataItem.ItemHeight * vm.YRatio);
+                    Canvas.SetLeft(connector, vm.DataItem.ItemWidth * vm.XRatio - vm.ConnectorWidth / 2);
+                    Canvas.SetTop(connector, vm.DataItem.ItemHeight * vm.YRatio - vm.ConnectorHeight / 2);
                 }
-                SetConnectorLocation();
+                //SetConnectorLocation();
             }
         }
 
@@ -63,8 +63,8 @@ namespace Util.DiagramDesigner
                 var vm = connector.DataContext as FullyCreatedConnectorInfo;
                 if (vm != null)
                 {
-                    Canvas.SetLeft(connector, vm.DataItem.ItemWidth * vm.XRatio);
-                    Canvas.SetTop(connector, vm.DataItem.ItemHeight * vm.YRatio);
+                    Canvas.SetLeft(connector, vm.DataItem.ItemWidth * vm.XRatio - vm.ConnectorWidth / 2);
+                    Canvas.SetTop(connector, vm.DataItem.ItemHeight * vm.YRatio - vm.ConnectorHeight / 2);
                 }
             }
         }

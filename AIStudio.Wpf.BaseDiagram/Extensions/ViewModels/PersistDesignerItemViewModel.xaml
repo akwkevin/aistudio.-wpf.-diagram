@@ -48,7 +48,7 @@
         <Grid>
             <Image IsHitTestVisible="False"
                     Stretch="Fill"
-                    Source="/AIStudio.Wpf.BaseDiagram;component/Images/Persist.png"
+                    Source="/AIStudio.Wpf.ADiagram;component/Images/Persist.png"
                     Tag="setting" />
             <Button x:Name="btnSetting" HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"

@@ -34,8 +34,8 @@ namespace Util.DiagramDesigner
 
         protected virtual void Init()
         {
-            ColorViewModel = CopyHelper.Mapper(_service.ColorViewModel);
-            FontViewModel = CopyHelper.Mapper<FontViewModel, IFontViewModel>(_service.FontViewModel);
+            ColorViewModel = _service.CopyDefaultColorViewModel();
+            FontViewModel = _service.CopyDefaultFontViewModel();
 
             LockObjectViewModel = new LockObjectViewModel();
             SelectItemCommand = new SimpleCommand(ExecuteSelectItemCommand);

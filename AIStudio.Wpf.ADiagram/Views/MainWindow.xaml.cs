@@ -40,10 +40,8 @@ namespace AIStudio.Wpf.ADiagram
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            base.OnPreviewKeyDown(e);
-
-            MainWindowViewModel.KeyCommand.Execute(e.KeyboardDevice.Modifiers.ToString() + "+" + e.Key.ToString());
-        }     
+            e.Handled = MainWindowViewModel.KeyExecuted(e.KeyboardDevice.Modifiers == ModifierKeys.None ? e.Key.ToString() : e.KeyboardDevice.Modifiers.ToString() + "+" + e.Key.ToString());
+        }
 
         private void HookEvents()
         {

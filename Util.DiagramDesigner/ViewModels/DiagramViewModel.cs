@@ -399,7 +399,7 @@ namespace Util.DiagramDesigner
                 var attr = property.GetCustomAttributes(typeof(CanDoAttribute), true);
                 if (attr != null && attr.Length != 0)
                 {
-                    DoCommandManager.DoNewCommand(sender.ToString(), () => Do(sender, e.PropertyName, valuePropertyChangedEventArgs.NewValue), () => UnDo(sender, e.PropertyName, valuePropertyChangedEventArgs.OldValue), null, false);
+                    DoCommandManager.DoNewCommand(sender.ToString() + e.PropertyName, () => Do(sender, e.PropertyName, valuePropertyChangedEventArgs.NewValue), () => UnDo(sender, e.PropertyName, valuePropertyChangedEventArgs.OldValue), null, false);
                 }
             }
         }
@@ -704,12 +704,12 @@ namespace Util.DiagramDesigner
                 DoCommandManager.DoNewCommand(this.ToString(),
                 () =>
                 {
-                    double mid = selectedItems.Select(p => p.Top).Average();
+                    double mid = selectedItems.Select(p => p.Top + p.ItemHeight / 2).Average();
 
                     foreach (DesignerItemViewModelBase item in selectedItems)
                     {
                         item.SetOldValue(item.Top, nameof(item.Top), guid.ToString());
-                        item.Top = mid;
+                        item.Top = mid - item.ItemHeight / 2;
                     }
                 },
                 () =>
@@ -809,12 +809,12 @@ namespace Util.DiagramDesigner
                 DoCommandManager.DoNewCommand(this.ToString(),
                 () =>
                 {
-                    double mid = selectedItems.Select(p => p.Left).Average();
+                    double mid = selectedItems.Select(p => p.Left + p.ItemWidth / 2).Average();
 
                     foreach (DesignerItemViewModelBase item in selectedItems)
                     {
                         item.SetOldValue(item.Left, nameof(item.Left), guid.ToString());
-                        item.Left = mid;
+                        item.Left = mid - item.ItemWidth / 2;
                     }
                 },
                 () =>

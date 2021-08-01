@@ -461,7 +461,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
         {
             get
             {
-                return this._centerCommand ?? (this._centerCommand = new DelegateCommand<object>(para => this.CenterExecuted(para)));
+                return this._centerCommand ?? (this._centerCommand = new DelegateCommand<object>(para => this.CenterMoveExecuted(para)));
             }
         }
 
@@ -706,8 +706,9 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
         }
 
 
-        private void KeyExecuted(string para)
+        public bool KeyExecuted(string para)
         {
+            bool executed = true;
             switch (para)
             {
                 case "Control+A": SelectedAllExecuted(); break;
@@ -719,8 +720,15 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 case "Control+S": SaveExecuted(); break;
                 case "Control+Z": UnDoExecuted(); break;
                 case "Control+Y": ReDoExecuted(); break;
-                case "None+Delete": DeleteExecuted(); break;
+                case "Delete": DeleteExecuted(); break;
+                case "Left": LeftMoveExecuted(); break;
+                case "Right": RightMoveExecuted(); break;
+                case "Up": UpMoveExecuted(); break;
+                case "Down": DownMoveExecuted(); break;
+                default: executed = false; break;
             }
+
+            return executed;
         }
 
         private void UnDoExecuted()
@@ -889,6 +897,10 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             {
                 DiagramsViewModel = new LogicalViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
             }
+            else if (type == DiagramType.SFC.ToString())
+            {
+                DiagramsViewModel = new SFCViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
+            }
             else
             {
                 DiagramsViewModel = new DiagramsViewModel(NewNameHelper.GetNewName(DiagramsViewModels.Select(p => p.Title), "新建-"), "*", (DiagramType)Enum.Parse(typeof(DiagramType), type));
@@ -993,11 +1005,39 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
         }
         #endregion
 
-        private void CenterExecuted(object para)
+        private void CenterMoveExecuted(object para)
         {
             if (DiagramsViewModel == null) return;
 
-            DiagramsViewModel.CenterExecuted(para);
+            DiagramsViewModel.CenterMoveExecuted(para);
+        }
+
+        private void LeftMoveExecuted(object para = null)
+        {
+            if (DiagramsViewModel == null) return;
+
+            DiagramsViewModel.LeftMoveExecuted(para);
+        }
+
+        private void RightMoveExecuted(object para = null)
+        {
+            if (DiagramsViewModel == null) return;
+
+            DiagramsViewModel.RightMoveExecuted(para);
+        }
+
+        private void UpMoveExecuted(object para = null)
+        {
+            if (DiagramsViewModel == null) return;
+
+            DiagramsViewModel.UpMoveExecuted(para);
+        }
+
+        private void DownMoveExecuted(object para = null)
+        {
+            if (DiagramsViewModel == null) return;
+
+            DiagramsViewModel.DownMoveExecuted(para);
         }
 
         private void SameWidthExecuted(object para)

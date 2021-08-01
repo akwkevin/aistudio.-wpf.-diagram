@@ -8,6 +8,7 @@ namespace Util.DiagramDesigner
     {
         Normal,
         FlowChart,
-        Logical
+        Logical,
+        SFC,
     }
 }

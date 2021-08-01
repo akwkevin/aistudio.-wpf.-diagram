@@ -15,6 +15,7 @@ using Util.DiagramDesigner;
 using Util.DiagramDesigner.Helpers;
 using AIStudio.Wpf.SFC;
 using AIStudio.Wpf.SFC.ViewModels;
+using System.Windows.Media;
 
 namespace AIStudio.Wpf.ADiagram.ViewModels
 {
@@ -186,7 +187,9 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Action, typeof(SFCActionNode), 32, 28));
             sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.COBegin, typeof(SFCCOBeginNode), 32, 10));
             sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.COEnd, typeof(SFCCOEndNode), 32, 10));
-
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Simulate_Tank, typeof(Simulate_TankViewModel), 32, 32));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Simulate_Solenoid, typeof(Simulate_SolenoidViewModel)));
+            sfcToolBoxItems.Add(new SFCToolBoxData(SFCNodeKinds.Simulate_Start, typeof(Simulate_StartViewModel)));
             ToolBoxCategory.Add(new ToolBoxCategory() { Header = "SFC顺序控制图", ToolBoxItems = new ObservableCollection<ToolBoxData>(sfcToolBoxItems) });
 
             LoadMyItems();
