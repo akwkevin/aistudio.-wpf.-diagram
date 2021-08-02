@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Text;
 using Util.DiagramDesigner;
 
@@ -8,6 +9,7 @@ namespace AIStudio.Wpf.SFC.ViewModels
 {
     public class Simulate_SolenoidViewModel : SFCNode
     {
+        private IDisposable diChangedSubscription;
         public Simulate_SolenoidViewModel() : base(SFCNodeKinds.Simulate_Solenoid)
         {
             ItemWidth = 32;
@@ -19,6 +21,17 @@ namespace AIStudio.Wpf.SFC.ViewModels
 
         public Simulate_SolenoidViewModel(IDiagramViewModel parent, DesignerItemBase designer) : base(parent, designer)
         {
+        }
+
+        protected override void Init()
+        {
+            base.Init();
+            if (diChangedSubscription != null)
+            {
+                diChangedSubscription.Dispose();
+            }
+            Random random = new Random();
+            diChangedSubscription = WhenPropertyChanged.Where(o => o.ToString() == "Value").Throttle(TimeSpan.FromSeconds(random.Next(1,10))).Subscribe(OnValueChanged);//Sample
         }
 
         private bool _showText;
@@ -64,8 +77,16 @@ namespace AIStudio.Wpf.SFC.ViewModels
             {
                 if (DOLinkPoint != null)
                 {
-                    DOLinkPoint.Value = DILinkPoint.Value;
+                    Value = DILinkPoint.Value;
                 }
+            }
+        }
+
+        private void OnValueChanged(string propertyName)
+        {
+            if (DOLinkPoint != null)
+            {
+                DOLinkPoint.Value = Value;
             }
         }
 

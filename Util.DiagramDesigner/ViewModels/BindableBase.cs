@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -129,6 +130,18 @@ namespace Util.DiagramDesigner
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             PropertyChanged?.Invoke(this, args);
+        }
+
+        public IObservable<string> WhenPropertyChanged
+        {
+            get
+            {
+                return Observable
+                    .FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+                        h => this.PropertyChanged += h,
+                        h => this.PropertyChanged -= h)
+                    .Select(x => x.EventArgs.PropertyName);
+            }
         }
     }
 

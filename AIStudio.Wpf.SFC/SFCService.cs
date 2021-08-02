@@ -86,18 +86,6 @@ namespace AIStudio.Wpf.SFC
             if (startbtn != null && startbtn.LinkPoint.Value == 0)//停止
             {
                 ResetStatus(viewModel);
-
-                //关闭所有阀门
-                foreach (var node in SFCNodes[viewModel].OfType<Simulate_SolenoidViewModel>())
-                {
-                    if (node.DILinkPoint != null)
-                    {
-                        node.DILinkPoint.Value = 0;
-                    }
-                }
-
-                //真实情况不会改变容器液位，只是为了模拟重新启动时候为了低液位处理的
-                //tank.LinkPoint.Value = 0;
             }
             else//启动
             {

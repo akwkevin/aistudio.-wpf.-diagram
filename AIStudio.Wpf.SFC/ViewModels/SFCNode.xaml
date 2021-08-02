@@ -79,6 +79,34 @@
         </Grid>
     </ControlTemplate>
 
+    <Style TargetType="{x:Type ToggleButton}" x:Key="SolenoidControlToggleButtonStyle">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid x:Name="Grid" Margin="{TemplateBinding Padding}">
+                        <Ellipse x:Name="path" Fill="Red" Stroke="Black" Stretch="Uniform"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource GrayBrush8}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource Fluent.Ribbon.Brushes.HighlightBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Fill" TargetName="path" Value="Green" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.6" TargetName="Grid"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type ToggleButton}" x:Key="SolenoidToggleButtonStyle">
         <Setter Property="Background" Value="Red"/>
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -139,8 +167,9 @@
     </Style>
 
     <ControlTemplate x:Key="SolenoidStyle" TargetType="{x:Type ContentControl}">
-        <Grid Margin="0,5">
-            <ToggleButton Style="{StaticResource SolenoidToggleButtonStyle}" IsChecked="{Binding DOLinkPoint.Value, Converter={StaticResource IntToBoolConverter}}"/>
+        <Grid Margin="0,5">          
+            <ToggleButton Style="{StaticResource SolenoidToggleButtonStyle}" IsChecked="{Binding DOLinkPoint.Value, Converter={StaticResource IntToBoolConverter}}" IsHitTestVisible="False" />
+            <ToggleButton Style="{StaticResource SolenoidControlToggleButtonStyle}" IsChecked="{Binding DILinkPoint.Value, Converter={StaticResource IntToBoolConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
             <TextBlock Text="{Binding Text}" RenderTransformOrigin="0.5,1" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="2">
                 <TextBlock.RenderTransform>
                     <TranslateTransform Y="16"/>
