@@ -45,7 +45,11 @@
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0723/095226_36478a7b_4799126.png "3.png")
 
-16博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
+16支持SFC顺序控制图（在文件新建下-基本绘图-顺序控制图）
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0802/215025_4aa32824_4799126.png "2 (2).png")
+
+17博客园文章地址 https://www.cnblogs.com/akwkevin/p/15047453.html
 
     相关链接地址：
 
