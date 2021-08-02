@@ -135,5 +135,19 @@ namespace AIStudio.Wpf.SFC.ViewModels
                 SetProperty(ref _value, value);
             }
         }
+
+        private int _status;
+
+        public int Status
+        {
+            get { return _status; }
+            set
+            {
+                SetProperty(ref _status, value);
+            }
+        }
+
+        public List<SFCNode> NextNode { get; set; } = new List<SFCNode>();
+        public List<SFCNode> PreNode { get; set; } = new List<SFCNode>();
     }
 }

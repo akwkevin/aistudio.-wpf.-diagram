@@ -133,6 +133,14 @@ namespace AIStudio.Wpf.Logical
                 }
             }
 
+            if (arg is TimerDesignerItemViewModel)
+            {
+                if (DiagramViewModel.Items.OfType<LogicalGateItemViewModelBase>().Any(p => p.LogicalType == LogicalType.Time))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 

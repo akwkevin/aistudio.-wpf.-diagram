@@ -734,7 +734,7 @@ namespace AIStudio.Wpf.Logical.ViewModels
         public override void Dispose()
         {
             base.Dispose();
-
+            readDataTimer.Stop();
             readDataTimer.Dispose();
         }
 

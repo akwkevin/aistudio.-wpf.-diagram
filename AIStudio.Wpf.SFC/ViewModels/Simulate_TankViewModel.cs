@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Util.DiagramDesigner;
 
@@ -66,6 +67,16 @@ namespace AIStudio.Wpf.SFC.ViewModels
             if (visualiserService.ShowDialog(data) == true)
             {
                 this.LinkPoint = data.LinkPoint;
+            }
+        }
+
+        public void Execute()
+        {
+            double input = PreNode.OfType<Simulate_SolenoidViewModel>().Sum(p => p.DOLinkPoint?.Value ?? 0);
+            double output = NextNode.OfType<Simulate_SolenoidViewModel>().Sum(p => p.DOLinkPoint?.Value ?? 0);
+            if (LinkPoint != null)
+            {
+                LinkPoint.Value += input - output;
             }
         }
     }

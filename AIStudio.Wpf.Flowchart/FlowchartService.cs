@@ -51,7 +51,7 @@ namespace AIStudio.Wpf.Flowchart
         /// <summary>
         /// 流程数据
         /// </summary>
-        public static List<FlowNode> FlowNodes { get; set; }
+        public static Dictionary<IDiagramViewModel, List<FlowNode>> FlowNodes { get; set; } = new Dictionary<IDiagramViewModel, List<FlowNode>>();
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace AIStudio.Wpf.Flowchart
         /// <param name="json"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static void InitData(List<FlowNode> oASteps, List<ConnectorViewModel> connectors)
+        public static void InitData(List<FlowNode> oASteps, List<ConnectorViewModel> connectors, IDiagramViewModel viewModel)
         {
             foreach (var edge in connectors)
             {
@@ -120,8 +120,10 @@ namespace AIStudio.Wpf.Flowchart
             }
 
             string nextstepid = oAStartStep.NextStepId;
-            FlowNodes = InitStep(oASteps, nextstepid);
-            FlowNodes.Insert(0, oAStartStep);
+            var nodes = InitStep(oASteps, nextstepid);
+            nodes.Insert(0, oAStartStep);
+
+            FlowNodes.Add(viewModel, nodes);           
 
             Approve(oAStartStep, 100);
         }
@@ -214,13 +216,13 @@ namespace AIStudio.Wpf.Flowchart
                     SetStatus(flowNode, status, remark);
                     if (!string.IsNullOrEmpty(flowNode.NextStepId))
                     {
-                        Next(flowNode.NextStepId);
+                        Next(flowNode.NextStepId, flowNode);
                     }
                     else if (flowNode.SelectNextStep != null && flowNode.SelectNextStep.Count > 0)
                     {
                         foreach (var step in flowNode.SelectNextStep)
                         {
-                            Next(step.Key);
+                            Next(step.Key, flowNode);
                         }
                     }
                     break;
@@ -236,8 +238,8 @@ namespace AIStudio.Wpf.Flowchart
                     break;
                 case 3:
                     SetStatus(flowNode, status, remark);
-                    FlowNodes.ForEach(p => { if (p.Status == 100) p.Status = 0; });
-                    Approve(FlowNodes[0], 100);
+                    FlowNodes[flowNode.Parent].ForEach(p => { if (p.Status == 100) p.Status = 0; });
+                    Approve(FlowNodes[flowNode.Parent][0], 100);
                     MessageBox.Show("流程重新开始");
                     break;
                 case 4:
@@ -251,16 +253,16 @@ namespace AIStudio.Wpf.Flowchart
         /// 流向下一个节点
         /// </summary>
         /// <param name="stepid"></param>
-        public static void Next(string stepid)
+        public static void Next(string stepid, FlowNode flowNode)
         {
-            FlowNode nextNode = FlowNodes.FirstOrDefault(p => p.Id.ToString() == stepid);
+            FlowNode nextNode = FlowNodes[flowNode.Parent].FirstOrDefault(p => p.Id.ToString() == stepid);
             SetStatus(nextNode, 1);
 
             switch (nextNode.Kind)
             {
                 case NodeKinds.Start:
                     SetStatus(nextNode, 100);
-                    Next(nextNode.NextStepId);
+                    Next(nextNode.NextStepId, nextNode);
                     break;
                 case NodeKinds.End:
                     SetStatus(nextNode, 100);
@@ -278,33 +280,33 @@ namespace AIStudio.Wpf.Flowchart
                             if (result == 1)
                             {
                                 SetStatus(nextNode, 100);
-                                Next(step.Key);
+                                Next(step.Key, nextNode);
                                 return;
                             }
                         }
                         catch { }
                     }
                     //如果表达式错了，就按第一个处理
-                    Next(nextNode.SelectNextStep.FirstOrDefault().Key);
+                    Next(nextNode.SelectNextStep.FirstOrDefault().Key, nextNode);
                     break;
                 case NodeKinds.COBegin:
                     foreach (var step in nextNode.SelectNextStep)//启动各个分支
                     {
                         SetStatus(nextNode, 100);
-                        Next(step.Key);
+                        Next(step.Key, nextNode);
                     }
                     break;
                 case NodeKinds.COEnd:
                     foreach (var prestep in nextNode.PreStepId)
                     {
-                        var step = FlowNodes.FirstOrDefault(p => p.Id.ToString() == prestep);
+                        var step = FlowNodes[flowNode.Parent].FirstOrDefault(p => p.Id.ToString() == prestep);
                         if (step.Status != 100)//如果并行分支没有都完成，那么并行结束节点也未完成
                         {
                             return;
                         }
                     }
                     SetStatus(nextNode, 100);
-                    Next(nextNode.NextStepId);
+                    Next(nextNode.NextStepId, nextNode);
                     break;
             }
         }
@@ -318,7 +320,7 @@ namespace AIStudio.Wpf.Flowchart
         {
             if (flowNode.PreStepId != null && flowNode.PreStepId.Count == 1)
             {
-                FlowNode preNode = FlowNodes.FirstOrDefault(p => p.Id.ToString() == flowNode.PreStepId[0]);
+                FlowNode preNode = FlowNodes[flowNode.Parent].FirstOrDefault(p => p.Id.ToString() == flowNode.PreStepId[0]);
                 if (preNode.Kind == NodeKinds.Middle)
                 {
                     SetStatus(preNode, 1);

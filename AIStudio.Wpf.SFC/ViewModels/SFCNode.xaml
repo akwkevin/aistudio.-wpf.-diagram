@@ -33,9 +33,9 @@
 
     <ControlTemplate x:Key="ConditionStyle" TargetType="{x:Type ContentControl}">
         <Grid IsHitTestVisible="False">
-            <Border BorderThickness="1" HorizontalAlignment="Center" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}">
+            <Border BorderThickness="3" HorizontalAlignment="Center" BorderBrush="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
             </Border>
-            <Border BorderThickness="1" VerticalAlignment="Center" BorderBrush="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}">
+            <Border BorderThickness="3" VerticalAlignment="Center" BorderBrush="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}">
             </Border>
             <TextBlock Text="{Binding Text}" RenderTransformOrigin="1,0.5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2">
                 <TextBlock.RenderTransform>
@@ -75,6 +75,7 @@
         <Grid IsHitTestVisible="False">
             <Rectangle RadiusX="5" RadiusY="5" StrokeThickness="1"  Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}" />
             <ProgressBar Orientation="Vertical" Foreground="Green" Background="Red" Value="{Binding LinkPoint.Value,FallbackValue=50}" Width="5" HorizontalAlignment="Right" Margin="5" Maximum="100" Minimum="0"/>
+            <TextBlock Text="{Binding LinkPoint.Value,StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0"/>
         </Grid>
     </ControlTemplate>
 
@@ -242,11 +243,12 @@
                 ItemsSource="{Binding LinkPoint}" AlternationCount="{Binding LinkPoint.Count}" Background="{DynamicResource Fluent.Ribbon.Brushes.AccentBaseColorBrush}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel Margin="2">
+                            <DockPanel >
                                 <Button DockPanel.Dock="Right" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding .}"  Width="16" Height="16">
                                     <Path Stretch="Fill" Fill="Black" Data="M512 620.544l253.3376 253.3376a76.6976 76.6976 0 1 0 108.544-108.544L620.6464 512l253.2352-253.3376a76.6976 76.6976 0 1 0-108.544-108.544L512 403.3536 258.6624 150.1184a76.6976 76.6976 0 1 0-108.544 108.544L403.3536 512 150.1184 765.3376a76.6976 76.6976 0 1 0 108.544 108.544L512 620.6464z"/>
                                 </Button>
-                                <ComboBox SelectedValue="{Binding Name}" ItemsSource="{x:Static local:SFCService.LinkPoint}"  VerticalAlignment="Center" SelectedValuePath="Name" DisplayMemberPath="Name" FontSize="12"/>                           
+                                <TextBlock VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=1}, Path=(ItemsControl.AlternationIndex),StringFormat={}p{0}}"/>
+                                <ComboBox SelectedValue="{Binding Name}" ItemsSource="{x:Static local:SFCService.LinkPoint}"  VerticalAlignment="Center" SelectedValuePath="Name" DisplayMemberPath="Name" FontSize="12" Margin="2"/>                           
                             </DockPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

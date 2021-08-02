@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 using Util.DiagramDesigner;
@@ -35,6 +36,7 @@ namespace AIStudio.Wpf.Flowchart
             DiagramViewModel.CellVerticalAlignment = CellVerticalAlignment.Center;
         }
 
+        private System.Timers.Timer readDataTimer = new System.Timers.Timer();
         protected override void Init()
         {
             base.Init();
@@ -42,43 +44,46 @@ namespace AIStudio.Wpf.Flowchart
             SFCStartNode start = new SFCStartNode() { Left = 0, Top = 60, Text = "S0" };
             DiagramViewModel.DirectAddItemCommand.Execute(start);
 
-            SFCConditionNode condition1 = new SFCConditionNode() { Left = 0, Top = 120, Text = "X0" };
-            DiagramViewModel.DirectAddItemCommand.Execute(condition1);
+            SFCConditionNode condition1_1 = new SFCConditionNode() { Left = 0, Top = 120, Text = "X01", Expression = "p0==1&p1<20", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "S0"), SFCService.LinkPoint.FirstOrDefault(p => p.Name == "T2") } };
+            DiagramViewModel.DirectAddItemCommand.Execute(condition1_1);
+
+            SFCConditionNode condition1_2 = new SFCConditionNode() { Left = 100, Top = 120, Text = "X02", Expression = "p0==1&p1<30", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "S0"), SFCService.LinkPoint.FirstOrDefault(p => p.Name == "T2") } };
+            DiagramViewModel.DirectAddItemCommand.Execute(condition1_2);
 
             SFCNodeNode step1 = new SFCNodeNode() { Left = 0, Top = 180, Text = "S1" };
             DiagramViewModel.DirectAddItemCommand.Execute(step1);
 
-            SFCActionNode action11 = new SFCActionNode() { Left = 100, Top = 180, Text = "SET_V1" };
+            SFCActionNode action11 = new SFCActionNode() { Left = 100, Top = 180, Text = "SET_V1", Expression = "1", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K1_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action11);
 
-            SFCActionNode action12 = new SFCActionNode() { Left = 200, Top = 180, Text = "SET_V2" };
+            SFCActionNode action12 = new SFCActionNode() { Left = 200, Top = 180, Text = "SET_V2", Expression = "1", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K2_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action12);
 
-            SFCActionNode action13 = new SFCActionNode() { Left = 300, Top = 180, Text = "SET_V3" };
+            SFCActionNode action13 = new SFCActionNode() { Left = 300, Top = 180, Text = "SET_V3", Expression = "1", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K3_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action13);
 
-            SFCActionNode action14 = new SFCActionNode() { Left = 400, Top = 180, Text = "RES_V4" };
+            SFCActionNode action14 = new SFCActionNode() { Left = 400, Top = 180, Text = "RES_V4", Expression = "0", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K4_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action14);
 
-            SFCConditionNode condition2 = new SFCConditionNode() { Left = 0, Top = 240, Text = "X1" };
+            SFCConditionNode condition2 = new SFCConditionNode() { Left = 0, Top = 240, Text = "X1", Expression = "p0>50", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "T2") } };
             DiagramViewModel.DirectAddItemCommand.Execute(condition2);
 
             SFCNodeNode step2 = new SFCNodeNode() { Left = 0, Top = 300, Text = "S2" };
             DiagramViewModel.DirectAddItemCommand.Execute(step2);
 
-            SFCActionNode action2 = new SFCActionNode() { Left = 100, Top = 300, Text = "SET_V4" };
+            SFCActionNode action2 = new SFCActionNode() { Left = 100, Top = 300, Text = "SET_V4", Expression = "1", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K4_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action2);
 
-            SFCConditionNode condition3 = new SFCConditionNode() { Left = 0, Top = 360, Text = "X2" };
+            SFCConditionNode condition3 = new SFCConditionNode() { Left = 0, Top = 360, Text = "X2", Expression = "p0>70", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "T2") } };
             DiagramViewModel.DirectAddItemCommand.Execute(condition3);
 
             SFCNodeNode step3 = new SFCNodeNode() { Left = 0, Top = 420, Text = "S3" };
             DiagramViewModel.DirectAddItemCommand.Execute(step3);
 
-            SFCActionNode action3 = new SFCActionNode() { Left = 100, Top = 420, Text = "RES_V1" };
+            SFCActionNode action3 = new SFCActionNode() { Left = 100, Top = 420, Text = "RES_V1", Expression = "0", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K1_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action3);
 
-            SFCConditionNode condition4 = new SFCConditionNode() { Left = 0, Top = 480, Text = "X4" };
+            SFCConditionNode condition4 = new SFCConditionNode() { Left = 0, Top = 480, Text = "X3", Expression = "p0>80", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "T2") } };
             DiagramViewModel.DirectAddItemCommand.Execute(condition4);
 
             SFCCOBeginNode cobegin = new SFCCOBeginNode() { Left = 38, Top = 540, Text = "" };
@@ -87,23 +92,35 @@ namespace AIStudio.Wpf.Flowchart
             SFCNodeNode step4 = new SFCNodeNode() { Left = 0, Top = 600, Text = "S4" };
             DiagramViewModel.DirectAddItemCommand.Execute(step4);
 
-            SFCActionNode action4 = new SFCActionNode() { Left = 100, Top = 600, Text = "RES_V2" };
+            SFCActionNode action4 = new SFCActionNode() { Left = 100, Top = 600, Text = "RES_V2", Expression = "0", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K2_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action4);
+
+            SFCConditionNode condition5 = new SFCConditionNode() { Left = 0, Top = 660, Text = "X4", Expression = "p0==0", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K2_DO") } };
+            DiagramViewModel.DirectAddItemCommand.Execute(condition5);
 
             SFCNodeNode step5 = new SFCNodeNode() { Left = 200, Top = 600, Text = "S5" };
             DiagramViewModel.DirectAddItemCommand.Execute(step5);
 
-            SFCActionNode action5 = new SFCActionNode() { Left = 300, Top = 600, Text = "RES_V3" };
+            SFCActionNode action5 = new SFCActionNode() { Left = 300, Top = 600, Text = "RES_V3", Expression = "0", LinkPoint = SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K3_DI") };
             DiagramViewModel.DirectAddItemCommand.Execute(action5);
 
-            SFCCOEndNode coend = new SFCCOEndNode() { Left = 38, Top = 660, Text = "" };
+            SFCConditionNode condition6 = new SFCConditionNode() { Left = 200, Top = 660, Text = "X5", Expression = "p0==0", LinkPoint = new ObservableCollection<LinkPoint> { SFCService.LinkPoint.FirstOrDefault(p => p.Name == "K3_DO") } };
+            DiagramViewModel.DirectAddItemCommand.Execute(condition6);
+
+            SFCCOEndNode coend = new SFCCOEndNode() { Left = 38, Top = 720, Text = "" };
             DiagramViewModel.DirectAddItemCommand.Execute(coend);
 
-            ConnectorViewModel connector1 = new ConnectorViewModel(start.Output[0], condition1.Input[0]);
-            DiagramViewModel.DirectAddItemCommand.Execute(connector1);
+            ConnectorViewModel connector1_1 = new ConnectorViewModel(start.Output[0], condition1_1.Input[0]);
+            DiagramViewModel.DirectAddItemCommand.Execute(connector1_1);
 
-            ConnectorViewModel connector2 = new ConnectorViewModel(condition1.Output[0], step1.Input[0]);
-            DiagramViewModel.DirectAddItemCommand.Execute(connector2);
+            ConnectorViewModel connector2_1 = new ConnectorViewModel(condition1_1.Output[0], step1.Input[0]);
+            DiagramViewModel.DirectAddItemCommand.Execute(connector2_1);
+
+            ConnectorViewModel connector1_2 = new ConnectorViewModel(start.Output[0], condition1_2.Input[0]);
+            DiagramViewModel.DirectAddItemCommand.Execute(connector1_2);
+
+            ConnectorViewModel connector2_2 = new ConnectorViewModel(condition1_2.Output[0], step1.Input[0]);
+            DiagramViewModel.DirectAddItemCommand.Execute(connector2_2);
 
             ConnectorViewModel connector31 = new ConnectorViewModel(step1.Action[0], action11.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector31);
@@ -147,20 +164,26 @@ namespace AIStudio.Wpf.Flowchart
             ConnectorViewModel connector13 = new ConnectorViewModel(step4.Action[0], action4.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector13);
 
-            ConnectorViewModel connector14 = new ConnectorViewModel(cobegin.Output[1], step5.Input[0]);
+            ConnectorViewModel connector14 = new ConnectorViewModel(step4.Output[0], condition5.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector14);
 
-            ConnectorViewModel connector15 = new ConnectorViewModel(step5.Action[0], action5.Input[0]);
+            ConnectorViewModel connector15 = new ConnectorViewModel(cobegin.Output[1], step5.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector15);
 
-            ConnectorViewModel connector16 = new ConnectorViewModel(step4.Output[0], coend.Input[0]);
+            ConnectorViewModel connector16 = new ConnectorViewModel(step5.Action[0], action5.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector16);
 
-            ConnectorViewModel connector17 = new ConnectorViewModel(step5.Output[0], coend.Input[1]);
+            ConnectorViewModel connector17 = new ConnectorViewModel(step5.Output[0], condition6.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector17);
 
-            ConnectorViewModel connector18 = new ConnectorViewModel(coend.Output[0], start.Input[0]);
+            ConnectorViewModel connector18 = new ConnectorViewModel(condition5.Output[0], coend.Input[0]);
             DiagramViewModel.DirectAddItemCommand.Execute(connector18);
+
+            ConnectorViewModel connector19 = new ConnectorViewModel(condition6.Output[0], coend.Input[1]);
+            DiagramViewModel.DirectAddItemCommand.Execute(connector19);
+
+            ConnectorViewModel connector20 = new ConnectorViewModel(coend.Output[0], start.Input[0]);
+            DiagramViewModel.DirectAddItemCommand.Execute(connector20);
 
             #region 模拟部分
             TextDesignerItemViewModel despcription = new TextDesignerItemViewModel()
@@ -239,9 +262,29 @@ namespace AIStudio.Wpf.Flowchart
 
             DiagramViewModel.ClearSelectedItems();
 
+            SFCService.InitData(DiagramViewModel.Items.OfType<SFCNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList(), DiagramViewModel);
 
+            readDataTimer.Elapsed += timeCycle;
+            readDataTimer.Interval = 1000;
+            readDataTimer.AutoReset = false;
+            readDataTimer.Start();
         }
 
+        private void timeCycle(object sender, ElapsedEventArgs e)
+        {
+            if (DiagramViewModel != null)
+            {
+                SFCService.Execute(DiagramViewModel);
+            }
+            readDataTimer.Start();
+        }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            readDataTimer.Stop();
+            readDataTimer.Dispose();
+        }
     }
 }

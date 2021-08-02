@@ -1067,5 +1067,9 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
 
             return new Size(formattedText.Width, formattedText.Height);
         }
+
+        public virtual void Dispose()
+        {
+        }
     }
 }

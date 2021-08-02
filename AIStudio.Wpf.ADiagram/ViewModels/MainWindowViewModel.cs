@@ -661,6 +661,11 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
         {
             //here's how you can cancel stuff:
             //args.Cancel(); 
+
+            if (args.DragablzItem.DataContext is DiagramsViewModel viewModel)
+            {
+                viewModel.Dispose();
+            }
         }
 
         private void MainWindowViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -46,7 +46,26 @@ namespace AIStudio.Wpf.SFC.ViewModels
             }
             set
             {
+                if (_dILinkPoint != null)
+                {
+                    _dILinkPoint.PropertyChanged -= _dILinkPoint_PropertyChanged;
+                }
                 SetProperty(ref _dILinkPoint, value);
+                if (_dILinkPoint != null)
+                {
+                    _dILinkPoint.PropertyChanged += _dILinkPoint_PropertyChanged;
+                }
+            }
+        }
+
+        private void _dILinkPoint_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Value")
+            {
+                if (DOLinkPoint != null)
+                {
+                    DOLinkPoint.Value = DILinkPoint.Value;
+                }
             }
         }
 
