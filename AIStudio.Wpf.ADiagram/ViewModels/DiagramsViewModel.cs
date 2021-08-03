@@ -41,7 +41,14 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
         public DiagramsViewModel(string filename)
         {
             FileName = filename;
-            OpenFile(filename);
+            var diagramDocument = OpenFile(filename);
+            OpenFile(diagramDocument);
+        }
+
+        public DiagramsViewModel(string filename, DiagramDocument diagramDocument)
+        {
+            FileName = filename;
+            OpenFile(diagramDocument);
         }
 
         protected virtual void InitDiagramViewModel()
@@ -189,7 +196,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             DiagramViewModel.SelectAllCommand.Execute(null);
         }
 
-        private void OpenFile(string filename)
+        public static DiagramDocument OpenFile(string filename)
         {
             try
             {
@@ -210,44 +217,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                     diagramDocument = JsonConvert.DeserializeObject<DiagramDocument>(File.ReadAllText(filename));
                 }
 
-                Title = diagramDocument.Title;
-                DiagramType = diagramDocument.DiagramType;
-
-                List<DiagramViewModel> viewModels = new List<DiagramViewModel>();
-                foreach (var diagramitem in diagramDocument.DiagramItems)
-                {
-                    var viewModel = new DiagramViewModel();
-                    viewModel.Name = diagramitem.Name;
-                    viewModel.DiagramType = diagramitem.DiagramType;
-
-                    foreach (DesignerItemBase diagramItemData in diagramitem.AllDesignerItems)
-                    {
-                        Type type = TypeHelper.GetType(diagramItemData.ItemTypeName);
-
-                        DesignerItemViewModelBase itemBase = (DesignerItemViewModelBase)Activator.CreateInstance(type, viewModel, diagramItemData);
-                        viewModel.Items.Add(itemBase);
-                    }
-
-                    foreach (var connection in diagramitem.Connections)
-                    {
-                        connection.SourceType = System.Type.GetType(connection.SourceTypeName);
-                        connection.SinkType = System.Type.GetType(connection.SinkTypeName);
-                        DesignerItemViewModelBase sourceItem = GetConnectorDataItem(viewModel, connection.SourceId, connection.SourceType);
-                        ConnectorOrientation sourceConnectorOrientation = connection.SourceOrientation;
-                        FullyCreatedConnectorInfo sourceConnectorInfo = GetFullConnectorInfo(connection.Id, sourceItem, sourceConnectorOrientation, connection.SourceXRatio, connection.SourceYRatio, connection.SourceInnerPoint);
-
-                        DesignerItemViewModelBase sinkItem = GetConnectorDataItem(viewModel, connection.SinkId, connection.SinkType);
-                        ConnectorOrientation sinkConnectorOrientation = connection.SinkOrientation;
-                        FullyCreatedConnectorInfo sinkConnectorInfo = GetFullConnectorInfo(connection.Id, sinkItem, sinkConnectorOrientation, connection.SinkXRatio, connection.SinkYRatio, connection.SinkInnerPoint);
-
-                        ConnectorViewModel connectionVM = new ConnectorViewModel(viewModel, sourceConnectorInfo, sinkConnectorInfo, connection);
-                        viewModel.Items.Add(connectionVM);
-                    }
-
-                    viewModels.Add(viewModel);
-                }
-                DiagramViewModels = new ObservableCollection<IDiagramViewModel>(viewModels);
-                DiagramViewModel = DiagramViewModels.FirstOrDefault();
+                return diagramDocument;
             }
             catch (System.IO.FileNotFoundException fnfe)
             {
@@ -274,6 +244,57 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 throw new System.Exception(
                     string.Format("The database format vc  invalid \r\n Exception:{0} \r\n InnerException:{1}", e.Message, e.InnerException.Message));
             }
+        }
+
+        private void OpenFile(DiagramDocument diagramDocument)
+        {
+            Title = diagramDocument.Title;
+            DiagramType = diagramDocument.DiagramType;
+
+            List<DiagramViewModel> viewModels = new List<DiagramViewModel>();
+            foreach (var diagramItem in diagramDocument.DiagramItems)
+            {
+                var viewModel = new DiagramViewModel();
+                viewModel.Name = diagramItem.Name;
+                viewModel.DiagramType = diagramItem.DiagramType;
+                viewModel.ShowGrid = diagramItem.ShowGrid;
+                viewModel.GridCellSize = diagramItem.GridCellSize;
+                viewModel.CellHorizontalAlignment = diagramItem.CellHorizontalAlignment;
+                viewModel.CellVerticalAlignment = diagramItem.CellVerticalAlignment;
+                viewModel.PageSizeOrientation = diagramItem.PageSizeOrientation;
+                viewModel.PageSize = diagramItem.PageSize;
+                viewModel.PageSizeType = diagramItem.PageSizeType;
+                viewModel.GridMargin = diagramItem.GridMargin;
+                viewModel.GridColor = diagramItem.GridColor;
+
+                foreach (DesignerItemBase diagramItemData in diagramItem.AllDesignerItems)
+                {
+                    Type type = TypeHelper.GetType(diagramItemData.ItemTypeName);
+
+                    DesignerItemViewModelBase itemBase = (DesignerItemViewModelBase)Activator.CreateInstance(type, viewModel, diagramItemData);
+                    viewModel.Items.Add(itemBase);
+                }
+
+                foreach (var connection in diagramItem.Connections)
+                {
+                    connection.SourceType = System.Type.GetType(connection.SourceTypeName);
+                    connection.SinkType = System.Type.GetType(connection.SinkTypeName);
+                    DesignerItemViewModelBase sourceItem = GetConnectorDataItem(viewModel, connection.SourceId, connection.SourceType);
+                    ConnectorOrientation sourceConnectorOrientation = connection.SourceOrientation;
+                    FullyCreatedConnectorInfo sourceConnectorInfo = GetFullConnectorInfo(connection.Id, sourceItem, sourceConnectorOrientation, connection.SourceXRatio, connection.SourceYRatio, connection.SourceInnerPoint);
+
+                    DesignerItemViewModelBase sinkItem = GetConnectorDataItem(viewModel, connection.SinkId, connection.SinkType);
+                    ConnectorOrientation sinkConnectorOrientation = connection.SinkOrientation;
+                    FullyCreatedConnectorInfo sinkConnectorInfo = GetFullConnectorInfo(connection.Id, sinkItem, sinkConnectorOrientation, connection.SinkXRatio, connection.SinkYRatio, connection.SinkInnerPoint);
+
+                    ConnectorViewModel connectionVM = new ConnectorViewModel(viewModel, sourceConnectorInfo, sinkConnectorInfo, connection);
+                    viewModel.Items.Add(connectionVM);
+                }
+
+                viewModels.Add(viewModel);
+            }
+            DiagramViewModels = new ObservableCollection<IDiagramViewModel>(viewModels);
+            DiagramViewModel = DiagramViewModels.FirstOrDefault();
         }
 
         public bool SaveFile(bool isSaveAs = false)
@@ -307,6 +328,15 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 DiagramItem diagramItem = new DiagramItem();
                 diagramItem.Name = viewModel.Name;
                 diagramItem.DiagramType = viewModel.DiagramType;
+                diagramItem.ShowGrid = viewModel.ShowGrid;
+                diagramItem.GridCellSize = viewModel.GridCellSize;
+                diagramItem.CellHorizontalAlignment = viewModel.CellHorizontalAlignment;
+                diagramItem.CellVerticalAlignment = viewModel.CellVerticalAlignment;
+                diagramItem.PageSizeOrientation = viewModel.PageSizeOrientation;
+                diagramItem.PageSize = viewModel.PageSize;
+                diagramItem.PageSizeType = viewModel.PageSizeType;
+                diagramItem.GridMargin = viewModel.GridMargin;
+                diagramItem.GridColor = viewModel.GridColor;
 
                 diagramItem.AddItems(DiagramViewModel.Items);            
 
@@ -891,6 +921,15 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 DiagramItem diagramItem = new DiagramItem();
                 diagramItem.Name = viewModel.Name;
                 diagramItem.DiagramType = viewModel.DiagramType;
+                diagramItem.ShowGrid = viewModel.ShowGrid;
+                diagramItem.GridCellSize = viewModel.GridCellSize;
+                diagramItem.CellHorizontalAlignment = viewModel.CellHorizontalAlignment;
+                diagramItem.CellVerticalAlignment = viewModel.CellVerticalAlignment;
+                diagramItem.PageSizeOrientation = viewModel.PageSizeOrientation;
+                diagramItem.PageSize = viewModel.PageSize;
+                diagramItem.PageSizeType = viewModel.PageSizeType;
+                diagramItem.GridMargin = viewModel.GridMargin;
+                diagramItem.GridColor = viewModel.GridColor;
 
                 diagramItem.AddItems(DiagramViewModel.Items);
 
@@ -920,6 +959,15 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 viewModel = new DiagramViewModel();
                 viewModel.Name = NewNameHelper.GetNewName(DiagramViewModels.Select(p => p.Name), "页-");
                 viewModel.DiagramType = diagramItem.DiagramType;
+                viewModel.ShowGrid = diagramItem.ShowGrid;
+                viewModel.GridCellSize = diagramItem.GridCellSize;
+                viewModel.CellHorizontalAlignment = diagramItem.CellHorizontalAlignment;
+                viewModel.CellVerticalAlignment = diagramItem.CellVerticalAlignment;
+                viewModel.PageSizeOrientation = diagramItem.PageSizeOrientation;
+                viewModel.PageSize = diagramItem.PageSize;
+                viewModel.PageSizeType = diagramItem.PageSizeType;
+                viewModel.GridMargin = diagramItem.GridMargin;
+                viewModel.GridColor = diagramItem.GridColor;
 
                 foreach (DesignerItemBase diagramItemData in diagramItem.AllDesignerItems)
                 {

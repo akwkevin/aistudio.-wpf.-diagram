@@ -1,4 +1,5 @@
-﻿using AIStudio.Wpf.ADiagram.ViewModels;
+﻿using AIStudio.Wpf.ADiagram.Models;
+using AIStudio.Wpf.ADiagram.ViewModels;
 using AIStudio.Wpf.Flowchart.ViewModels;
 using AIStudio.Wpf.SFC;
 using AIStudio.Wpf.SFC.ViewModels;
@@ -21,9 +22,16 @@ namespace AIStudio.Wpf.Flowchart
         {
 
         }
-        public SFCViewModel(string filename) : base(filename)
+        public SFCViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
-
+            if (DiagramViewModel != null)
+            {
+                SFCService.InitData(DiagramViewModel.Items.OfType<SFCNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList(), DiagramViewModel);
+            }
+            readDataTimer.Elapsed += timeCycle;
+            readDataTimer.Interval = 1000;
+            readDataTimer.AutoReset = false;
+            readDataTimer.Start();
         }
 
         protected override void InitDiagramViewModel()
@@ -285,6 +293,11 @@ namespace AIStudio.Wpf.Flowchart
 
             readDataTimer.Stop();
             readDataTimer.Dispose();
+
+            foreach (var viewModel in DiagramViewModels)
+            {
+                SFCService.DisposeData(viewModel);
+            }
         }
     }
 }

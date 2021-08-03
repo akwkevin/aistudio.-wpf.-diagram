@@ -13,6 +13,10 @@ using AIStudio.Wpf.BaseDiagram.Extensions.Models;
 using Newtonsoft.Json;
 using AIStudio.Wpf.Flowchart.Models;
 using AIStudio.Wpf.Flowchart.ViewModels;
+using AIStudio.Wpf.SFC.Models;
+using AIStudio.Wpf.SFC.ViewModels;
+using System.Windows;
+using System.Windows.Media;
 
 namespace AIStudio.Wpf.ADiagram.Models
 {
@@ -20,7 +24,7 @@ namespace AIStudio.Wpf.ADiagram.Models
     public class DiagramItem
     {
         public DiagramItem()
-        {            
+        {
             this.ConnectionIds = new List<Guid>();
             this.Connections = new List<ConnectionItem>();
         }
@@ -30,6 +34,75 @@ namespace AIStudio.Wpf.ADiagram.Models
 
         [XmlAttribute]
         public DiagramType DiagramType { get; set; }
+
+        [XmlAttribute]
+        public bool ShowGrid { get; set; }
+
+        [XmlIgnore]
+        public Size GridCellSize { get; set; }
+
+        [JsonIgnore]
+        [XmlAttribute("GridCellSize")]
+        public string XmlGridCellSize
+        {
+            get
+            {
+                return SerializeHelper.SerializeSize(GridCellSize);
+            }
+            set
+            {
+                GridCellSize = SerializeHelper.DeserializeSize(value);
+            }
+        }
+
+        [XmlAttribute]
+        public CellHorizontalAlignment CellHorizontalAlignment { get; set; }
+
+        [XmlAttribute]
+        public CellVerticalAlignment CellVerticalAlignment { get; set; }
+
+        [XmlAttribute]
+        public PageSizeOrientation PageSizeOrientation { get; set; }
+
+        [XmlIgnore]
+        public Size PageSize { get; set; }
+
+        [JsonIgnore]
+        [XmlAttribute("PageSize")]
+        public string XmlPageSize
+        {
+            get
+            {
+                return SerializeHelper.SerializeSize(PageSize);
+            }
+            set
+            {
+                PageSize = SerializeHelper.DeserializeSize(value);
+            }
+        }
+
+        [XmlAttribute]
+        public PageSizeType PageSizeType { get; set; }
+
+        [XmlAttribute]
+        public double GridMargin { get; set; }
+
+        [XmlIgnore]
+        public Color GridColor { get; set; }
+
+        [JsonIgnore]
+        [XmlAttribute("GridColor")]
+        public string XmlGridColor
+        {
+            get
+            {
+                return SerializeHelper.SerializeColor(GridColor);
+            }
+            set
+            {
+                GridColor = SerializeHelper.DeserializeColor(value);
+            }
+        }
 
         [XmlArray]
         public List<DesignerItemBase> DesignerItems { get; set; } = new List<DesignerItemBase>();
@@ -58,21 +131,31 @@ namespace AIStudio.Wpf.ADiagram.Models
         [XmlArray]
         public List<FlowNodeDesignerItem> FlowNodeDesignerItems { get; set; } = new List<FlowNodeDesignerItem>();
 
+        [XmlArray]
+        public List<SFCNodeDesignerItem> SFCNodeDesignerItems { get; set; } = new List<SFCNodeDesignerItem>();
+
         [JsonIgnore]
         [XmlIgnore]
-        public List<DesignerItemBase> AllDesignerItems { get { return 
-                            DesignerItems.OfType<DesignerItemBase>()
-                     .Union(TextDesignerItems.OfType<DesignerItemBase>())
-                     .Union(LogicalGateItems.OfType<DesignerItemBase>())
-                     .Union(MediaDesignerItems.OfType<DesignerItemBase>())
-                     .Union(ImageDesignerItems.OfType<DesignerItemBase>())
-                     .Union(PathDesignerItems.OfType<DesignerItemBase>())
-                     .Union(PersistDesignerItems.OfType<DesignerItemBase>())
-                     .Union(SettingsDesignerItems.OfType<DesignerItemBase>())
-                     .Union(FlowNodeDesignerItems.OfType<FlowNodeDesignerItem>())
-                     .ToList(); } }
+        public List<DesignerItemBase> AllDesignerItems
+        {
+            get
+            {
+                return
+DesignerItems.OfType<DesignerItemBase>()
+.Union(TextDesignerItems.OfType<DesignerItemBase>())
+.Union(LogicalGateItems.OfType<DesignerItemBase>())
+.Union(MediaDesignerItems.OfType<DesignerItemBase>())
+.Union(ImageDesignerItems.OfType<DesignerItemBase>())
+.Union(PathDesignerItems.OfType<DesignerItemBase>())
+.Union(PersistDesignerItems.OfType<DesignerItemBase>())
+.Union(SettingsDesignerItems.OfType<DesignerItemBase>())
+.Union(FlowNodeDesignerItems.OfType<DesignerItemBase>())
+.Union(SFCNodeDesignerItems.OfType<DesignerItemBase>())
+.ToList();
+            }
+        }
 
-        [XmlArray] 
+        [XmlArray]
         public List<Guid> ConnectionIds { get; set; }
 
         [XmlArray]
@@ -113,10 +196,14 @@ namespace AIStudio.Wpf.ADiagram.Models
                 else if (item is LogicalGateItemViewModelBase)
                 {
                     LogicalGateItems.Add(new LogicalGateDesignerItemBase(item as LogicalGateItemViewModelBase));
-                }              
+                }
                 else if (item is FlowNode)
                 {
                     FlowNodeDesignerItems.Add(new FlowNodeDesignerItem(item as FlowNode));
+                }
+                else if (item is SFCNode)
+                {
+                    SFCNodeDesignerItems.Add(new SFCNodeDesignerItem(item as SFCNode));
                 }
                 else if (item is BarcodeDesignerItemViewModel)
                 {
@@ -133,7 +220,7 @@ namespace AIStudio.Wpf.ADiagram.Models
         {
             if (item is PersistDesignerItemViewModel)
             {
-               return new PersistDesignerItem(item as PersistDesignerItemViewModel);
+                return new PersistDesignerItem(item as PersistDesignerItemViewModel);
             }
             else if (item is SettingsDesignerItemViewModel)
             {
@@ -167,6 +254,10 @@ namespace AIStudio.Wpf.ADiagram.Models
             {
                 return new FlowNodeDesignerItem(item as FlowNode);
             }
+            else if (item is SFCNode)
+            {
+                return new SFCNodeDesignerItem(item as SFCNode);
+            }
             else
             {
                 return new DesignerItemBase(item as DesignerItemViewModelBase);
@@ -191,6 +282,8 @@ namespace AIStudio.Wpf.ADiagram.Models
                 return typeof(LogicalGateDesignerItemBase);
             if (vmType is FlowNode)
                 return typeof(FlowNodeDesignerItem);
+            if (vmType is SFCNode)
+                return typeof(SFCNodeDesignerItem);
             throw new InvalidOperationException(string.Format("Unknown diagram type. Currently only {0} and {1} are supported",
                 typeof(PersistDesignerItem).AssemblyQualifiedName,
                 typeof(SettingsDesignerItemViewModel).AssemblyQualifiedName

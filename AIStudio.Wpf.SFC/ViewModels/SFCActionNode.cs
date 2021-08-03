@@ -21,19 +21,6 @@ namespace AIStudio.Wpf.SFC.ViewModels
             
         }
 
-        private string _expression;
-        public string Expression
-        {
-            get
-            {
-                return _expression;
-            }
-            set
-            {
-                SetProperty(ref _expression, value);
-            }
-        }
-
         private LinkPoint _linkPoint;
         public LinkPoint LinkPoint
         {

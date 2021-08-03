@@ -1,4 +1,5 @@
-﻿using AIStudio.Wpf.ADiagram.ViewModels;
+﻿using AIStudio.Wpf.ADiagram.Models;
+using AIStudio.Wpf.ADiagram.ViewModels;
 using AIStudio.Wpf.Flowchart.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,12 @@ namespace AIStudio.Wpf.Flowchart
         {
 
         }
-        public FlowchartViewModel(string filename) : base(filename)
+        public FlowchartViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
-
+            if (DiagramViewModel != null)
+            {
+                FlowchartService.InitData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList(), DiagramViewModel);
+            }
         }
 
         protected override void InitDiagramViewModel()
@@ -101,6 +105,14 @@ namespace AIStudio.Wpf.Flowchart
             FlowchartService.InitData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList(), DiagramViewModel);
         }
 
- 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            foreach (var viewModel in DiagramViewModels)
+            {
+                FlowchartService.DisposeData(viewModel);
+            }
+        }
     }
 }

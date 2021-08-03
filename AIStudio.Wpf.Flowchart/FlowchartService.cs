@@ -363,5 +363,10 @@ namespace AIStudio.Wpf.Flowchart
                     break;
             }
         }
+
+        public static void DisposeData(IDiagramViewModel viewModel)
+        {
+            FlowNodes.Remove(viewModel);
+        }
     }
 }

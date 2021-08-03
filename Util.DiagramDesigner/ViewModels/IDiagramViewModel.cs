@@ -44,20 +44,20 @@ namespace Util.DiagramDesigner
         bool BelongToSameGroup(IGroupable item1, IGroupable item2);
         Rect GetBoundingRectangle(IEnumerable<DesignerItemViewModelBase> items);
         void UpdateZIndex();
-        Size PageSize { get;}
+
+        Size PageSize { get; set; }
         PageSizeType PageSizeType { get; set; }
         bool ShowGrid { get; set; }
         Size GridCellSize { get; set; }
         PageSizeOrientation PageSizeOrientation { get; set; }
-        double GridMargin { get; set; }
-        Color GridColor { get; set; }
-        Point CurrentPoint { get; set; }
-        Color CurrentColor { get; set; }
-
-        DiagramType DiagramType { get; set; }
-
         CellHorizontalAlignment CellHorizontalAlignment { get; set; }
         CellVerticalAlignment CellVerticalAlignment { get; set; }
+        double GridMargin { get; set; }
+        Color GridColor { get; set; }
+        DiagramType DiagramType { get; set; }
+
+        Point CurrentPoint { get; set; }
+        Color CurrentColor { get; set; }
 
         event PropertyChangedEventHandler PropertyChanged;
 

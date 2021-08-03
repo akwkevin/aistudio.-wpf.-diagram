@@ -1,4 +1,5 @@
-﻿using AIStudio.Wpf.ADiagram.ViewModels;
+﻿using AIStudio.Wpf.ADiagram.Models;
+using AIStudio.Wpf.ADiagram.ViewModels;
 using AIStudio.Wpf.Logical.ViewModels;
 using System;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace AIStudio.Wpf.Logical
         {
 
         }
-        public LogicalViewModel(string filename) : base(filename)
+        public LogicalViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
 
         }

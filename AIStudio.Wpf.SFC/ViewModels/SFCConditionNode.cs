@@ -42,32 +42,6 @@ namespace AIStudio.Wpf.SFC.ViewModels
             }
         }
 
-        private string _expression;
-        public string Expression
-        {
-            get
-            {
-                return _expression;
-            }
-            set
-            {
-                SetProperty(ref _expression, value);
-            }
-        }
-
-        private string _para;
-        public string Para
-        {
-            get
-            {
-                return _para;
-            }
-            set
-            {
-                _para = value;
-            }
-        }
-
         private ObservableCollection<LinkPoint> _linkPoint = new ObservableCollection<LinkPoint>();
         public ObservableCollection<LinkPoint> LinkPoint
         {

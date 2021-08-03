@@ -786,7 +786,24 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                 return;
             }
 
-            var flow = new DiagramsViewModel(filename);
+            var diagram = DiagramsViewModel.OpenFile(filename);
+            DiagramsViewModel flow;
+            if (diagram.DiagramType == DiagramType.FlowChart)
+            {
+                flow = new FlowchartViewModel(filename, diagram);
+            }
+            else if (diagram.DiagramType == DiagramType.Logical)
+            {
+                flow = new LogicalViewModel(filename, diagram);
+            }
+            else if (diagram.DiagramType == DiagramType.SFC)
+            {
+                flow = new SFCViewModel(filename, diagram);
+            }
+            else
+            {
+                flow = new DiagramsViewModel(filename, diagram);
+            }
             DiagramsViewModels.Add(flow);
             DiagramsViewModel = flow;
 

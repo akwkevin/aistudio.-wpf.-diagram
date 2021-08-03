@@ -1,8 +1,10 @@
 ﻿using AIStudio.Wpf.BaseDiagram;
 using AIStudio.Wpf.BaseDiagram.Services;
+using AIStudio.Wpf.SFC.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using Util.DiagramDesigner;
@@ -18,7 +20,7 @@ namespace AIStudio.Wpf.SFC.ViewModels
             ColorViewModel.FillColor.Color = Colors.Blue;
             Kind = kind;
             ItemWidth = 80;
-            ItemHeight = 40;         
+            ItemHeight = 40;
         }
 
         public SFCNode(IDiagramViewModel parent, DesignerItemBase designer) : base(parent, designer)
@@ -37,12 +39,60 @@ namespace AIStudio.Wpf.SFC.ViewModels
             base.Init();
 
             visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
-        }        
+        }
 
         protected override void LoadDesignerItemViewModel(IDiagramViewModel parent, SelectableDesignerItemBase designerbase)
         {
             base.LoadDesignerItemViewModel(parent, designerbase);
 
+            SFCNodeDesignerItem designer = designerbase as SFCNodeDesignerItem;
+            this.Kind = designer.Kind;
+            this.Expression = designer.Expression;
+
+            foreach (var connector in designer.Connectors)
+            {
+                FullyCreatedConnectorInfo fullyCreatedConnectorInfo = new FullyCreatedConnectorInfo(this, connector.Orientation, true);
+                fullyCreatedConnectorInfo.XRatio = connector.XRatio;
+                fullyCreatedConnectorInfo.YRatio = connector.YRatio;
+                fullyCreatedConnectorInfo.ConnectorWidth = connector.ConnectorWidth;
+                fullyCreatedConnectorInfo.ConnectorHeight = connector.ConnectorHeight;
+                fullyCreatedConnectorInfo.Orientation = connector.Orientation;
+                fullyCreatedConnectorInfo.IsInnerPoint = connector.IsInnerPoint;
+                fullyCreatedConnectorInfo.ValueTypePoint = connector.ValueTypePoint;
+                fullyCreatedConnectorInfo.ConnectorValue = connector.ConnectorValue;
+
+                if (fullyCreatedConnectorInfo.Orientation == ConnectorOrientation.Left)
+                {
+                    Input.Add(Input.Count, fullyCreatedConnectorInfo);
+                }
+                else if (fullyCreatedConnectorInfo.Orientation == ConnectorOrientation.Right)
+                {
+                    Output.Add(Output.Count, fullyCreatedConnectorInfo);
+                }
+                AddConnector(fullyCreatedConnectorInfo);
+            }
+
+            if (this is SFCActionNode actionNode)
+            {
+                actionNode.LinkPoint = designer.LinkPoints.FirstOrDefault();
+            }
+            else if (this is SFCConditionNode sFCConditionNode)
+            {
+                sFCConditionNode.LinkPoint = new System.Collections.ObjectModel.ObservableCollection<LinkPoint>(designer.LinkPoints);
+            }
+            else if (this is Simulate_SolenoidViewModel simulate_SolenoidViewModel)
+            {
+                simulate_SolenoidViewModel.DILinkPoint = designer.LinkPoints.FirstOrDefault();
+                simulate_SolenoidViewModel.DOLinkPoint = designer.LinkPoints.LastOrDefault();
+            }
+            else if (this is Simulate_StartViewModel simulate_StartViewModel)
+            {
+                simulate_StartViewModel.LinkPoint = designer.LinkPoints.FirstOrDefault();
+            }
+            else if (this is Simulate_TankViewModel simulate_TankViewModel)
+            {
+                simulate_TankViewModel.LinkPoint = designer.LinkPoints.FirstOrDefault();
+            }
         }
 
         protected override void InitConnector()
@@ -136,6 +186,20 @@ namespace AIStudio.Wpf.SFC.ViewModels
             }
         }
 
+        private string _expression;
+        public string Expression
+        {
+            get
+            {
+                return _expression;
+            }
+            set
+            {
+                SetProperty(ref _expression, value);
+            }
+        }
+
+        #region 暂不保存
         private int _status;
 
         public int Status
@@ -149,5 +213,6 @@ namespace AIStudio.Wpf.SFC.ViewModels
 
         public List<SFCNode> NextNode { get; set; } = new List<SFCNode>();
         public List<SFCNode> PreNode { get; set; } = new List<SFCNode>();
+        #endregion
     }
 }

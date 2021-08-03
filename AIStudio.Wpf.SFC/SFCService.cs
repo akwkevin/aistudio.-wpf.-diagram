@@ -16,18 +16,18 @@ namespace AIStudio.Wpf.SFC
         {
             LinkPoint = new List<LinkPoint>();
 
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "S0", Despcription = "启动按钮", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K1_DI", Despcription = "阀门1输入", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K2_DI", Despcription = "阀门2输入", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K3_DI", Despcription = "阀门3输入", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K4_DI", Despcription = "阀门4输入", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K1_DO", Despcription = "阀门1反馈", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K2_DO", Despcription = "阀门2反馈", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K3_DO", Despcription = "阀门3反馈", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "K4_DO", Despcription = "阀门4反馈", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "T1", Despcription = "容器1液位", Value = 100, });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "T2", Despcription = "容器2液位", Value = 0 });
-            LinkPoint.Add(new LinkPoint { Id = Guid.NewGuid(), Name = "T3", Despcription = "容器3液位", Value = 20 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("9943AC3B-5E19-4AF4-8CB0-26998FC31545"), Name = "S0", Despcription = "启动按钮", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("F60007E3-913B-43C4-B80B-9624B4BD95AC"), Name = "K1_DI", Despcription = "阀门1输入", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("8B2CBA04-A9C8-4FF0-BE95-27546292FB90"), Name = "K2_DI", Despcription = "阀门2输入", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("F213B720-ADC2-41C9-82B7-D77B56B99CB7"), Name = "K3_DI", Despcription = "阀门3输入", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("48BB7F62-A476-4A68-9DB4-5BD4201C1C26"), Name = "K4_DI", Despcription = "阀门4输入", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("5E52ACA8-8DB4-4D39-A3BF-73EE3A551253"), Name = "K1_DO", Despcription = "阀门1反馈", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("5B8C53FF-A4CA-40BA-9F36-5C228D9D0C5A"), Name = "K2_DO", Despcription = "阀门2反馈", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("29496600-74CF-4AB0-88D1-4C5BFAD4C405"), Name = "K3_DO", Despcription = "阀门3反馈", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("15733895-96E5-4F90-9BC2-3C7FF0A2B048"), Name = "K4_DO", Despcription = "阀门4反馈", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("BD593101-C759-4077-A3F2-F86AA2FC6DF8"), Name = "T1", Despcription = "容器1液位", Value = 100, });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("2BCBD2C9-9BCE-4F10-B115-088DEE1F4E08"), Name = "T2", Despcription = "容器2液位", Value = 0 });
+            LinkPoint.Add(new LinkPoint { Id = Guid.Parse("DBD10A3C-7E2E-4DAE-9CB0-A2132DC469DF"), Name = "T3", Despcription = "容器3液位", Value = 20 });
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace AIStudio.Wpf.SFC
                                 SetStatus(next, 1);
                             }
                         }
-                    }                 
+                    }
                 }
             }
         }
@@ -191,6 +191,28 @@ namespace AIStudio.Wpf.SFC
                     node.ColorViewModel.FillColor.Color = Colors.Green;
                     break;
             }
+        }
+
+
+        public static string SerializeLinkPoint(List<LinkPoint> points)
+        {
+            return string.Join(",", points.Select(p => p.Id));
+        }
+
+        public static List<LinkPoint> DeserializeLinkPoint(string point)
+        {
+            List<LinkPoint> links = new List<LinkPoint>();
+            string[] pieces = point.Split(new char[] { ',' });
+            foreach (var piece in pieces)
+            {
+                links.Add(LinkPoint.FirstOrDefault(p => p.Id.ToString() == piece));
+            }
+            return links;
+        }
+
+        public static void DisposeData(IDiagramViewModel viewModel)
+        {
+            SFCNodes.Remove(viewModel);
         }
     }
 }

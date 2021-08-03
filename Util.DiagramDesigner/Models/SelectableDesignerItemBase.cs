@@ -348,6 +348,17 @@ namespace Util.DiagramDesigner
             string[] pieces = point.Split(new char[] { ',' });
             return new Point(double.Parse(pieces[0]), double.Parse(pieces[1]));
         }
+
+        public static string SerializeSize(Size size)
+        {
+            return string.Format("{0},{1}", size.Width, size.Height);
+        }
+
+        public static Size DeserializeSize(string size)
+        {
+            string[] pieces = size.Split(new char[] { ',' });
+            return new Size(double.Parse(pieces[0]), double.Parse(pieces[1]));
+        }
     }
 
 
