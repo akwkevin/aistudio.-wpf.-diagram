@@ -13,11 +13,17 @@ namespace AIStudio.Wpf.Logical
     {
         public LogicalViewModel(string title, string status, DiagramType diagramType) : base(title, status, diagramType)
         {
-
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.CornerConnectingLine;
         }
         public LogicalViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
 
+        }
+
+        protected override void OpenFile(DiagramDocument diagramDocument)
+        {
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.CornerConnectingLine;
+            base.OpenFile(diagramDocument);
         }
 
         protected override void InitDiagramViewModel()

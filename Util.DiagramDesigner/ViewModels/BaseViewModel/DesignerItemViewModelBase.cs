@@ -271,7 +271,7 @@ namespace Util.DiagramDesigner
         /// <summary>
         /// 连接点是否可以按偏移自定义
         /// </summary>
-        public bool IsRatioConnector { get; set; }
+        public bool IsInnerConnector { get; set; }
 
         private ObservableCollection<FullyCreatedConnectorInfo> connectors = new ObservableCollection<FullyCreatedConnectorInfo>();
         public IEnumerable<FullyCreatedConnectorInfo> Connectors { get { return connectors; } }

@@ -801,33 +801,41 @@
                         </Fluent:ToggleButton.ToolTip>
                     </Fluent:ToggleButton>
 
-                    <Fluent:SplitButton Header="连接线" GroupName="DrawMode" IsCheckable="True" IsChecked="{Binding VectorLineDrawModeSelected}" Icon="{iconPacks:Material Kind=VectorLine}" Width="50" VerticalAlignment="Top">
+                    <Fluent:SplitButton Header="连接线" GroupName="DrawMode" IsCheckable="True" IsChecked="{Binding VectorLineDrawModeSelected}" Icon="{iconPacks:Material Kind=VectorPolyline}" Width="50" VerticalAlignment="Top">
                         <Fluent:MenuItem Header="直线连接线" Size="Middle" IsCheckable="True" IsChecked="{Binding VectorLineDrawMode,Converter={converter:ConverterValueMapToBool Parameter='ConnectingLine'}, ConverterParameter='ConnectingLine'}" Icon="{iconPacks:Material Kind=VectorLine}"/>
                         <Fluent:MenuItem Header="折角连接线" Size="Middle" IsCheckable="True" IsChecked="{Binding VectorLineDrawMode,Converter={converter:ConverterValueMapToBool Parameter='CornerConnectingLine'}, ConverterParameter='CornerConnectingLine'}" Icon="{iconPacks:Material Kind=VectorPolyline}"/>
+                        <Fluent:MenuItem Header="边界连接线" Size="Middle" IsCheckable="True" IsChecked="{Binding VectorLineDrawMode,Converter={converter:ConverterValueMapToBool Parameter='BoundaryConnectingLine'}, ConverterParameter='BoundaryConnectingLine'}" Icon="{iconPacks:Material Kind=VectorPolylineEdit}"/>
                         <Fluent:MenuItem Header="曲线连接线" Size="Middle" IsCheckable="True" IsChecked="{Binding VectorLineDrawMode,Converter={converter:ConverterValueMapToBool Parameter='RadiusConnectingLine'}, ConverterParameter='RadiusConnectingLine'}" Icon="{iconPacks:Material Kind=VectorRadius}"/>
                         <Fluent:SplitButton.Style>
                             <Style TargetType="{x:Type Fluent:SplitButton}" BasedOn="{StaticResource RibbonSplitButtonStyle}">
                                 <Setter Property="LargeIcon">
                                     <Setter.Value>
-                                        <iconPacks:PackIconMaterial Kind="VectorLine" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <iconPacks:PackIconMaterial Kind="VectorPolyline" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Setter.Value>
                                 </Setter>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShapeDrawMode}" Value="ConnectingLine">
+                                    <DataTrigger Binding="{Binding VectorLineDrawMode}" Value="ConnectingLine">
                                         <Setter Property="LargeIcon">
                                             <Setter.Value>
                                                 <iconPacks:PackIconMaterial Kind="VectorLine" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                             </Setter.Value>
                                         </Setter>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding ShapeDrawMode}" Value="CornerConnectingLine">
+                                    <DataTrigger Binding="{Binding VectorLineDrawMode}" Value="CornerConnectingLine">
                                         <Setter Property="LargeIcon">
                                             <Setter.Value>
                                                 <iconPacks:PackIconMaterial Kind="VectorPolyline" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                             </Setter.Value>
                                         </Setter>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding ShapeDrawMode}" Value="RadiusConnectingLine">
+                                    <DataTrigger Binding="{Binding VectorLineDrawMode}" Value="BoundaryConnectingLine">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <iconPacks:PackIconMaterial Kind="VectorPolylineEdit" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding VectorLineDrawMode}" Value="RadiusConnectingLine">
                                         <Setter Property="LargeIcon">
                                             <Setter.Value>
                                                 <iconPacks:PackIconMaterial Kind="VectorRadius" VerticalAlignment="Center" HorizontalAlignment="Center"/>

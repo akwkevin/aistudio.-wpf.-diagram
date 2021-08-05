@@ -25,11 +25,11 @@ namespace Util.DiagramDesigner
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            List<Point> points = (List<Point>)value;
+            List<PointInfoBase> points = (List<PointInfoBase>)value;
             PointCollection pointCollection = new PointCollection();
             if (points != null)
             {
-                foreach (Point point in points)
+                foreach (var point in points)
                 {
                     pointCollection.Add(point);
                 }

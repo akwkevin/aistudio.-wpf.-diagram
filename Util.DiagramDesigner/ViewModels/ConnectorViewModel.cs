@@ -10,6 +10,8 @@ namespace Util.DiagramDesigner
 {
     public class ConnectorViewModel : SelectableDesignerItemViewModelBase
     {
+        private IDiagramServiceProvider _service { get { return DiagramServicesProvider.Instance.Provider; } }
+
         public ConnectorViewModel(IDiagramViewModel parent, FullyCreatedConnectorInfo sourceConnectorInfo, FullyCreatedConnectorInfo sinkConnectorInfo,
             SelectableDesignerItemBase designer) : base(parent, designer)
         {
@@ -61,8 +63,8 @@ namespace Util.DiagramDesigner
             }
         }
 
-        private List<Point> _connectionPoints;
-        public List<Point> ConnectionPoints
+        private List<PointInfoBase> _connectionPoints;
+        public List<PointInfoBase> ConnectionPoints
         {
             get
             {
@@ -70,7 +72,15 @@ namespace Util.DiagramDesigner
             }
             private set
             {
+                if (_connectionPoints != null)
+                {
+                    _connectionPoints.ForEach(p => p.PropertyChanged -= new WeakINPCEventHandler(ConnectionPoint_PropertyChanged).Handler);
+                }
                 SetProperty(ref _connectionPoints, value);
+                if (_connectionPoints != null)
+                {
+                    _connectionPoints.ForEach(p => p.PropertyChanged += new WeakINPCEventHandler(ConnectionPoint_PropertyChanged).Handler);
+                }
             }
         }
 
@@ -179,35 +189,36 @@ namespace Util.DiagramDesigner
 
         private void UpdateConnectionPoints()
         {
-            if (SinkConnectorInfo is FullyCreatedConnectorInfo && SourceConnectorInfo.DataItem is LinkPointDesignerItemViewModel && ((FullyCreatedConnectorInfo)SinkConnectorInfo).DataItem is LinkPointDesignerItemViewModel)
+            if (_service.DrawModeViewModel.VectorLineDrawMode == DrawMode.ConnectingLine)
             {
                 UpdateConnectionPointsByLine();
-                return;
             }
-            if (Parent.DiagramType == DiagramType.FlowChart || Parent.DiagramType == DiagramType.SFC)
+            else if (_service.DrawModeViewModel.VectorLineDrawMode == DrawMode.BoundaryConnectingLine)
             {
-                UpdateConnectionPointsByFlowChart();
+                UpdateConnectionPointsByBoundary();
             }
             else
             {
-                UpdateConnectionPointsByNormal();
+                UpdateConnectionPointsByCorner();
             }
 
         }
 
         private void UpdateConnectionPointsByLine()
         {
-            ConnectionPoints = new List<Point>()
+            ConnectionPoints = PointInfoBase.ToList(new List<Point>()
                                    {
 
                                        new Point(SourceA.X  <  SourceB.X ? 0d : Area.Width, SourceA.Y  <  SourceB.Y ? 0d : Area.Height ),
                                        new Point(SourceA.X  >  SourceB.X ? 0d : Area.Width, SourceA.Y  >  SourceB.Y ? 0d : Area.Height)
-                                   };
+                                   });
+            StartPoint = ConnectionPoints[0];
+            EndPoint = ConnectionPoints.Last();
         }
 
-        private void UpdateConnectionPointsByNormal()
+        private void UpdateConnectionPointsByCorner()
         {
-            ConnectionPoints = new List<Point>()
+            var points = new List<Point>()
                                    {
 
                                        new Point(SourceA.X  <  SourceB.X ? 0d : Area.Width, SourceA.Y  <  SourceB.Y ? 0d : Area.Height ),
@@ -215,34 +226,34 @@ namespace Util.DiagramDesigner
                                    };
 
             ConnectorInfo sourceInfo = ConnectorInfo(SourceConnectorInfo.Orientation,
-                                            ConnectionPoints[0].X,
-                                            ConnectionPoints[0].Y,
+                                            points[0].X,
+                                            points[0].Y,
                                             SourceConnectorInfo.DataItem.ItemWidth,
                                             SourceConnectorInfo.DataItem.ItemHeight,
-                                            ConnectionPoints[0]);
+                                            points[0]);
 
-            StartPoint = ConnectionPoints[0];
+            StartPoint = points[0];
             if (IsFullConnection)
             {
-                EndPoint = ConnectionPoints.Last();
+                EndPoint = points.Last();
                 ConnectorInfo sinkInfo = ConnectorInfo(SinkConnectorInfo.Orientation,
-                                  ConnectionPoints[1].X,
-                                  ConnectionPoints[1].Y,
+                                  points[1].X,
+                                  points[1].Y,
                                   ((FullyCreatedConnectorInfo)_sinkConnectorInfo).DataItem.ItemWidth,
                                   ((FullyCreatedConnectorInfo)_sinkConnectorInfo).DataItem.ItemHeight,
-                                  ConnectionPoints[1]);
+                                  points[1]);
 
-                ConnectionPoints = PathFinder.GetConnectionLine(sourceInfo, sinkInfo, false, SourceConnectorInfo.IsInnerPoint);
+                ConnectionPoints = PointInfoBase.ToList(PathFinder.GetConnectionLine(sourceInfo, sinkInfo, false, SourceConnectorInfo.IsInnerPoint));
             }
             else
             {
-                ConnectionPoints = PathFinder.GetConnectionLine(sourceInfo, ConnectionPoints[1], SourceConnectorInfo.Orientation, SourceConnectorInfo.IsInnerPoint);
+                ConnectionPoints = PointInfoBase.ToList(PathFinder.GetConnectionLine(sourceInfo, points[1], SourceConnectorInfo.Orientation, SourceConnectorInfo.IsInnerPoint));
                 EndPoint = new Point();
             }
         }
 
         #region
-        private void UpdateConnectionPointsByFlowChart()
+        private void UpdateConnectionPointsByBoundary()
         {
             var points = new List<Point>();
             var ends = GetEndPoinds();
@@ -253,7 +264,7 @@ namespace Util.DiagramDesigner
             var res = points.ToArray();
             //UpdateEdges(res);
             DoShift(res);
-            ConnectionPoints = res.ToList();
+            ConnectionPoints = PointInfoBase.ToList(res.ToList());
             StartPoint = ConnectionPoints[0];
             EndPoint = ConnectionPoints.Last();
         }
@@ -367,6 +378,18 @@ namespace Util.DiagramDesigner
                     {
                         SourceB = PointHelper.GetPointForConnector((FullyCreatedConnectorInfo)this.SinkConnectorInfo);
                     }
+                    break;
+
+            }
+        }
+
+        private void ConnectionPoint_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Left":
+                case "Top":
+                    RaisePropertyChanged(nameof(ConnectionPoints));
                     break;
 
             }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Util.DiagramDesigner;
 
 namespace AIStudio.Wpf.BaseDiagram.Helpers
 {
@@ -26,6 +27,11 @@ namespace AIStudio.Wpf.BaseDiagram.Helpers
 
         private static void OnEnumChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
+            if (DesignerHelper.IsInDesignMode)
+            {
+                return;
+            }
+
             var control = sender as ItemsControl;
 
             if (control != null)

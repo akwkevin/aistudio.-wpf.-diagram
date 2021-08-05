@@ -20,7 +20,7 @@ namespace AIStudio.Wpf.Flowchart
     {
         public SFCViewModel(string title, string status, DiagramType diagramType) : base(title, status, diagramType)
         {
-
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
         }
         public SFCViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
@@ -32,6 +32,12 @@ namespace AIStudio.Wpf.Flowchart
             readDataTimer.Interval = 1000;
             readDataTimer.AutoReset = false;
             readDataTimer.Start();
+        }
+
+        protected override void OpenFile(DiagramDocument diagramDocument)
+        {
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
+            base.OpenFile(diagramDocument);
         }
 
         protected override void InitDiagramViewModel()

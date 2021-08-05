@@ -30,7 +30,7 @@ namespace AIStudio.Wpf.SFC.ViewModels
 
         protected override void Init()
         {
-            IsRatioConnector = true;
+            IsInnerConnector = true;
             ShowRotate = false;
             ShowArrow = false;
             ShowText = true;

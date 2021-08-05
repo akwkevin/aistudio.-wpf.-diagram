@@ -274,6 +274,22 @@
                 </Setter>
             </Style>
 
+            <!-- Connector Style -->
+            <Style x:Key="pointConnector1" TargetType="{x:Type s:PointConnector}">
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type s:PointConnector}">
+                            <Grid Width="{Binding ConnectorWidth}" Height="{Binding ConnectorHeight}">
+                                <!-- transparent extra space makes connector easier to hit -->
+                                <Ellipse Fill="Transparent" Margin="-2" />
+                                <Ellipse Fill="{Binding ColorViewModel.FillColor,Converter={StaticResource ColorBrushConverter}}"  StrokeThickness="1" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style x:Key="normalConnectorContainer" TargetType="{x:Type s:ConnectorContainer}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -293,7 +309,7 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="logicConnectorContainer" TargetType="{x:Type s:ConnectorContainer}">
+            <Style x:Key="innerConnectorContainer" TargetType="{x:Type ItemsControl}">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ItemsControl}">
@@ -333,16 +349,16 @@
                 </Grid>
             </ControlTemplate>
 
-            <ControlTemplate x:Key="RatioConnectorDecoratorTemplate"
+            <ControlTemplate x:Key="InnerConnectorDecoratorTemplate"
                      TargetType="{x:Type Control}">
-                <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource logicConnectorContainer}" ItemsSource="{Binding Connectors}" Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource innerConnectorContainer}" ItemsSource="{Binding Connectors}" Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                     <s:ConnectorContainer.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <s:Connector  Style="{StaticResource normalConnector}"/>
                             </Grid>
                         </DataTemplate>
-                    </s:ConnectorContainer.ItemTemplate>
+                    </s:ConnectorContainer.ItemTemplate>            
                 </s:ConnectorContainer>
             </ControlTemplate>
 
@@ -359,10 +375,10 @@
                 <ItemsControl.Resources>
                     <Style x:Key="designerItemStyle"
                                 TargetType="{x:Type ContentPresenter}">
-                        <Setter Property="Canvas.Top"
-                                    Value="{Binding Top}" />
                         <Setter Property="Canvas.Left"
                                     Value="{Binding Left}" />
+                        <Setter Property="Canvas.Top"
+                                    Value="{Binding Top}" />
                         <Setter Property="Canvas.ZIndex"
                                     Value="{Binding ZIndex}" />
                         <Setter Property="s:SelectionProps.EnabledForSelection"
@@ -474,8 +490,8 @@
                                             <Setter TargetName="PART_ConnectorDecorator" Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                         <DataTrigger Value="True"
-                                                            Binding="{Binding IsRatioConnector}">
-                                            <Setter TargetName="PART_ConnectorDecorator" Property="Template" Value="{StaticResource RatioConnectorDecoratorTemplate}" />
+                                                            Binding="{Binding IsInnerConnector}">
+                                            <Setter TargetName="PART_ConnectorDecorator" Property="Template" Value="{StaticResource InnerConnectorDecoratorTemplate}" />
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>
@@ -528,8 +544,8 @@
                                                         Points="{Binding Path=ConnectionPoints, Converter={x:Static s:ConnectionPathConverter.Instance}}"
                                                         Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
                                                         StrokeThickness="{Binding ColorViewModel.LineWidth}"  
-                                                        StrokeDashArray="{Binding ColorViewModel.LineDashStyle,Converter={StaticResource LineDashConverter}}" />
-
+                                                        StrokeDashArray="{Binding ColorViewModel.LineDashStyle,Converter={StaticResource LineDashConverter}}" />                                           
+                                            
                                             <Path x:Name="rightarrow"
                                                     Data="{Binding ColorViewModel.RightArrowPathStyle,Converter={StaticResource ArrowPathConverter}}"
                                                     Visibility="{Binding Path=IsFullConnection, Converter={x:Static s:BoolToVisibilityConverter.Instance}}"
@@ -574,6 +590,24 @@
                                                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
                                             </c:DragThumb.InputBindings>                                 
                                         </c:DragThumb>
+
+                                        <s:PointContainer x:Name="PART_PointContainer" Style="{StaticResource innerConnectorContainer}" ItemsSource="{Binding ConnectionPoints}" Visibility="Collapsed">
+                                            <s:PointContainer.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <s:PointConnector  Style="{StaticResource pointConnector1}"/>
+                                                        <c:PointDragThumb Cursor="SizeAll" Opacity="0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </s:PointContainer.ItemTemplate>
+                                            <s:PointContainer.Resources>
+                                                <Style TargetType="{x:Type ContentPresenter}">
+                                                    <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                                                    <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                                                </Style>
+                                            </s:PointContainer.Resources>
+                                        </s:PointContainer>
+                                        
                                     </Grid>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Value="True"
@@ -587,6 +621,9 @@
                                             <Setter TargetName="rightarrow"
                                                         Property="Fill"
                                                         Value="Black" />
+                                            <Setter TargetName="PART_PointContainer"
+                                                        Property="Visibility"
+                                                        Value="Visible"/>
                                         </DataTrigger>
 
                                         <!--右箭头-->
@@ -816,7 +853,7 @@
                                         </Grid.ContextMenu>
 
                                         <!--PART_ConnectorDecorator-->
-                                        <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource logicConnectorContainer}" ItemsSource="{Binding Connectors}" Margin="0,0,0,0">
+                                        <s:ConnectorContainer x:Name="PART_ConnectorContainer" Style="{StaticResource innerConnectorContainer}" ItemsSource="{Binding Connectors}" Margin="0,0,0,0">
                                             <s:ConnectorContainer.ItemTemplate>
                                                 <DataTemplate>
                                                     <Grid>

@@ -17,7 +17,7 @@ namespace AIStudio.Wpf.Flowchart
     {
         public FlowchartViewModel(string title, string status, DiagramType diagramType) : base(title, status, diagramType)
         {
-
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
         }
         public FlowchartViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
@@ -25,6 +25,12 @@ namespace AIStudio.Wpf.Flowchart
             {
                 FlowchartService.InitData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList(), DiagramViewModel);
             }
+        }
+
+        protected override void OpenFile(DiagramDocument diagramDocument)
+        {
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
+            base.OpenFile(diagramDocument);
         }
 
         protected override void InitDiagramViewModel()

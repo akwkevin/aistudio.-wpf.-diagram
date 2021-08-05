@@ -22,7 +22,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
 {
     public partial class DiagramsViewModel : BindableBase
     {
-        private IDiagramServiceProvider _service { get { return DiagramServicesProvider.Instance.Provider; } }
+        protected IDiagramServiceProvider _service { get { return DiagramServicesProvider.Instance.Provider; } }
        
         public DiagramsViewModel(string title, string status, DiagramType diagramType)
         {
@@ -246,7 +246,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
             }
         }
 
-        private void OpenFile(DiagramDocument diagramDocument)
+        protected virtual void OpenFile(DiagramDocument diagramDocument)
         {
             Title = diagramDocument.Title;
             DiagramType = diagramDocument.DiagramType;

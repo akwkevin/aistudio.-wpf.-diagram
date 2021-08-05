@@ -27,6 +27,7 @@ namespace Util.DiagramDesigner
 
             return DrawMode.Normal;
         }
+
         public void ResetDrawMode()
         {
             CursorDrawModeSelected = true;
@@ -104,7 +105,7 @@ namespace Util.DiagramDesigner
             }
         }
 
-        private DrawMode _vectorLineDrawMode = DrawMode.ConnectingLine;
+        private DrawMode _vectorLineDrawMode = DrawMode.RadiusConnectingLine;
         public DrawMode VectorLineDrawMode
         {
             get

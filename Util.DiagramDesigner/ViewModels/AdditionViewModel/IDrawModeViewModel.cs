@@ -12,5 +12,6 @@ namespace Util.DiagramDesigner
         void ResetDrawMode();
 
         CursorMode CursorMode { get; set; }
+        DrawMode VectorLineDrawMode { get; set; }
     }
 }

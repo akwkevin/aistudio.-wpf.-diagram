@@ -15,7 +15,8 @@ namespace Util.DiagramDesigner
         DirectLine = 6,
         ConnectingLine = 10,
         CornerConnectingLine = 11,
-        RadiusConnectingLine = 12,
+        BoundaryConnectingLine = 12,
+        RadiusConnectingLine = 13,
         Text = 20,
     }
 }
