@@ -287,7 +287,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                     ConnectorOrientation sinkConnectorOrientation = connection.SinkOrientation;
                     FullyCreatedConnectorInfo sinkConnectorInfo = GetFullConnectorInfo(connection.Id, sinkItem, sinkConnectorOrientation, connection.SinkXRatio, connection.SinkYRatio, connection.SinkInnerPoint);
 
-                    ConnectorViewModel connectionVM = new ConnectorViewModel(viewModel, sourceConnectorInfo, sinkConnectorInfo, connection);
+                    ConnectorViewModel connectionVM = new ConnectorViewModel(viewModel, sourceConnectorInfo, sinkConnectorInfo, connection, connection.VectorLineDrawMode);
                     viewModel.Items.Add(connectionVM);
                 }
 
@@ -445,7 +445,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                         ConnectorOrientation sinkConnectorOrientation = connection.SinkOrientation;
                         FullyCreatedConnectorInfo sinkConnectorInfo = GetFullConnectorInfo(connection.Id, sinkItem, sinkConnectorOrientation, connection.SinkXRatio, connection.SinkYRatio, connection.SinkInnerPoint);
 
-                        ConnectorViewModel connectionVM = new ConnectorViewModel(DiagramViewModel, sourceConnectorInfo, sinkConnectorInfo, connection);
+                        ConnectorViewModel connectionVM = new ConnectorViewModel(DiagramViewModel, sourceConnectorInfo, sinkConnectorInfo, connection, connection.VectorLineDrawMode);
                         items.Add(connectionVM);
                     }
 
@@ -989,7 +989,7 @@ namespace AIStudio.Wpf.ADiagram.ViewModels
                     ConnectorOrientation sinkConnectorOrientation = connection.SinkOrientation;
                     FullyCreatedConnectorInfo sinkConnectorInfo = GetFullConnectorInfo(connection.Id, sinkItem, sinkConnectorOrientation, connection.SinkXRatio, connection.SinkYRatio, connection.SinkInnerPoint);
 
-                    ConnectorViewModel connectionVM = new ConnectorViewModel(viewModel, sourceConnectorInfo, sinkConnectorInfo, connection);
+                    ConnectorViewModel connectionVM = new ConnectorViewModel(viewModel, sourceConnectorInfo, sinkConnectorInfo, connection, connection.VectorLineDrawMode);
                     viewModel.Items.Add(connectionVM);
                 }
 

@@ -188,7 +188,7 @@ namespace Util.DiagramDesigner
                     Rect rectangleBounds = sourceConnector.TransformToVisual(this).TransformBounds(new Rect(sourceConnector.RenderSize));
                     Point point = new Point(rectangleBounds.Left + (rectangleBounds.Width / 2),
                                             rectangleBounds.Bottom + (rectangleBounds.Height / 2));
-                    partialConnection = new ConnectorViewModel(sourceDataItem, new PartCreatedConnectionInfo(point));
+                    partialConnection = new ConnectorViewModel(sourceDataItem, new PartCreatedConnectionInfo(point), _service.DrawModeViewModel.VectorLineDrawMode);
                     _viewModel.DirectAddItemCommand.Execute(partialConnection);
                 }
             }
@@ -209,7 +209,7 @@ namespace Util.DiagramDesigner
                     Rect rectangleBounds = new Rect(sourceConnectorInfo.DataItem.Left, sourceConnectorInfo.DataItem.Top, 3, 3);
                     Point point = new Point(rectangleBounds.Left + (rectangleBounds.Width / 2),
                                             rectangleBounds.Bottom + (rectangleBounds.Height / 2));
-                    partialConnection = new ConnectorViewModel(sourceConnectorInfo, new PartCreatedConnectionInfo(point));
+                    partialConnection = new ConnectorViewModel(sourceConnectorInfo, new PartCreatedConnectionInfo(point), _service.DrawModeViewModel.VectorLineDrawMode);
                     _viewModel.DirectAddItemCommand.Execute(partialConnection);
                 }
             }
@@ -341,7 +341,7 @@ namespace Util.DiagramDesigner
                     int indexOfLastTempConnection = sinkDataItem.DataItem.Parent.Items.Count - 1;
                     sinkDataItem.DataItem.Parent.DirectRemoveItemCommand.Execute(
                         sinkDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
-                    sinkDataItem.DataItem.Parent.AddItemCommand.Execute(new ConnectorViewModel(sourceDataItem, sinkDataItem));
+                    sinkDataItem.DataItem.Parent.AddItemCommand.Execute(new ConnectorViewModel(sourceDataItem, sinkDataItem, _service.DrawModeViewModel.VectorLineDrawMode));
                 }
                 else if (_service.DrawModeViewModel.GetDrawMode() == DrawMode.ConnectingLine && connectorsHit.Count() == 1)
                 {
@@ -352,7 +352,7 @@ namespace Util.DiagramDesigner
                     _viewModel.DirectRemoveItemCommand.Execute(_viewModel.Items[indexOfLastTempConnection]);
                     _viewModel.DirectAddItemCommand.Execute(pointItemView);
 
-                    var connector = new ConnectorViewModel(sourceDataItem, sinkDataItem);
+                    var connector = new ConnectorViewModel(sourceDataItem, sinkDataItem, _service.DrawModeViewModel.VectorLineDrawMode);
                     _viewModel.AddItemCommand.Execute(connector);
 
                     sourceDataItem.DataItem.ZIndex++;

@@ -1477,12 +1477,192 @@
                         <Fluent:SplitButton.LargeIcon>
                             <iconPacks:PackIconMaterial Kind="Grid" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Fluent:SplitButton.LargeIcon>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5" Text="宽度" VerticalAlignment="Center"/>
+                            <Fluent:Spinner Margin="5" Width="60" Size="Small" Value="{Binding DiagramsViewModel.DiagramViewModel.GridCellWidth,Mode=TwoWay}" Minimum="0" Format="0" />
+                            <TextBlock Margin="5" Text="高度" VerticalAlignment="Center"/>
+                            <Fluent:Spinner Margin="5" Width="60" Size="Small" Value="{Binding DiagramsViewModel.DiagramViewModel.GridCellHeight,Mode=TwoWay}" Minimum="0" Format="0" />
+                        </StackPanel>
+                        
                         <Fluent:SplitButton.ToolTip>
                             <Fluent:ScreenTip Title="ShowGrid"
-                                              Text="显示表格"
+                                              Text="显示网格"
                                               Width="190" />
                         </Fluent:SplitButton.ToolTip>
                     </Fluent:SplitButton>
+                    <Fluent:SplitButton Header="横对齐" Width="50" VerticalAlignment="Top">
+                        <UniformGrid Rows="4">
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment,Converter={converter:ConverterValueMapToBool Parameter='Left'}, ConverterParameter='Left'}" ToolTip="左对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignLeft" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment,Converter={converter:ConverterValueMapToBool Parameter='Center'}, ConverterParameter='Center'}" ToolTip="居中对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignCenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment,Converter={converter:ConverterValueMapToBool Parameter='Right'}, ConverterParameter='Right'}" ToolTip="右对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignRight" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment,Converter={converter:ConverterValueMapToBool Parameter='None'}, ConverterParameter='None'}" ToolTip="无对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <TextBlock Text="无" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>      
+                        </UniformGrid>
+                        <Fluent:SplitButton.ToolTip>
+                            <Fluent:ScreenTip Title="ShowGrid"
+                                              Text="横向对齐到网格方式"
+                                              Width="190" />
+                        </Fluent:SplitButton.ToolTip>
+                        <Fluent:SplitButton.Style>
+                            <Style TargetType="{x:Type Fluent:SplitButton}" BasedOn="{StaticResource RibbonSplitButtonStyle}">
+                                <Setter Property="LargeIcon">
+                                    <Setter.Value>
+                                        <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                            <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignLeft" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                        </Border>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment}" Value="Left">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignLeft" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment}" Value="Center">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignCenter" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment}" Value="Right">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignRight" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellHorizontalAlignment}" Value="None">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <TextBlock Text="无" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Fluent:SplitButton.Style>
+                    </Fluent:SplitButton>
+                    <Fluent:SplitButton Header="竖对齐" Width="50" VerticalAlignment="Top">
+                        <UniformGrid Columns="4">
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment,Converter={converter:ConverterValueMapToBool Parameter='Top'}, ConverterParameter='Top'}" ToolTip="上对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignLeft" RotationAngle="90" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment,Converter={converter:ConverterValueMapToBool Parameter='Center'}, ConverterParameter='Center'}" ToolTip="居中对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignCenter" RotationAngle="90" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment,Converter={converter:ConverterValueMapToBool Parameter='Bottom'}, ConverterParameter='Bottom'}" ToolTip="下对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignRight" RotationAngle="90" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                            <Fluent:ToggleButton Height="48" Width="48" SizeDefinition="Large" IsChecked="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment,Converter={converter:ConverterValueMapToBool Parameter='None'}, ConverterParameter='None'}" ToolTip="无对齐">
+                                <Fluent:ToggleButton.LargeIcon>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                        <TextBlock Text="无" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Fluent:ToggleButton.LargeIcon>
+                            </Fluent:ToggleButton>
+                        </UniformGrid>
+                        <Fluent:SplitButton.Style>
+                            <Style TargetType="{x:Type Fluent:SplitButton}" BasedOn="{StaticResource RibbonSplitButtonStyle}">
+                                <Setter Property="LargeIcon">
+                                    <Setter.Value>
+                                        <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                            <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignLeft" RotationAngle="90" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment}" Value="Top">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignLeft" RotationAngle="90" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment}" Value="Center">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignCenter" RotationAngle="90" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment}" Value="Bottom">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <iconPacks:PackIconMaterial Foreground="Gray" Kind="FormatAlignRight" RotationAngle="90" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DiagramsViewModel.DiagramViewModel.CellVerticalAlignment}" Value="None">
+                                        <Setter Property="LargeIcon">
+                                            <Setter.Value>
+                                                <Border BorderThickness="1" BorderBrush="Gray" Margin="6,6,6,6">
+                                                    <TextBlock Text="无" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Fluent:SplitButton.Style>                      
+                        <Fluent:SplitButton.ToolTip>
+                            <Fluent:ScreenTip Title="ShowGrid"
+                                              Text="竖向对齐到网格方式"
+                                              Width="190" />
+                        </Fluent:SplitButton.ToolTip>
+                    </Fluent:SplitButton>
+
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="背景"
                                        IsLauncherVisible="True" >

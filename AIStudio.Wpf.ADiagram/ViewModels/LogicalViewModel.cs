@@ -13,17 +13,11 @@ namespace AIStudio.Wpf.Logical
     {
         public LogicalViewModel(string title, string status, DiagramType diagramType) : base(title, status, diagramType)
         {
-            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.CornerConnectingLine;
+            
         }
         public LogicalViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
         {
-
-        }
-
-        protected override void OpenFile(DiagramDocument diagramDocument)
-        {
             _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.CornerConnectingLine;
-            base.OpenFile(diagramDocument);
         }
 
         protected override void InitDiagramViewModel()
@@ -37,6 +31,7 @@ namespace AIStudio.Wpf.Logical
             DiagramViewModel.CellVerticalAlignment = CellVerticalAlignment.None;
 
             DiagramViewModel.Items.CollectionChanged += Items_CollectionChanged;
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.CornerConnectingLine;
         }
 
         protected override void Init()
@@ -79,28 +74,28 @@ namespace AIStudio.Wpf.Logical
             out1.LinkPoint = LogicalService.LinkPoint[4];
             DiagramViewModel.DirectAddItemCommand.Execute(out1);
 
-            ConnectorViewModel connector1 = new ConnectorViewModel(in1.Output[0], item1.Input[0]);
+            ConnectorViewModel connector1 = new ConnectorViewModel(in1.Output[0], item1.Input[0], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector1);
 
-            ConnectorViewModel connector2 = new ConnectorViewModel(in2.Output[0], item1.Input[1]);
+            ConnectorViewModel connector2 = new ConnectorViewModel(in2.Output[0], item1.Input[1], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector2);
 
-            ConnectorViewModel connector3 = new ConnectorViewModel(item1.Output[0], gTGate.Input[0]);
+            ConnectorViewModel connector3 = new ConnectorViewModel(item1.Output[0], gTGate.Input[0], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector3);
 
-            ConnectorViewModel connector4 = new ConnectorViewModel(constant.Output[0], gTGate.Input[1]);
+            ConnectorViewModel connector4 = new ConnectorViewModel(constant.Output[0], gTGate.Input[1], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector4);
 
-            ConnectorViewModel connector5 = new ConnectorViewModel(gTGate.Output[0], sELGate.Input[0]);
+            ConnectorViewModel connector5 = new ConnectorViewModel(gTGate.Output[0], sELGate.Input[0], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector5);
 
-            ConnectorViewModel connector6 = new ConnectorViewModel(in3.Output[0], sELGate.Input[1]);
+            ConnectorViewModel connector6 = new ConnectorViewModel(in3.Output[0], sELGate.Input[1], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector6);
 
-            ConnectorViewModel connector7 = new ConnectorViewModel(in4.Output[0], sELGate.Input[2]);
+            ConnectorViewModel connector7 = new ConnectorViewModel(in4.Output[0], sELGate.Input[2], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector7);
 
-            ConnectorViewModel connector8 = new ConnectorViewModel(sELGate.Output[0], out1.Input[0]);
+            ConnectorViewModel connector8 = new ConnectorViewModel(sELGate.Output[0], out1.Input[0], _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector8);
         }
 

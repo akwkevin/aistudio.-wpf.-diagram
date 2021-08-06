@@ -17,20 +17,15 @@ namespace AIStudio.Wpf.Flowchart
     {
         public FlowchartViewModel(string title, string status, DiagramType diagramType) : base(title, status, diagramType)
         {
-            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
+            
         }
         public FlowchartViewModel(string filename, DiagramDocument diagramDocument) : base(filename, diagramDocument)
-        {
+        {          
             if (DiagramViewModel != null)
             {
                 FlowchartService.InitData(DiagramViewModel.Items.OfType<FlowNode>().ToList(), DiagramViewModel.Items.OfType<ConnectorViewModel>().ToList(), DiagramViewModel);
             }
-        }
-
-        protected override void OpenFile(DiagramDocument diagramDocument)
-        {
             _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
-            base.OpenFile(diagramDocument);
         }
 
         protected override void InitDiagramViewModel()
@@ -41,6 +36,7 @@ namespace AIStudio.Wpf.Flowchart
             DiagramViewModel.GridCellSize = new Size(100, 100);
             DiagramViewModel.CellHorizontalAlignment = CellHorizontalAlignment.Center;
             DiagramViewModel.CellVerticalAlignment = CellVerticalAlignment.Center;
+            _service.DrawModeViewModel.VectorLineDrawMode = DrawMode.BoundaryConnectingLine;
         }
 
         protected override void Init()
@@ -74,36 +70,36 @@ namespace AIStudio.Wpf.Flowchart
             DesignerItemViewModelBase end = new EndFlowNode() { Left = 100, Top = 700, Color = Colors.Yellow.ToString() };
             DiagramViewModel.DirectAddItemCommand.Execute(end);
 
-            ConnectorViewModel connector1 = new ConnectorViewModel(start.BottomConnector, middle1.TopConnector);     
+            ConnectorViewModel connector1 = new ConnectorViewModel(start.BottomConnector, middle1.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);     
             DiagramViewModel.DirectAddItemCommand.Execute(connector1);
 
-            ConnectorViewModel connector2 = new ConnectorViewModel(middle1.BottomConnector, decide.TopConnector);
+            ConnectorViewModel connector2 = new ConnectorViewModel(middle1.BottomConnector, decide.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector2);
 
-            ConnectorViewModel connector3 = new ConnectorViewModel(decide.RightConnector, middle2.TopConnector);
+            ConnectorViewModel connector3 = new ConnectorViewModel(decide.RightConnector, middle2.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector3);
             connector3.AddText(">=3");
 
-            ConnectorViewModel connector4 = new ConnectorViewModel(middle2.BottomConnector, cobegin.TopConnector);
+            ConnectorViewModel connector4 = new ConnectorViewModel(middle2.BottomConnector, cobegin.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector4);
 
-            ConnectorViewModel connector5 = new ConnectorViewModel(decide.BottomConnector, cobegin.TopConnector);
+            ConnectorViewModel connector5 = new ConnectorViewModel(decide.BottomConnector, cobegin.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector5);
             connector5.AddText("<3");
 
-            ConnectorViewModel connector6 = new ConnectorViewModel(cobegin.BottomConnector, middle3.TopConnector);
+            ConnectorViewModel connector6 = new ConnectorViewModel(cobegin.BottomConnector, middle3.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector6);
 
-            ConnectorViewModel connector7 = new ConnectorViewModel(cobegin.BottomConnector, middle4.TopConnector);
+            ConnectorViewModel connector7 = new ConnectorViewModel(cobegin.BottomConnector, middle4.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector7);
 
-            ConnectorViewModel connector8 = new ConnectorViewModel(middle3.BottomConnector, coend.TopConnector);
+            ConnectorViewModel connector8 = new ConnectorViewModel(middle3.BottomConnector, coend.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector8);
 
-            ConnectorViewModel connector9 = new ConnectorViewModel(middle4.BottomConnector, coend.TopConnector);
+            ConnectorViewModel connector9 = new ConnectorViewModel(middle4.BottomConnector, coend.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector9);
 
-            ConnectorViewModel connector10 = new ConnectorViewModel(coend.BottomConnector, end.TopConnector);
+            ConnectorViewModel connector10 = new ConnectorViewModel(coend.BottomConnector, end.TopConnector, _service.DrawModeViewModel.VectorLineDrawMode);
             DiagramViewModel.DirectAddItemCommand.Execute(connector10);
 
             DiagramViewModel.ClearSelectedItems();

@@ -540,12 +540,21 @@
                                             <Canvas.InputBindings>
                                                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditCommand}" CommandParameter="{Binding }" />
                                             </Canvas.InputBindings>
-                                            <Polyline x:Name="poly"                                                  
+                                            <!--<Polyline x:Name="poly"                                                  
                                                         Points="{Binding Path=ConnectionPoints, Converter={x:Static s:ConnectionPathConverter.Instance}}"
                                                         Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
                                                         StrokeThickness="{Binding ColorViewModel.LineWidth}"  
-                                                        StrokeDashArray="{Binding ColorViewModel.LineDashStyle,Converter={StaticResource LineDashConverter}}" />                                           
-                                            
+                                                        StrokeDashArray="{Binding ColorViewModel.LineDashStyle,Converter={StaticResource LineDashConverter}}" />-->
+                                            <Path x:Name="poly" Stroke="{Binding ColorViewModel.LineColor,Converter={StaticResource ColorBrushConverter}}"
+                                                  StrokeThickness="{Binding ColorViewModel.LineWidth}"  
+                                                  StrokeDashArray="{Binding ColorViewModel.LineDashStyle,Converter={StaticResource LineDashConverter}}">
+                                                <Path.Data>
+                                                    <MultiBinding Converter="{x:Static s:ConnectionDataConverter.Instance}">
+                                                        <Binding Path="ConnectionPoints"/>
+                                                        <Binding Path="VectorLineDrawMode"/>
+                                                    </MultiBinding>
+                                                </Path.Data>
+                                            </Path>
                                             <Path x:Name="rightarrow"
                                                     Data="{Binding ColorViewModel.RightArrowPathStyle,Converter={StaticResource ArrowPathConverter}}"
                                                     Visibility="{Binding Path=IsFullConnection, Converter={x:Static s:BoolToVisibilityConverter.Instance}}"

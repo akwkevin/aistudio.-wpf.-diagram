@@ -59,7 +59,7 @@ namespace AIStudio.Wpf.ADiagram.Models
         public SFCToolBoxData(SFCNodeKinds kind, Type type, double width = 32, double height = 32) : base(null, null, type, width, height)
         {
             Kind = kind;
-            ColorViewModel.LineColor.Color = Colors.Black;
+            ColorViewModel.LineColor.Color = Colors.Gray;
             ColorViewModel.FillColor.Color = Colors.Blue;
 
         }

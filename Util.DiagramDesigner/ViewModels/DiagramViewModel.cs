@@ -117,7 +117,7 @@ namespace Util.DiagramDesigner
             }
         }
 
-        private Size _gridCellSize = new Size(50, 50);
+        private Size _gridCellSize = new Size(100, 100);
         public Size GridCellSize
         {
             get
@@ -127,6 +127,32 @@ namespace Util.DiagramDesigner
             set
             {
                 SetProperty(ref _gridCellSize, value);
+            }
+        }
+
+        public double GridCellWidth
+        {
+            get
+            {
+                return _gridCellSize.Width;
+            }
+            set
+            {
+                _gridCellSize.Width = value;
+                RaisePropertyChanged(nameof(GridCellSize));
+            }
+        }
+
+        public double GridCellHeight
+        {
+            get
+            {
+                return _gridCellSize.Height;
+            }
+            set
+            {
+                _gridCellSize.Height = value;
+                RaisePropertyChanged(nameof(GridCellSize));
             }
         }
 

@@ -17,26 +17,27 @@ namespace Util.DiagramDesigner
         {
 
         }
-        public ConnectionItem(Guid id, Guid sourceId, ConnectorOrientation sourceOrientation, Type sourceType, double sourceXRatio, double sourceYRatio, bool sourceInnerPoint,
-            Guid sinkId, ConnectorOrientation sinkOrientation, Type sinkType, double sinkXRatio, double sinkYRatio, bool sinkInnerPoint,
-            int zIndex, bool isGroup, Guid parentId, ColorViewModel colorViewModel, FontViewModel fontViewModel) : base(id, zIndex, isGroup, parentId, colorViewModel, fontViewModel)
-        {
-            this.SourceId = sourceId;
-            this.SourceOrientation = sourceOrientation;
-            this.SourceType = sourceType;
-            this.SourceTypeName = sourceType.FullName;
-            this.SourceXRatio = sourceXRatio;
-            this.SourceYRatio = sourceYRatio;
-            this.SourceInnerPoint = sourceInnerPoint;
+        //public ConnectionItem(Guid id, Guid sourceId, ConnectorOrientation sourceOrientation, Type sourceType, double sourceXRatio, double sourceYRatio, bool sourceInnerPoint,
+        //    Guid sinkId, ConnectorOrientation sinkOrientation, Type sinkType, double sinkXRatio, double sinkYRatio, bool sinkInnerPoint,
+        //    int zIndex, bool isGroup, Guid parentId, DrawMode vectorLineDrawMode, ColorViewModel colorViewModel, FontViewModel fontViewModel) : base(id, zIndex, isGroup, parentId, colorViewModel, fontViewModel)
+        //{
+        //    this.SourceId = sourceId;
+        //    this.SourceOrientation = sourceOrientation;
+        //    this.SourceType = sourceType;
+        //    this.SourceTypeName = sourceType.FullName;
+        //    this.SourceXRatio = sourceXRatio;
+        //    this.SourceYRatio = sourceYRatio;
+        //    this.SourceInnerPoint = sourceInnerPoint;
 
-            this.SinkId = sinkId;
-            this.SinkOrientation = sinkOrientation;
-            this.SinkType = sinkType;           
-            this.SinkTypeName = sinkType.FullName;
-            this.SinkXRatio = sinkXRatio;
-            this.SinkYRatio = sinkYRatio;
-            this.SinkInnerPoint = sinkInnerPoint;
-        }
+        //    this.SinkId = sinkId;
+        //    this.SinkOrientation = sinkOrientation;
+        //    this.SinkType = sinkType;           
+        //    this.SinkTypeName = sinkType.FullName;
+        //    this.SinkXRatio = sinkXRatio;
+        //    this.SinkYRatio = sinkYRatio;
+        //    this.SinkInnerPoint = sinkInnerPoint;
+        //    this.VectorLineDrawMode = vectorLineDrawMode;
+        //}
 
         public ConnectionItem(Guid sourceId, ConnectorOrientation sourceOrientation, Type sourceType, double sourceXRatio, double sourceYRatio, bool sourceInnerPoint,
             Guid sinkId, ConnectorOrientation sinkOrientation, Type sinkType, double sinkXRatio, double sinkYRatio, bool sinkInnerPoint, ConnectorViewModel viewmodel) : base(viewmodel)
@@ -56,6 +57,7 @@ namespace Util.DiagramDesigner
             this.SinkXRatio = sinkXRatio;
             this.SinkYRatio = sinkYRatio;
             this.SinkInnerPoint = sinkInnerPoint;
+            this.VectorLineDrawMode = viewmodel.VectorLineDrawMode;
         }
 
         [XmlAttribute]
@@ -99,5 +101,8 @@ namespace Util.DiagramDesigner
 
         [XmlAttribute]
         public bool SinkInnerPoint { get; set; }
+
+        [XmlAttribute]
+        public DrawMode VectorLineDrawMode { get; set; }
     }
 }

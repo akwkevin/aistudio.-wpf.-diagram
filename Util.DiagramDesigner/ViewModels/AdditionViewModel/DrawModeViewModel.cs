@@ -105,7 +105,7 @@ namespace Util.DiagramDesigner
             }
         }
 
-        private DrawMode _vectorLineDrawMode = DrawMode.RadiusConnectingLine;
+        private DrawMode _vectorLineDrawMode = DrawMode.CornerConnectingLine;
         public DrawMode VectorLineDrawMode
         {
             get

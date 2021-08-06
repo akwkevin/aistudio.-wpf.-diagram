@@ -56,6 +56,10 @@ namespace Util.DiagramDesigner
                     {
                         bool flag;
                         Point n = GetNearestNeighborSource(source, endPoint, rectSource, rectSink, out flag, sourceInnerPoint);
+                        if (linePoints.Contains(n))
+                        {
+                            break;
+                        }
                         linePoints.Add(n);
                         currentPoint = n;
 
@@ -209,7 +213,7 @@ namespace Util.DiagramDesigner
             return linePoints;
         }
 
-        public List<Point> GetConnectionLine(ConnectorInfo source, Point sinkPoint, ConnectorOrientation preferredOrientation, bool isInnerPoint = false)
+        public List<Point> GetConnectionLine(ConnectorInfo source, Point sinkPoint, ConnectorOrientation preferredOrientation, bool showLastLine, bool isInnerPoint = false)
         {
             List<Point> linePoints = new List<Point>();
             int margin = isInnerPoint ? 0 : const_margin; 
@@ -265,7 +269,7 @@ namespace Util.DiagramDesigner
             else
                 linePoints = OptimizeLinePoints(linePoints, new Rect[] { rectSource }, source.Orientation, GetOpositeOrientation(source.Orientation));
 
-            if (!isInnerPoint)
+            if (!showLastLine)
             {
                 linePoints.Insert(0, source.Position);
             }

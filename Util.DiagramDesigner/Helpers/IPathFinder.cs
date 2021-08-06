@@ -9,6 +9,6 @@ namespace Util.DiagramDesigner
     public interface IPathFinder
     {
         List<Point> GetConnectionLine(ConnectorInfo source, ConnectorInfo sink, bool showLastLine, bool sourceInnerPoint = false);
-        List<Point> GetConnectionLine(ConnectorInfo source, Point sinkPoint, ConnectorOrientation preferredOrientation, bool isInnerPoint = false);
+        List<Point> GetConnectionLine(ConnectorInfo source, Point sinkPoint, ConnectorOrientation preferredOrientation, bool showLastLine, bool isInnerPoint = false);
     }
 }

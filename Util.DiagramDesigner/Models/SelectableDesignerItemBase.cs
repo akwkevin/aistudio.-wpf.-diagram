@@ -21,17 +21,17 @@ namespace Util.DiagramDesigner
             FontItem = new FontItem();
         }
 
-        public SelectableDesignerItemBase(Guid id, int zIndex, bool isGroup, Guid parentId, IColorViewModel colorViewModel, IFontViewModel fontViewModel)
-        {
-            this.Id = id;
-            this.ZIndex = zIndex;
-            this.IsGroup = isGroup;
-            this.ParentId = parentId;
+        //public SelectableDesignerItemBase(Guid id, int zIndex, bool isGroup, Guid parentId, IColorViewModel colorViewModel, IFontViewModel fontViewModel)
+        //{
+        //    this.Id = id;
+        //    this.ZIndex = zIndex;
+        //    this.IsGroup = isGroup;
+        //    this.ParentId = parentId;
 
 
-            ColorItem = CopyHelper.Mapper<ColorItem>(colorViewModel);
-            FontItem = CopyHelper.Mapper<FontItem, IFontViewModel>(fontViewModel);
-        }
+        //    ColorItem = CopyHelper.Mapper<ColorItem>(colorViewModel);
+        //    FontItem = CopyHelper.Mapper<FontItem, IFontViewModel>(fontViewModel);
+        //}
 
         public SelectableDesignerItemBase(SelectableDesignerItemViewModelBase viewmodel)
         {

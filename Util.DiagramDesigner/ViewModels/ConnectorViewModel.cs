@@ -10,16 +10,16 @@ namespace Util.DiagramDesigner
 {
     public class ConnectorViewModel : SelectableDesignerItemViewModelBase
     {
-        private IDiagramServiceProvider _service { get { return DiagramServicesProvider.Instance.Provider; } }
-
         public ConnectorViewModel(IDiagramViewModel parent, FullyCreatedConnectorInfo sourceConnectorInfo, FullyCreatedConnectorInfo sinkConnectorInfo,
-            SelectableDesignerItemBase designer) : base(parent, designer)
+            SelectableDesignerItemBase designer, DrawMode vectorLineDrawMode) : base(parent, designer)
         {
+            VectorLineDrawMode = vectorLineDrawMode;
             Init(sourceConnectorInfo, sinkConnectorInfo);
         }
 
-        public ConnectorViewModel(FullyCreatedConnectorInfo sourceConnectorInfo, ConnectorInfoBase sinkConnectorInfo)
+        public ConnectorViewModel(FullyCreatedConnectorInfo sourceConnectorInfo, ConnectorInfoBase sinkConnectorInfo, DrawMode vectorLineDrawMode)
         {
+            VectorLineDrawMode = vectorLineDrawMode;
             Init(sourceConnectorInfo, sinkConnectorInfo);
         }
 
@@ -120,12 +120,14 @@ namespace Util.DiagramDesigner
             private set
             {
                 if (SetProperty(ref _area, value))
-                {                    
+                {
                     UpdateConnectionPoints();
                     OutTextItemLocation(_area, value);
                 }
             }
         }
+
+        public DrawMode VectorLineDrawMode { get; set; }
 
         public ConnectorInfo ConnectorInfo(ConnectorOrientation orientation, double left, double top, double width, double height, Point position)
         {
@@ -189,11 +191,11 @@ namespace Util.DiagramDesigner
 
         private void UpdateConnectionPoints()
         {
-            if (_service.DrawModeViewModel.VectorLineDrawMode == DrawMode.ConnectingLine)
+            if (VectorLineDrawMode == DrawMode.ConnectingLine)
             {
                 UpdateConnectionPointsByLine();
             }
-            else if (_service.DrawModeViewModel.VectorLineDrawMode == DrawMode.BoundaryConnectingLine)
+            else if (VectorLineDrawMode == DrawMode.BoundaryConnectingLine)
             {
                 UpdateConnectionPointsByBoundary();
             }
@@ -247,7 +249,7 @@ namespace Util.DiagramDesigner
             }
             else
             {
-                ConnectionPoints = PointInfoBase.ToList(PathFinder.GetConnectionLine(sourceInfo, points[1], SourceConnectorInfo.Orientation, SourceConnectorInfo.IsInnerPoint));
+                ConnectionPoints = PointInfoBase.ToList(PathFinder.GetConnectionLine(sourceInfo, points[1], SourceConnectorInfo.Orientation, false, SourceConnectorInfo.IsInnerPoint));
                 EndPoint = new Point();
             }
         }
